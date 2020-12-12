@@ -26,30 +26,50 @@ func GetTestMailRecipient(t *testing.T) string {
 
 func TestSendgridProvider_SendSingleMail(t *testing.T) {
 
-	toMail := mailings.Mail{
+	validMail := mailings.Mail{
 		Name: "Test Recipient",
 		Mail: GetTestMailRecipient(t),
+	}
+	invalidMail := mailings.Mail{
+		Name: "Test Recipient",
+		Mail: "notexisting@unkown.qz",
 	}
 	tests := []struct {
 		name string
 		input mailings.MinimumMailInput
+		wantErr error
 	}{
 		{
 			name: "happy",
 			input: mailings.MinimumMailInput{
-				FromMail:    toMail,
-				ToMail:      toMail,
+				FromMail:    validMail,
+				ToMail:      validMail,
 				Subject:     utils.StringPtr("Test"),
 				HtmlContent: "<h1>This is a Test</h1>",
 			},
+		},
+		{
+			name: "error not a valid email",
+			input: mailings.MinimumMailInput{
+				FromMail:    invalidMail,
+				ToMail:      invalidMail,
+				Subject:     utils.StringPtr("Test"),
+				HtmlContent: "<h1>This is a Test</h1>",
+			},
+			wantErr: NotAuthorizedSenderMail,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			p := NewTestSendgridProvider(t)
-			fmt.Println("Sending test mail to: ", toMail.Mail)
+			fmt.Println("Sending test mail to: ", test.input.ToMail.Mail)
 			err := p.SendSingleMail(test.input)
-			assert.NoError(t, err)
+			if test.wantErr == nil {
+				assert.NoError(t, err)
+			}else {
+				assert.NotNil(t, err)
+				assert.EqualError(t, err, test.wantErr.Error())
+			}
 		})
 	}
 }

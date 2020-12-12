@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"errors"
 	"fmt"
 	"github.com/Linus-Boehm/go-serverless-suite/mailings"
 	"github.com/Linus-Boehm/go-serverless-suite/utils"
@@ -15,6 +16,8 @@ type SendgridConfig struct {
 type SendgridProvider struct {
 	client *sendgrid.Client
 }
+
+var NotAuthorizedSenderMail = errors.New("sender mail is not authorized")
 
 func NewSendgridProvider(config SendgridConfig) *SendgridProvider {
 	c := sendgrid.NewSendClient(config.APIKey)
@@ -34,6 +37,9 @@ func (s *SendgridProvider) SendSingleMail(input mailings.MinimumMailInput) error
 	resp, err := s.client.Send(message)
 	if err != nil {
 		return err
+	}
+	if resp.StatusCode == 403 {
+		return NotAuthorizedSenderMail
 	}
 	if resp.StatusCode > 204 {
 		return fmt.Errorf("unexpected response code from sendgrid: %d", resp.StatusCode)
