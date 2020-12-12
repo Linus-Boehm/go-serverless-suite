@@ -1,0 +1,8 @@
+{
+  "mailings": {
+    "test_recipient": "lena@sewandbooze.com",
+    "sendgrid_config": {
+      "api_key": "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"
+    }
+  }
+}
