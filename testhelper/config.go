@@ -12,18 +12,18 @@ type TestConfig struct {
 }
 
 type MailingsConfig struct {
-	TestRecipient string `json:"test_recipient"`
+	TestRecipient  string                `json:"test_recipient"`
 	SendgridConfig SendgridMailingConfig `json:"sendgrid_config"`
 }
 
 type SendgridMailingConfig struct {
-	ApiKey string `json:"api_key"`
+	APIKey string `json:"api_key"`
 }
 
 func LoadConfig() (*TestConfig, error) {
 	gpth := os.Getenv("GOPATH")
 
-	file, err := ioutil.ReadFile(filepath.Join(gpth,"src","github.com","Linus-Boehm","go-serverless-suite", "/config.json"))
+	file, err := ioutil.ReadFile(filepath.Join(gpth, "src", "github.com", "Linus-Boehm", "go-serverless-suite", "/config.json"))
 	if err != nil {
 		return nil, err
 	}

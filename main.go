@@ -3,5 +3,5 @@ package main
 import "github.com/markbates/pkger"
 
 func init() {
-	pkger.Include("/templates/manifests")
+	_ = pkger.Include("/templates/manifests")
 }

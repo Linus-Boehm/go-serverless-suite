@@ -2,18 +2,19 @@ package provider
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/Linus-Boehm/go-serverless-suite/mailings"
 	"github.com/Linus-Boehm/go-serverless-suite/testhelper"
 	"github.com/Linus-Boehm/go-serverless-suite/utils"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func NewTestSendgridProvider(t *testing.T) *SendgridProvider {
 	c, err := testhelper.LoadConfig()
 	assert.NoError(t, err)
 	conf := SendgridConfig{
-		APIKey: c.Mailings.SendgridConfig.ApiKey,
+		APIKey: c.Mailings.SendgridConfig.APIKey,
 	}
 	return NewSendgridProvider(conf)
 }
@@ -35,8 +36,8 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 		Mail: "notexisting@unkown.qz",
 	}
 	tests := []struct {
-		name string
-		input mailings.MinimumMailInput
+		name    string
+		input   mailings.MinimumMailInput
 		wantErr error
 	}{
 		{
@@ -45,7 +46,7 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 				FromMail:    validMail,
 				ToMail:      validMail,
 				Subject:     utils.StringPtr("Test"),
-				HtmlContent: "<h1>This is a Test</h1>",
+				HTMLContent: "<h1>This is a Test</h1>",
 			},
 		},
 		{
@@ -54,9 +55,9 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 				FromMail:    invalidMail,
 				ToMail:      invalidMail,
 				Subject:     utils.StringPtr("Test"),
-				HtmlContent: "<h1>This is a Test</h1>",
+				HTMLContent: "<h1>This is a Test</h1>",
 			},
-			wantErr: NotAuthorizedSenderMail,
+			wantErr: ErrNotAuthorizedSenderMail,
 		},
 	}
 	for _, test := range tests {
@@ -66,7 +67,7 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 			err := p.SendSingleMail(test.input)
 			if test.wantErr == nil {
 				assert.NoError(t, err)
-			}else {
+			} else {
 				assert.NotNil(t, err)
 				assert.EqualError(t, err, test.wantErr.Error())
 			}

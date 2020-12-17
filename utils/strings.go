@@ -1,6 +1,5 @@
 package utils
 
-
 func StringValue(ptr *string) string {
 	if ptr == nil {
 		return ""

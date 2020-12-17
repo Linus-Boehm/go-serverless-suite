@@ -2,10 +2,11 @@ package templates
 
 import (
 	"bytes"
-	"github.com/Linus-Boehm/go-serverless-suite/utils"
-	"github.com/markbates/pkger"
 	"html/template"
 	"io/ioutil"
+
+	"github.com/Linus-Boehm/go-serverless-suite/utils"
+	"github.com/markbates/pkger"
 )
 
 var (
@@ -21,12 +22,12 @@ type TemplateManifest struct {
 }
 
 type Template struct {
-	raw *string
+	raw      *string
 	manifest TemplateManifest
-	Tpl *template.Template
+	Tpl      *template.Template
 }
 
-func LoadTemplate(manifest TemplateManifest) (*Template,error) {
+func LoadTemplate(manifest TemplateManifest) (*Template, error) {
 	rawContent, err := open(manifest.Path)
 	if err != nil {
 		return nil, err
@@ -35,25 +36,25 @@ func LoadTemplate(manifest TemplateManifest) (*Template,error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &Template{
-		raw: rawContent,
+		raw:      rawContent,
 		manifest: manifest,
-		Tpl: tpl,
-	},nil
+		Tpl:      tpl,
+	}, nil
 }
 
-func (t *Template) Render(data interface{}) (*string,error){
+func (t *Template) Render(data interface{}) (*string, error) {
 	var buf bytes.Buffer
 
 	err := t.Tpl.Execute(&buf, data)
 	if err != nil {
 		return nil, err
 	}
-	return utils.StringPtr(string(buf.String())), nil
+	return utils.StringPtr(buf.String()), nil
 }
 
-
-func open(p string) (*string,error){
+func open(p string) (*string, error) {
 	f, err := pkger.Open(p)
 	if err != nil {
 		return nil, err

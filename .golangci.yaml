@@ -1,0 +1,19 @@
+linters:
+  enable-all: false
+  disable-all: false
+  enable:
+    - govet
+    - golint
+    - goimports
+    - deadcode
+    - ineffassign
+    - misspell
+    - nakedret
+    - unconvert
+    - megacheck
+    - varcheck
+  disable:
+    - errcheck
+run:
+  skip-files:
+    - version.go

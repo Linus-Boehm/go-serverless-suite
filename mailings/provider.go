@@ -14,12 +14,12 @@ type Mail struct {
 }
 
 type MinimumMailInput struct {
-	FromMail Mail
-	ToMail Mail
-	Subject *string
-	HtmlContent string
+	FromMail    Mail
+	ToMail      Mail
+	Subject     *string
+	HTMLContent string
 }
 
 func (mmi *MinimumMailInput) GetPlainText() string {
-	return bluemonday.UGCPolicy().Sanitize(mmi.HtmlContent)
+	return bluemonday.UGCPolicy().Sanitize(mmi.HTMLContent)
 }
