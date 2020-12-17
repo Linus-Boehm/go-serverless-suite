@@ -5,14 +5,14 @@ type MailSender interface {
 }
 
 type service struct {
-	provider IMailProvider
+	provider MailProvider
 }
 
 type Renderer interface {
 	Render(data interface{}) (*string, error)
 }
 
-func NewMailingsService(provider IMailProvider) MailSender {
+func NewMailingsService(provider MailProvider) MailSender {
 	return &service{provider: provider}
 }
 

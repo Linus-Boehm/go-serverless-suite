@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func NewTestSendgridProvider(t *testing.T) *SendgridProvider {
+func NewTestSendgridProvider(t *testing.T) *Sendgrid {
 	c, err := testhelper.LoadConfig()
 	assert.NoError(t, err)
 	conf := SendgridConfig{

@@ -14,21 +14,21 @@ type SendgridConfig struct {
 	APIKey string
 }
 
-type SendgridProvider struct {
+type Sendgrid struct {
 	client *sendgrid.Client
 }
 
 var ErrNotAuthorizedSenderMail = errors.New("sender mail is not authorized")
 
-func NewSendgridProvider(config SendgridConfig) *SendgridProvider {
+func NewSendgridProvider(config SendgridConfig) *Sendgrid {
 	c := sendgrid.NewSendClient(config.APIKey)
 
-	return &SendgridProvider{
+	return &Sendgrid{
 		client: c,
 	}
 }
 
-func (s *SendgridProvider) SendSingleMail(input mailings.MinimumMailInput) error {
+func (s *Sendgrid) SendSingleMail(input mailings.MinimumMailInput) error {
 	plainText := input.GetPlainText()
 	from := sendgridMailFromMailingsMail(input.FromMail)
 	to := sendgridMailFromMailingsMail(input.ToMail)

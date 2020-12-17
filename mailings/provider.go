@@ -4,7 +4,7 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 )
 
-type IMailProvider interface {
+type MailProvider interface {
 	SendSingleMail(input MinimumMailInput) error
 }
 
