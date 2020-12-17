@@ -18,7 +18,7 @@ func (m *Service) SendSimpleContactForm(input SimpleContactFormInput, renderer R
 		return err
 	}
 	mmi := MinimumMailInput{
-		FromMail:    input.ToMail,
+		FromMail:    input.SenderMail,
 		ToMail:      input.ToMail,
 		Subject:     &input.Subject,
 		HTMLContent: *content,
