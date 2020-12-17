@@ -5,7 +5,6 @@ go 1.14
 require (
 	github.com/gobuffalo/here v0.6.2 // indirect
 	github.com/gobuffalo/release v1.15.0 // indirect
-	github.com/golangci/golangci-lint v1.33.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/markbates/pkger v0.17.1
 	github.com/microcosm-cc/bluemonday v1.0.4
