@@ -1,16 +1,13 @@
 SHELL = /bin/bash
 
-VERSION ?= "v0.1.1"
+VERSION ?= "v0.1.2"
 TAGS ?= ""
 GO_BIN ?= "go"
-
-load-env:
-	source ./.env
 
 deps:
 	$(GO_BIN) get -tags ${TAGS} -t ./...
 
-test: load-env
+test:
 	go test -race ./...
 
 build-statics:
@@ -35,7 +32,6 @@ update:
 release-test:
 	$(GO_BIN) test -tags ${TAGS} -race ./...
 
-release: build-statics
-	export GITHUB_TOKEN=$(cat ~/.config/goreleaser/github_token)
+release: release-test build-statics
 	$(GO_BIN) get github.com/gobuffalo/release
 	release -y -f version.go -v ${VERSION} --skip-packr

@@ -23,6 +23,8 @@ Thank you to the following **GIANTS**:
 
 * [github.com/cpuguy83/go-md2man](https://godoc.org/github.com/cpuguy83/go-md2man)
 
+* [github.com/creack/pty](https://godoc.org/github.com/creack/pty)
+
 * [github.com/davecgh/go-spew](https://godoc.org/github.com/davecgh/go-spew)
 
 * [github.com/fatih/structs](https://godoc.org/github.com/fatih/structs)
@@ -108,6 +110,8 @@ Thank you to the following **GIANTS**:
 * [github.com/mitchellh/go-homedir](https://godoc.org/github.com/mitchellh/go-homedir)
 
 * [github.com/mitchellh/mapstructure](https://godoc.org/github.com/mitchellh/mapstructure)
+
+* [github.com/niemeyer/pretty](https://godoc.org/github.com/niemeyer/pretty)
 
 * [github.com/onsi/ginkgo](https://godoc.org/github.com/onsi/ginkgo)
 
