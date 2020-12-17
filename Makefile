@@ -23,7 +23,7 @@ lint:
 	golangci-lint run --enable-all
 
 install:
-	$(GO_BIN) install -tags ${TAGS} -v .
+	echo "Skip install for this package"
 
 update:
 	rm go.*
@@ -35,11 +35,11 @@ update:
 prepare-release:
 	git tag -a ${VERSION}
 	git push origin ${VERSION}
+
 release-test:
 	$(GO_BIN) test -tags ${TAGS} -race ./...
 
-
-release: build-statics prepare-release
+release: build-statics
 	export GITHUB_TOKEN=$(cat ~/.config/goreleaser/github_token)
 	$(GO_BIN) get github.com/gobuffalo/release
-	${VERSION} | release -y -f version.go --skip-packr
+	echo "${VERSION}" | release -y -f version.go --skip-packr
