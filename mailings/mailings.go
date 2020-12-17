@@ -1,6 +1,10 @@
 package mailings
 
-type Service struct {
+type MailSender interface {
+	SendSimpleContactForm(input SimpleContactFormInput, renderer Renderer) error
+}
+
+type service struct {
 	provider IMailProvider
 }
 
@@ -8,11 +12,11 @@ type Renderer interface {
 	Render(data interface{}) (*string, error)
 }
 
-func NewMailingsService(provider IMailProvider) *Service {
-	return &Service{provider: provider}
+func NewMailingsService(provider IMailProvider) MailSender {
+	return &service{provider: provider}
 }
 
-func (m *Service) SendSimpleContactForm(input SimpleContactFormInput, renderer Renderer) error {
+func (m *service) SendSimpleContactForm(input SimpleContactFormInput, renderer Renderer) error {
 	content, err := renderer.Render(input)
 	if err != nil {
 		return err
