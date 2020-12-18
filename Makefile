@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 
-VERSION ?= "v0.1.7"
+VERSION ?= "v0.1.8"
 TAGS ?= ""
 GO_BIN ?= "go"
 
@@ -15,6 +15,7 @@ build-statics:
 
 build: build-statics
 	$(GO_BIN) build -v .
+
 lint:
 	go get github.com/golangci/golangci-lint/cmd/golangci-lint
 	golangci-lint run

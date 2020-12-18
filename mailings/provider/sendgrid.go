@@ -38,11 +38,15 @@ func (s *Sendgrid) SendSingleMail(input mailings.MinimumMailInput) error {
 	if err != nil {
 		return err
 	}
+	var errorMsg string
+	if resp != nil {
+		errorMsg = resp.Body
+	}
 	if resp.StatusCode == 403 {
-		return ErrNotAuthorizedSenderMail
+		return fmt.Errorf("%w: %s", ErrNotAuthorizedSenderMail, errorMsg)
 	}
 	if resp.StatusCode > 204 {
-		return fmt.Errorf("unexpected response code from sendgrid: %d", resp.StatusCode)
+		return fmt.Errorf("unexpected response code from sendgrid: %d Msg: %s", resp.StatusCode, errorMsg)
 	}
 	return nil
 }

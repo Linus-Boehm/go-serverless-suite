@@ -5,6 +5,8 @@ import (
 	"html/template"
 	"io/ioutil"
 
+	"github.com/markbates/pkger/pkging"
+
 	"github.com/Linus-Boehm/go-serverless-suite/utils"
 	"github.com/markbates/pkger"
 )
@@ -27,8 +29,14 @@ type Template struct {
 	Tpl      *template.Template
 }
 
+type TemplateOpener = func(p string) (pkging.File, error)
+
 func LoadTemplate(manifest TemplateManifest) (*Template, error) {
-	rawContent, err := open(manifest.Path)
+	return LoadCustomTemplate(pkger.Open, manifest)
+}
+
+func LoadCustomTemplate(opener TemplateOpener, manifest TemplateManifest) (*Template, error) {
+	rawContent, err := open(opener, manifest.Path)
 	if err != nil {
 		return nil, err
 	}
@@ -54,8 +62,8 @@ func (t *Template) Render(data interface{}) (*string, error) {
 	return utils.StringPtr(buf.String()), nil
 }
 
-func open(p string) (*string, error) {
-	f, err := pkger.Open(p)
+func open(opener TemplateOpener, p string) (*string, error) {
+	f, err := opener(p)
 	if err != nil {
 		return nil, err
 	}
