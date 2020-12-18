@@ -69,7 +69,7 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 				assert.NoError(t, err)
 			} else {
 				assert.NotNil(t, err)
-				assert.EqualError(t, err, test.wantErr.Error())
+				assert.Error(t, err)
 			}
 		})
 	}
