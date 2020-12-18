@@ -12,7 +12,7 @@ type Renderer interface {
 	Render(data interface{}) (*string, error)
 }
 
-func NewMailingsService(provider MailProvider) MailSender {
+func NewMailSender(provider MailProvider) MailSender {
 	return &service{provider: provider}
 }
 

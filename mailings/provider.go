@@ -21,5 +21,5 @@ type MinimumMailInput struct {
 }
 
 func (mmi *MinimumMailInput) GetPlainText() string {
-	return bluemonday.UGCPolicy().Sanitize(mmi.HTMLContent)
+	return bluemonday.StripTagsPolicy().Sanitize(mmi.HTMLContent)
 }
