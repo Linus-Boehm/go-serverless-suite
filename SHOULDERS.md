@@ -23,8 +23,6 @@ Thank you to the following **GIANTS**:
 
 * [github.com/cpuguy83/go-md2man](https://godoc.org/github.com/cpuguy83/go-md2man)
 
-* [github.com/creack/pty](https://godoc.org/github.com/creack/pty)
-
 * [github.com/davecgh/go-spew](https://godoc.org/github.com/davecgh/go-spew)
 
 * [github.com/fatih/structs](https://godoc.org/github.com/fatih/structs)
@@ -111,8 +109,6 @@ Thank you to the following **GIANTS**:
 
 * [github.com/mitchellh/mapstructure](https://godoc.org/github.com/mitchellh/mapstructure)
 
-* [github.com/niemeyer/pretty](https://godoc.org/github.com/niemeyer/pretty)
-
 * [github.com/onsi/ginkgo](https://godoc.org/github.com/onsi/ginkgo)
 
 * [github.com/onsi/gomega](https://godoc.org/github.com/onsi/gomega)
@@ -168,8 +164,6 @@ Thank you to the following **GIANTS**:
 * [golang.org/x/sync](https://godoc.org/golang.org/x/sync)
 
 * [golang.org/x/sys](https://godoc.org/golang.org/x/sys)
-
-* [golang.org/x/term](https://godoc.org/golang.org/x/term)
 
 * [golang.org/x/text](https://godoc.org/golang.org/x/text)
 
