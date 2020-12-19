@@ -1,14 +1,14 @@
 SHELL = /bin/bash
 
-VERSION ?= "v0.1.8"
+VERSION ?= "v0.1.9"
 TAGS ?= ""
-GO_BIN ?= "go"
+GO_BIN ?= "go1.16beta1"
 
 deps:
 	$(GO_BIN) get -tags ${TAGS} -t ./...
 
 test:
-	go test -race ./...
+	$(GO_BIN) test -race ./...
 
 build-statics:
 	pkger -o templates
@@ -17,7 +17,7 @@ build: build-statics
 	$(GO_BIN) build -v .
 
 lint:
-	go get github.com/golangci/golangci-lint/cmd/golangci-lint
+	$(GO_BIN) get github.com/golangci/golangci-lint/cmd/golangci-lint
 	golangci-lint run
 
 install:
