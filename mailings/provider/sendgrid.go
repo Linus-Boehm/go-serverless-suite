@@ -33,7 +33,7 @@ func (s *Sendgrid) SendSingleMail(input mailings.MinimumMailInput) error {
 	from := sendgridMailFromMailingsMail(input.FromMail)
 	to := sendgridMailFromMailingsMail(input.ToMail)
 	sbj := utils.StringValue(input.Subject)
-	message := mail.NewSingleEmail(from, sbj, to, plainText, input.HTMLContent)
+	message := mail.NewSingleEmail(from, sbj, to, plainText, input.GetHTMLTemplate())
 	resp, err := s.client.Send(message)
 	if err != nil {
 		return err

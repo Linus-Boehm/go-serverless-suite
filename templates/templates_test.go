@@ -3,7 +3,6 @@ package templates
 import (
 	"testing"
 
-	"github.com/Linus-Boehm/go-serverless-suite/mailings"
 	"github.com/Linus-Boehm/go-serverless-suite/utils"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,14 +20,14 @@ func TestLoadRenderTemplate(t *testing.T) {
 			name:        "happy",
 			input:       SimpleContactFormManifest,
 			mustInclude: utils.StringPtr("New Contact Request"),
-			data: mailings.SimpleContactFormInput{
-				FromMail: mailings.Mail{
-					Name: "Max Muster",
-					Mail: "max.muster@example.org",
+			data: map[string]interface{}{
+				"FromMail": map[string]interface{}{
+					"Name": "Max Muster",
+					"Mail": "max.muster@example.org",
 				},
-				Subject: "Subject",
-				Message: "Message",
-				Attributes: map[string]string{
+				"Subject": "Subject",
+				"Message": "Message",
+				"Attributes": map[string]string{
 					"TestAttr": "TestValue",
 				},
 			},

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Linus-Boehm/go-serverless-suite/templates"
+
 	"github.com/Linus-Boehm/go-serverless-suite/mailings"
 	"github.com/Linus-Boehm/go-serverless-suite/testhelper"
 	"github.com/Linus-Boehm/go-serverless-suite/utils"
@@ -43,19 +45,19 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 		{
 			name: "happy",
 			input: mailings.MinimumMailInput{
-				FromMail:    validMail,
-				ToMail:      validMail,
-				Subject:     utils.StringPtr("Test"),
-				HTMLContent: "<h1>This is a Test</h1>",
+				FromMail:     validMail,
+				ToMail:       validMail,
+				Subject:      utils.StringPtr("Test"),
+				HTMLTemplate: templates.HTMLTemplate{Content: "<h1>This is a Test</h1>"},
 			},
 		},
 		{
 			name: "error not a valid email",
 			input: mailings.MinimumMailInput{
-				FromMail:    invalidMail,
-				ToMail:      invalidMail,
-				Subject:     utils.StringPtr("Test"),
-				HTMLContent: "<h1>This is a Test</h1>",
+				FromMail:     invalidMail,
+				ToMail:       invalidMail,
+				Subject:      utils.StringPtr("Test"),
+				HTMLTemplate: templates.HTMLTemplate{Content: "<h1>This is a Test</h1>"},
 			},
 			wantErr: ErrNotAuthorizedSenderMail,
 		},

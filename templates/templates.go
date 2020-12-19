@@ -6,6 +6,8 @@ import (
 	"html/template"
 	"io/ioutil"
 
+	"github.com/microcosm-cc/bluemonday"
+
 	"github.com/Linus-Boehm/go-serverless-suite/utils"
 )
 
@@ -18,6 +20,10 @@ var (
 
 //go:embed manifests/*
 var manifests embed.FS
+
+type HTMLTemplate struct {
+	Content string
+}
 
 type TemplateManifest struct {
 	Name string
@@ -53,12 +59,27 @@ func LoadCustomTemplate(fs embed.FS, manifest TemplateManifest) (*Template, erro
 
 func (t *Template) Render(data interface{}) (*string, error) {
 	var buf bytes.Buffer
-
 	err := t.Tpl.Execute(&buf, data)
 	if err != nil {
 		return nil, err
 	}
 	return utils.StringPtr(buf.String()), nil
+}
+
+func (t *Template) RenderWithHTML(data interface{}) (*HTMLTemplate, error) {
+	content, err := t.Render(data)
+	if err != nil {
+		return nil, err
+	}
+	return &HTMLTemplate{Content: *content}, nil
+}
+
+func (h *HTMLTemplate) GetPlainText() string {
+	return bluemonday.StripTagsPolicy().Sanitize(h.Content)
+}
+
+func (h *HTMLTemplate) GetHTML() string {
+	return h.Content
 }
 
 func open(fs embed.FS, p string) (*string, error) {

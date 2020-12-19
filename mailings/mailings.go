@@ -1,5 +1,7 @@
 package mailings
 
+import "github.com/Linus-Boehm/go-serverless-suite/templates"
+
 type MailSender interface {
 	SendSimpleContactForm(input SimpleContactFormInput, renderer Renderer) error
 }
@@ -10,6 +12,7 @@ type service struct {
 
 type Renderer interface {
 	Render(data interface{}) (*string, error)
+	RenderWithHTML(data interface{}) (*templates.HTMLTemplate, error)
 }
 
 func NewMailSender(provider MailProvider) MailSender {
@@ -17,15 +20,15 @@ func NewMailSender(provider MailProvider) MailSender {
 }
 
 func (m *service) SendSimpleContactForm(input SimpleContactFormInput, renderer Renderer) error {
-	content, err := renderer.Render(input)
+	content, err := renderer.RenderWithHTML(input)
 	if err != nil {
 		return err
 	}
 	mmi := MinimumMailInput{
-		FromMail:    input.SenderMail,
-		ToMail:      input.ToMail,
-		Subject:     &input.Subject,
-		HTMLContent: *content,
+		FromMail:     input.SenderMail,
+		ToMail:       input.ToMail,
+		Subject:      &input.Subject,
+		HTMLTemplate: *content,
 	}
 
 	return m.provider.SendSingleMail(mmi)

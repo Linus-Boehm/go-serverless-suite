@@ -1,7 +1,7 @@
 package mailings
 
 import (
-	"github.com/microcosm-cc/bluemonday"
+	"github.com/Linus-Boehm/go-serverless-suite/templates"
 )
 
 type MailProvider interface {
@@ -14,12 +14,16 @@ type Mail struct {
 }
 
 type MinimumMailInput struct {
-	FromMail    Mail
-	ToMail      Mail
-	Subject     *string
-	HTMLContent string
+	FromMail     Mail
+	ToMail       Mail
+	Subject      *string
+	HTMLTemplate templates.HTMLTemplate
 }
 
 func (mmi *MinimumMailInput) GetPlainText() string {
-	return bluemonday.StripTagsPolicy().Sanitize(mmi.HTMLContent)
+	return mmi.HTMLTemplate.GetPlainText()
+}
+
+func (mmi *MinimumMailInput) GetHTMLTemplate() string {
+	return mmi.HTMLTemplate.GetPlainText()
 }
