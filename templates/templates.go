@@ -6,8 +6,6 @@ import (
 	"html/template"
 	"io/ioutil"
 
-	"github.com/markbates/pkger/pkging"
-
 	"github.com/Linus-Boehm/go-serverless-suite/utils"
 )
 
@@ -31,8 +29,6 @@ type Template struct {
 	manifest TemplateManifest
 	Tpl      *template.Template
 }
-
-type TemplateOpener = func(p string) (pkging.File, error)
 
 func LoadTemplate(manifest TemplateManifest) (*Template, error) {
 	return LoadCustomTemplate(manifests, manifest)

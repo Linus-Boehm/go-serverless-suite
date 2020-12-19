@@ -10,10 +10,7 @@ deps:
 test:
 	$(GO_BIN) test -race ./...
 
-build-statics:
-	pkger -o templates
-
-build: build-statics
+build:
 	$(GO_BIN) build -v .
 
 lint:
@@ -33,6 +30,6 @@ update:
 release-test:
 	$(GO_BIN) test -tags ${TAGS} -race ./...
 
-release: release-test build-statics
+release: release-test
 	$(GO_BIN) get github.com/gobuffalo/release
 	release -y -f version.go -v ${VERSION} --skip-packr
