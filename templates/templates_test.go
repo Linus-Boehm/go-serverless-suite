@@ -14,7 +14,7 @@ func TestLoadRenderTemplate(t *testing.T) {
 		data              interface{}
 		mustInclude       *string
 		wantRenderErr     bool
-		mustIncludeRender *string
+		mustIncludeRender []string
 	}{
 		{
 			name:        "happy",
@@ -31,7 +31,7 @@ func TestLoadRenderTemplate(t *testing.T) {
 					"TestAttr": "TestValue",
 				},
 			},
-			mustIncludeRender: utils.StringPtr("TestValue"),
+			mustIncludeRender: []string{"TestValue"},
 		},
 	}
 	for _, test := range tests {
@@ -42,7 +42,7 @@ func TestLoadRenderTemplate(t *testing.T) {
 			if test.mustInclude != nil {
 				assert.Contains(t, *tpl.raw, *test.mustInclude)
 			}
-			result, err := tpl.Render(test.data)
+			result, err := tpl.RenderWithHTML(test.data)
 			if !test.wantRenderErr {
 				assert.NoError(t, err)
 				assert.NotNil(t, result)
@@ -51,7 +51,10 @@ func TestLoadRenderTemplate(t *testing.T) {
 				assert.Nil(t, err)
 			}
 			if test.mustIncludeRender != nil {
-				assert.Contains(t, *result, *test.mustIncludeRender)
+				for _, incl := range test.mustIncludeRender {
+					assert.Contains(t, result.GetHTML(), incl)
+				}
+
 			}
 		})
 	}

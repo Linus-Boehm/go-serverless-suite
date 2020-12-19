@@ -1,14 +1,10 @@
-<html>
-<body>
-	<h1>New Contact Request</h1>
-	<h3>Subject: </h3>
-	<span>{{.Subject}}</span>
-	<h3>Sender: </h3> <span>{{.FromMail.Name}} {{.FromMail.Mail}}</span>
-	<h3>Message:</h3>
-	<p>{{.Message}}</p>
-    {{ range $key, $element := .Attributes }}
-		<h4>{{ $key }}</h4>
-		<p>{{ $element }}</p>
-	{{ end }}
-</body>
-</html>
+<h1>New Contact Request</h1>
+<h3>Subject: </h3>
+<span>{{.Subject}}</span>
+<h3>Sender: </h3> <span>{{.FromMail.Name}} {{.FromMail.Mail}}</span>
+<h3>Message:</h3>
+<p>{{.Message}}</p>
+{{ range $key, $element := .Attributes }}
+	<h4>{{ $key }}</h4>
+	<p>{{ $element }}</p>
+{{ end }}

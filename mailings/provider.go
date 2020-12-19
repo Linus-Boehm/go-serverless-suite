@@ -25,5 +25,5 @@ func (mmi *MinimumMailInput) GetPlainText() string {
 }
 
 func (mmi *MinimumMailInput) GetHTMLTemplate() string {
-	return mmi.HTMLTemplate.GetPlainText()
+	return mmi.HTMLTemplate.GetHTML()
 }
