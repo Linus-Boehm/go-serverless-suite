@@ -4,8 +4,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/Linus-Boehm/go-serverless-suite/common"
+
 	"github.com/Linus-Boehm/go-serverless-suite/mailings"
-	"github.com/Linus-Boehm/go-serverless-suite/utils"
 	sendgrid "github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
@@ -32,7 +33,7 @@ func (s *Sendgrid) SendSingleMail(input mailings.MinimumMailInput) error {
 	plainText := input.GetPlainText()
 	from := sendgridMailFromMailingsMail(input.FromMail)
 	to := sendgridMailFromMailingsMail(input.ToMail)
-	sbj := utils.StringValue(input.Subject)
+	sbj := common.StringValue(input.Subject)
 	message := mail.NewSingleEmail(from, sbj, to, plainText, input.GetHTMLTemplate())
 	resp, err := s.client.Send(message)
 	if err != nil {

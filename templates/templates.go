@@ -6,9 +6,9 @@ import (
 	"html/template"
 	"io/ioutil"
 
-	"github.com/microcosm-cc/bluemonday"
+	"github.com/Linus-Boehm/go-serverless-suite/common"
 
-	"github.com/Linus-Boehm/go-serverless-suite/utils"
+	"github.com/microcosm-cc/bluemonday"
 )
 
 var (
@@ -63,7 +63,7 @@ func (t *Template) Render(data interface{}) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-	return utils.StringPtr(buf.String()), nil
+	return common.StringPtr(buf.String()), nil
 }
 
 func (t *Template) RenderWithHTML(data interface{}) (*HTMLTemplate, error) {
@@ -91,5 +91,5 @@ func open(fs embed.FS, p string) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-	return utils.StringPtr(string(content)), nil
+	return common.StringPtr(string(content)), nil
 }

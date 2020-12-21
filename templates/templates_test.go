@@ -3,7 +3,8 @@ package templates
 import (
 	"testing"
 
-	"github.com/Linus-Boehm/go-serverless-suite/utils"
+	"github.com/Linus-Boehm/go-serverless-suite/common"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,7 +20,7 @@ func TestLoadRenderTemplate(t *testing.T) {
 		{
 			name:        "happy",
 			input:       SimpleContactFormManifest,
-			mustInclude: utils.StringPtr("New Contact Request"),
+			mustInclude: common.StringPtr("New Contact Request"),
 			data: map[string]interface{}{
 				"FromMail": map[string]interface{}{
 					"Name": "Max Muster",

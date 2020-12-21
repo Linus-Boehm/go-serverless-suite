@@ -21,6 +21,8 @@ Thank you to the following **GIANTS**:
 
 * [github.com/coreos/go-semver](https://godoc.org/github.com/coreos/go-semver)
 
+* [github.com/coreos/go-systemd](https://godoc.org/github.com/coreos/go-systemd)
+
 * [github.com/cpuguy83/go-md2man](https://godoc.org/github.com/cpuguy83/go-md2man)
 
 * [github.com/davecgh/go-spew](https://godoc.org/github.com/davecgh/go-spew)
@@ -28,6 +30,22 @@ Thank you to the following **GIANTS**:
 * [github.com/fatih/structs](https://godoc.org/github.com/fatih/structs)
 
 * [github.com/fsnotify/fsnotify](https://godoc.org/github.com/fsnotify/fsnotify)
+
+* [github.com/gin-contrib/cors](https://godoc.org/github.com/gin-contrib/cors)
+
+* [github.com/gin-contrib/logger](https://godoc.org/github.com/gin-contrib/logger)
+
+* [github.com/gin-contrib/sse](https://godoc.org/github.com/gin-contrib/sse)
+
+* [github.com/gin-gonic/gin](https://godoc.org/github.com/gin-gonic/gin)
+
+* [github.com/go-playground/assert/v2](https://godoc.org/github.com/go-playground/assert/v2)
+
+* [github.com/go-playground/locales](https://godoc.org/github.com/go-playground/locales)
+
+* [github.com/go-playground/universal-translator](https://godoc.org/github.com/go-playground/universal-translator)
+
+* [github.com/go-playground/validator/v10](https://godoc.org/github.com/go-playground/validator/v10)
 
 * [github.com/gobuffalo/attrs](https://godoc.org/github.com/gobuffalo/attrs)
 
@@ -75,6 +93,8 @@ Thank you to the following **GIANTS**:
 
 * [github.com/golang/protobuf](https://godoc.org/github.com/golang/protobuf)
 
+* [github.com/google/gofuzz](https://godoc.org/github.com/google/gofuzz)
+
 * [github.com/gorilla/css](https://godoc.org/github.com/gorilla/css)
 
 * [github.com/hashicorp/hcl](https://godoc.org/github.com/hashicorp/hcl)
@@ -84,6 +104,8 @@ Thank you to the following **GIANTS**:
 * [github.com/inconshreveable/mousetrap](https://godoc.org/github.com/inconshreveable/mousetrap)
 
 * [github.com/joho/godotenv](https://godoc.org/github.com/joho/godotenv)
+
+* [github.com/json-iterator/go](https://godoc.org/github.com/json-iterator/go)
 
 * [github.com/karrick/godirwalk](https://godoc.org/github.com/karrick/godirwalk)
 
@@ -95,6 +117,8 @@ Thank you to the following **GIANTS**:
 
 * [github.com/kr/text](https://godoc.org/github.com/kr/text)
 
+* [github.com/leodido/go-urn](https://godoc.org/github.com/leodido/go-urn)
+
 * [github.com/magiconair/properties](https://godoc.org/github.com/magiconair/properties)
 
 * [github.com/markbates/oncer](https://godoc.org/github.com/markbates/oncer)
@@ -103,11 +127,17 @@ Thank you to the following **GIANTS**:
 
 * [github.com/markbates/safe](https://godoc.org/github.com/markbates/safe)
 
+* [github.com/mattn/go-isatty](https://godoc.org/github.com/mattn/go-isatty)
+
 * [github.com/microcosm-cc/bluemonday](https://godoc.org/github.com/microcosm-cc/bluemonday)
 
 * [github.com/mitchellh/go-homedir](https://godoc.org/github.com/mitchellh/go-homedir)
 
 * [github.com/mitchellh/mapstructure](https://godoc.org/github.com/mitchellh/mapstructure)
+
+* [github.com/modern-go/concurrent](https://godoc.org/github.com/modern-go/concurrent)
+
+* [github.com/modern-go/reflect2](https://godoc.org/github.com/modern-go/reflect2)
 
 * [github.com/onsi/ginkgo](https://godoc.org/github.com/onsi/ginkgo)
 
@@ -120,6 +150,10 @@ Thank you to the following **GIANTS**:
 * [github.com/pmezard/go-difflib](https://godoc.org/github.com/pmezard/go-difflib)
 
 * [github.com/rogpeppe/go-internal](https://godoc.org/github.com/rogpeppe/go-internal)
+
+* [github.com/rs/xid](https://godoc.org/github.com/rs/xid)
+
+* [github.com/rs/zerolog](https://godoc.org/github.com/rs/zerolog)
 
 * [github.com/russross/blackfriday](https://godoc.org/github.com/russross/blackfriday)
 
@@ -153,9 +187,13 @@ Thank you to the following **GIANTS**:
 
 * [github.com/stretchr/testify](https://godoc.org/github.com/stretchr/testify)
 
+* [github.com/ugorji/go](https://godoc.org/github.com/ugorji/go)
+
 * [github.com/ugorji/go/codec](https://godoc.org/github.com/ugorji/go/codec)
 
 * [github.com/xordataexchange/crypt](https://godoc.org/github.com/xordataexchange/crypt)
+
+* [github.com/zenazn/goji](https://godoc.org/github.com/zenazn/goji)
 
 * [golang.org/x/crypto](https://godoc.org/golang.org/x/crypto)
 
@@ -176,6 +214,12 @@ Thank you to the following **GIANTS**:
 * [gopkg.in/errgo.v2](https://godoc.org/gopkg.in/errgo.v2)
 
 * [gopkg.in/fsnotify.v1](https://godoc.org/gopkg.in/fsnotify.v1)
+
+* [gopkg.in/go-playground/assert.v1](https://godoc.org/gopkg.in/go-playground/assert.v1)
+
+* [gopkg.in/go-playground/validator.v8](https://godoc.org/gopkg.in/go-playground/validator.v8)
+
+* [gopkg.in/go-playground/validator.v9](https://godoc.org/gopkg.in/go-playground/validator.v9)
 
 * [gopkg.in/tomb.v1](https://godoc.org/gopkg.in/tomb.v1)
 

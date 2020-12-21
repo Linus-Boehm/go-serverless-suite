@@ -1,4 +1,4 @@
-package utils
+package common
 
 func StringValue(ptr *string) string {
 	if ptr == nil {

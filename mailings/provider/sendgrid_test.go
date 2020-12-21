@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Linus-Boehm/go-serverless-suite/common"
+
 	"github.com/Linus-Boehm/go-serverless-suite/templates"
 
 	"github.com/Linus-Boehm/go-serverless-suite/mailings"
 	"github.com/Linus-Boehm/go-serverless-suite/testhelper"
-	"github.com/Linus-Boehm/go-serverless-suite/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -47,7 +48,7 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 			input: mailings.MinimumMailInput{
 				FromMail:     validMail,
 				ToMail:       validMail,
-				Subject:      utils.StringPtr("Test"),
+				Subject:      common.StringPtr("Test"),
 				HTMLTemplate: templates.HTMLTemplate{Content: "<h1>This is a Test</h1>"},
 			},
 		},
@@ -56,7 +57,7 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 			input: mailings.MinimumMailInput{
 				FromMail:     invalidMail,
 				ToMail:       invalidMail,
-				Subject:      utils.StringPtr("Test"),
+				Subject:      common.StringPtr("Test"),
 				HTMLTemplate: templates.HTMLTemplate{Content: "<h1>This is a Test</h1>"},
 			},
 			wantErr: ErrNotAuthorizedSenderMail,

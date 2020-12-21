@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 
-VERSION ?= "v0.1.12"
+VERSION ?= "v0.2.0"
 TAGS ?= ""
 GO_BIN ?= "go1.16beta1"
 
@@ -14,7 +14,6 @@ build:
 	$(GO_BIN) build -v .
 
 lint:
-	$(GO_BIN) get github.com/golangci/golangci-lint/cmd/golangci-lint
 	golangci-lint run
 
 install:
