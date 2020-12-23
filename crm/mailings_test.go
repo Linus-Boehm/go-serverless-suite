@@ -1,4 +1,4 @@
-package mailings
+package crm
 
 import "testing"
 

@@ -1,4 +1,4 @@
-package mailings
+package crm
 
 type MailAttributes map[string]string
 

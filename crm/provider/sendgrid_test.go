@@ -8,7 +8,7 @@ import (
 
 	"github.com/Linus-Boehm/go-serverless-suite/templates"
 
-	"github.com/Linus-Boehm/go-serverless-suite/mailings"
+	"github.com/Linus-Boehm/go-serverless-suite/crm"
 	"github.com/Linus-Boehm/go-serverless-suite/testhelper"
 	"github.com/stretchr/testify/assert"
 )
@@ -30,22 +30,22 @@ func GetTestMailRecipient(t *testing.T) string {
 
 func TestSendgridProvider_SendSingleMail(t *testing.T) {
 
-	validMail := mailings.Mail{
+	validMail := crm.Mail{
 		Name: "Test Recipient",
 		Mail: GetTestMailRecipient(t),
 	}
-	invalidMail := mailings.Mail{
+	invalidMail := crm.Mail{
 		Name: "Test Recipient",
 		Mail: "notexisting@unkown.qz",
 	}
 	tests := []struct {
 		name    string
-		input   mailings.MinimumMailInput
+		input   crm.MinimumMailInput
 		wantErr error
 	}{
 		{
 			name: "happy",
-			input: mailings.MinimumMailInput{
+			input: crm.MinimumMailInput{
 				FromMail:     validMail,
 				ToMail:       validMail,
 				Subject:      common.StringPtr("Test"),
@@ -54,7 +54,7 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 		},
 		{
 			name: "error not a valid email",
-			input: mailings.MinimumMailInput{
+			input: crm.MinimumMailInput{
 				FromMail:     invalidMail,
 				ToMail:       invalidMail,
 				Subject:      common.StringPtr("Test"),
@@ -76,4 +76,12 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSendgrid_GetContactLists(t *testing.T) {
+	p := NewTestSendgridProvider(t)
+
+	lists, err := p.GetContactLists()
+	assert.NoError(t, err)
+	assert.NotNil(t, lists)
 }

@@ -1,4 +1,4 @@
-package mailings
+package crm
 
 import "github.com/Linus-Boehm/go-serverless-suite/templates"
 

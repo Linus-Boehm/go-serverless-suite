@@ -1,4 +1,4 @@
-package mailings
+package crm
 
 import (
 	"github.com/Linus-Boehm/go-serverless-suite/templates"
@@ -8,9 +8,19 @@ type MailProvider interface {
 	SendSingleMail(input MinimumMailInput) error
 }
 
+type ContactProvider interface {
+	GetContactLists() ([]ContactList, error)
+}
+
 type Mail struct {
 	Name string
 	Mail string
+}
+
+type ContactList struct {
+	ID             string
+	Name           string
+	RecipientCount int
 }
 
 type MinimumMailInput struct {
