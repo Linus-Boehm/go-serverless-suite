@@ -13,7 +13,6 @@ func CorsMiddleware() gin.HandlerFunc {
 		"Content-Length",
 		"Content-Type",
 		"Authorization",
-		"Content-Type",
 		"X-Amz-Date",
 		"X-Api-Key",
 		"X-Amz-Security-Token",
