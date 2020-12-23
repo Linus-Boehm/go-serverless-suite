@@ -89,10 +89,17 @@ func errorMapperHandler(mapper ...GinErrorMapper) gin.HandlerFunc {
 		for _, mapErr := range mapper {
 			gErr := mapErr(err, ctx)
 			if gErr != nil {
-				ctx.JSON(gErr.StatusCode, &gErr)
+				ctx.JSON(gErr.StatusCode, gErr)
+				return
 			}
 		}
-
+		defaultErr := &GenericError{
+			Entity:     getEntityFromCtx(ctx),
+			StatusCode: http.StatusInternalServerError,
+			ErrorCode:  ErrorTypeInternal,
+			Message:    "Internal Server Error",
+		}
+		ctx.JSON(defaultErr.StatusCode, defaultErr)
 	}
 }
 
