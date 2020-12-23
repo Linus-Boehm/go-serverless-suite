@@ -71,6 +71,8 @@ func NewGiner(cfg common.Configer, zerologger *zerolog.Logger, errorMapper ...Gi
 		Logger: zerologger,
 		UTC:    true,
 	}))
+	router.Use(CorsMiddleware())
+	// this should be added last, as it watches next
 	router.Use(errorMapperHandler(errorMapper...))
 	return router
 }

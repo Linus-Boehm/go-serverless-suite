@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 
-VERSION ?= "v0.2.0"
+VERSION ?= "v0.3.0"
 TAGS ?= ""
 GO_BIN ?= "go1.16beta1"
 
