@@ -7,7 +7,7 @@ type MailSender interface {
 }
 
 type service struct {
-	provider MailProvider
+	provider CRMProvider
 }
 
 type Renderer interface {
@@ -15,7 +15,7 @@ type Renderer interface {
 	RenderWithHTML(data interface{}) (*templates.HTMLTemplate, error)
 }
 
-func NewMailSender(provider MailProvider) MailSender {
+func NewMailSender(provider CRMProvider) MailSender {
 	return &service{provider: provider}
 }
 
@@ -32,4 +32,8 @@ func (m *service) SendSimpleContactForm(input SimpleContactFormInput, renderer R
 	}
 
 	return m.provider.SendSingleMail(mmi)
+}
+
+func (m *service) GetContactLists() ([]ContactList, error) {
+	return m.provider.GetContactLists()
 }

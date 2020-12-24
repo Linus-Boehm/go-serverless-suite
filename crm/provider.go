@@ -4,11 +4,8 @@ import (
 	"github.com/Linus-Boehm/go-serverless-suite/templates"
 )
 
-type MailProvider interface {
+type CRMProvider interface {
 	SendSingleMail(input MinimumMailInput) error
-}
-
-type ContactProvider interface {
 	GetContactLists() ([]ContactList, error)
 }
 
