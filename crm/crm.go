@@ -2,8 +2,9 @@ package crm
 
 import "github.com/Linus-Boehm/go-serverless-suite/templates"
 
-type MailSender interface {
+type CRMServicer interface {
 	SendSimpleContactForm(input SimpleContactFormInput, renderer Renderer) error
+	GetContactLists() ([]ContactList, error)
 }
 
 type service struct {
@@ -15,7 +16,7 @@ type Renderer interface {
 	RenderWithHTML(data interface{}) (*templates.HTMLTemplate, error)
 }
 
-func NewMailSender(provider CRMProvider) MailSender {
+func NewCRMService(provider CRMProvider) CRMServicer {
 	return &service{provider: provider}
 }
 
