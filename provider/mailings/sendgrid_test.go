@@ -1,14 +1,14 @@
-package provider
+package mailings
 
 import (
 	"fmt"
+	"os"
 	"testing"
+
+	"github.com/Linus-Boehm/go-serverless-suite/entity"
 
 	"github.com/Linus-Boehm/go-serverless-suite/common"
 
-	"github.com/Linus-Boehm/go-serverless-suite/templates"
-
-	"github.com/Linus-Boehm/go-serverless-suite/crm"
 	"github.com/Linus-Boehm/go-serverless-suite/testhelper"
 	"github.com/stretchr/testify/assert"
 )
@@ -30,41 +30,44 @@ func GetTestMailRecipient(t *testing.T) string {
 
 func TestSendgridProvider_SendSingleMail(t *testing.T) {
 
-	validMail := crm.Mail{
+	validMail := entity.Mail{
 		Name: "Test Recipient",
 		Mail: GetTestMailRecipient(t),
 	}
-	invalidMail := crm.Mail{
+	invalidMail := entity.Mail{
 		Name: "Test Recipient",
 		Mail: "notexisting@unkown.qz",
 	}
 	tests := []struct {
 		name    string
-		input   crm.MinimumMailInput
+		input   entity.MinimalMail
 		wantErr error
 	}{
 		{
 			name: "happy",
-			input: crm.MinimumMailInput{
+			input: entity.MinimalMail{
 				FromMail:     validMail,
 				ToMail:       validMail,
 				Subject:      common.StringPtr("Test"),
-				HTMLTemplate: templates.HTMLTemplate{Content: "<h1>This is a Test</h1>"},
+				HTMLTemplate: entity.HTMLTemplate{Content: "<h1>This is a Test</h1>"},
 			},
 		},
 		{
 			name: "error not a valid email",
-			input: crm.MinimumMailInput{
+			input: entity.MinimalMail{
 				FromMail:     invalidMail,
 				ToMail:       invalidMail,
 				Subject:      common.StringPtr("Test"),
-				HTMLTemplate: templates.HTMLTemplate{Content: "<h1>This is a Test</h1>"},
+				HTMLTemplate: entity.HTMLTemplate{Content: "<h1>This is a Test</h1>"},
 			},
 			wantErr: ErrNotAuthorizedSenderMail,
 		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
+			if os.Getenv("ONLINE_TEST") == "" {
+				t.Skip("online test skipped")
+			}
 			p := NewTestSendgridProvider(t)
 			fmt.Println("Sending test mail to: ", test.input.ToMail.Mail)
 			err := p.SendSingleMail(test.input)

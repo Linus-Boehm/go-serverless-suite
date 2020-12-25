@@ -23,7 +23,7 @@ type ErrInsufficientPermissions struct {
 }
 
 func NewInsufficientPermissionsError(msg string) ErrInsufficientPermissions {
-	err := errors.New("insufficient ermissions")
+	err := errors.New("insufficient permissions")
 	if msg == "" {
 		return ErrInsufficientPermissions{
 			cause: err,

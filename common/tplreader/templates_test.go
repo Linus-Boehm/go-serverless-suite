@@ -1,7 +1,9 @@
-package templates
+package tplreader
 
 import (
 	"testing"
+
+	"github.com/Linus-Boehm/go-serverless-suite/entity"
 
 	"github.com/Linus-Boehm/go-serverless-suite/common"
 
@@ -11,7 +13,7 @@ import (
 func TestLoadRenderTemplate(t *testing.T) {
 	tests := []struct {
 		name              string
-		input             TemplateManifest
+		input             entity.TemplateManifest
 		data              interface{}
 		mustInclude       *string
 		wantRenderErr     bool
@@ -41,7 +43,7 @@ func TestLoadRenderTemplate(t *testing.T) {
 			assert.NoError(t, err)
 			assert.NotNil(t, tpl)
 			if test.mustInclude != nil {
-				assert.Contains(t, *tpl.raw, *test.mustInclude)
+				assert.Contains(t, *tpl.GetRaw(), *test.mustInclude)
 			}
 			result, err := tpl.RenderWithHTML(test.data)
 			if !test.wantRenderErr {

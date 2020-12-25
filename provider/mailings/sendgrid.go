@@ -1,13 +1,14 @@
-package provider
+package mailings
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
 
+	"github.com/Linus-Boehm/go-serverless-suite/entity"
+
 	"github.com/Linus-Boehm/go-serverless-suite/common"
 
-	"github.com/Linus-Boehm/go-serverless-suite/crm"
 	sendgrid "github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
@@ -34,7 +35,7 @@ func NewSendgridProvider(config SendgridConfig) *Sendgrid {
 	}
 }
 
-func (s *Sendgrid) SendSingleMail(input crm.MinimumMailInput) error {
+func (s *Sendgrid) SendSingleMail(input entity.MinimalMail) error {
 	plainText := input.GetPlainText()
 	from := sendgridMailFromMailingsMail(input.FromMail)
 	to := sendgridMailFromMailingsMail(input.ToMail)
@@ -53,7 +54,7 @@ func (s *Sendgrid) SendSingleMail(input crm.MinimumMailInput) error {
 	return nil
 }
 
-func sendgridMailFromMailingsMail(m crm.Mail) *mail.Email {
+func sendgridMailFromMailingsMail(m entity.Mail) *mail.Email {
 	return mail.NewEmail(m.Name, m.Mail)
 }
 
@@ -65,7 +66,7 @@ type GetContactListResponse struct {
 	} `json:"result"`
 }
 
-func (s *Sendgrid) GetContactLists() ([]crm.ContactList, error) {
+func (s *Sendgrid) GetContactLists() ([]entity.ContactList, error) {
 
 	request := sendgrid.GetRequest(s.config.APIKey, "/v3/marketing/lists", s.host)
 	request.Method = "GET"
@@ -81,11 +82,11 @@ func (s *Sendgrid) GetContactLists() ([]crm.ContactList, error) {
 	if err != nil {
 		return nil, err
 	}
-	lists := []crm.ContactList{}
+	lists := []entity.ContactList{}
 
 	for _, l := range payload.Result {
-		lists = append(lists, crm.ContactList{
-			ID:             l.ID,
+		lists = append(lists, entity.ContactList{
+			ID:             entity.IDFromStringOrNil(l.ID),
 			Name:           l.Name,
 			RecipientCount: l.ContactCount,
 		})

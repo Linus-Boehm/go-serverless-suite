@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  dynamo:
+    image: dwmkerr/dynamodb
+    restart: always
+    command: ['-sharedDb']
+    ports:
+      - "8000:8000"
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    restart: always
+    depends_on:
+      - dynamo
+    ports:
+      - "8001:8001"
+    environment:
+      - AWS_REGION=eu-central-1
+      - AWS_ACCESS_KEY_ID=key
+      - AWS_SECRET_ACCESS_KEY=secret
+      - DYNAMO_ENDPOINT=http://dynamo:8000
+
