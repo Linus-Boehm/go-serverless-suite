@@ -3,18 +3,20 @@ package persistence
 import (
 	"testing"
 
+	"github.com/Linus-Boehm/go-serverless-suite/repositories"
+
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestProvider(t *testing.T) {
-	b, err := NewTestProvider(entity.UserEntity{})
+	b, err := NewTestProvider(repositories.UserEntity{})
 	assert.NoError(t, err)
 	assert.NoError(t, b.DeleteTable())
 }
 
 func TestDynamoBaseTable_PutReadItem(t *testing.T) {
-	b, err := NewTestProvider(entity.UserEntity{})
+	b, err := NewTestProvider(repositories.UserEntity{})
 	assert.NoError(t, err)
 	defer b.DeleteTable()
 	ts := entity.Timestamps{}
@@ -27,11 +29,11 @@ func TestDynamoBaseTable_PutReadItem(t *testing.T) {
 		Attributes: map[string]string{},
 		Timestamps: ts,
 	}
-	e := user.GetDBEntity()
+	e := repositories.NewUserEntity(user)
 	err = b.PutItem(e)
 	assert.NoError(t, err)
-	oldU := e.(*entity.UserEntity)
-	newU := entity.UserEntity{}
+	oldU := e.(*repositories.UserEntity)
+	newU := repositories.UserEntity{}
 	err = b.ReadItem(e, &newU)
 	assert.NoError(t, err)
 
@@ -42,7 +44,7 @@ func TestDynamoBaseTable_PutReadItem(t *testing.T) {
 }
 
 func TestDynamoBaseTable_ReadAllWithPK(t *testing.T) {
-	b, err := NewTestProvider(entity.UserEntity{})
+	b, err := NewTestProvider(repositories.UserEntity{})
 	assert.NoError(t, err)
 	defer b.DeleteTable()
 	ts := entity.Timestamps{}
@@ -55,18 +57,18 @@ func TestDynamoBaseTable_ReadAllWithPK(t *testing.T) {
 		Attributes: map[string]string{},
 		Timestamps: ts,
 	}
-	e := user.GetDBEntity()
+	e := repositories.NewUserEntity(user)
 	err = b.PutItem(e)
 	assert.NoError(t, err)
-	result := []entity.UserEntity{}
-	err = b.ReadAllWithPK(e.GetPK(), nil, entity.UserEntityKey, &result)
+	result := []repositories.UserEntity{}
+	err = b.ReadAllWithPK(e.GetPK(), nil, entity.UserEntityName, &result)
 	assert.NoError(t, err)
 	assert.Len(t, result, 1)
 	assert.Equal(t, result[0].PK, e.GetPK().String())
 }
 
 func TestDynamoBaseTable_BatchWriteItems(t *testing.T) {
-	b, err := NewTestProvider(entity.UserEntity{})
+	b, err := NewTestProvider(repositories.UserEntity{})
 	assert.NoError(t, err)
 	defer b.DeleteTable()
 	newU := func() entity.User {
@@ -78,14 +80,14 @@ func TestDynamoBaseTable_BatchWriteItems(t *testing.T) {
 	var payload []interface{}
 
 	for i := 0; i < 50; i++ {
-		u := newU().GetDBEntity()
+		u := repositories.NewUserEntity(newU())
 		payload = append(payload, &u)
 	}
 
 	err = b.BatchWriteItems(payload...)
 	assert.NoError(t, err)
-	var counter []entity.UserEntity
-	err = b.GetEntity(DynamoEntityIndex, entity.UserEntityKey, &counter, false)
+	var counter []repositories.UserEntity
+	err = b.GetEntity(DynamoEntityIndex, entity.UserEntityName, &counter, false)
 	assert.NoError(t, err)
 	assert.Len(t, counter, 50)
 }

@@ -9,17 +9,24 @@ import (
 //go:generate mockgen -destination=basetable_mocks.go -package=itf -source=basetable.go
 
 type BaseTableProvider interface {
-	PutItem(row entity.DBProvider) error
-	RemoveItem(key entity.DBKeyer) error
+	PutItem(row DBKeyer) error
+	RemoveItem(key DBKeyer, item DBKeyer) error
+	RemoveItemSoft(key DBKeyer, item DBKeyer) error
 	RemoveMainEntity(entity fmt.Stringer, id fmt.Stringer) error
-	ReadItem(key entity.DBKeyer, row entity.DBProvider) error
+	ReadItem(key DBKeyer, row DBKeyer) error
 	ReadAllWithPK(key fmt.Stringer, index *entity.TableIndex, entity fmt.Stringer, rows interface{}) error
-	ReadItemFromIndex(key entity.DBKeyer, index *entity.TableIndex, row entity.DBProvider) error
+	ReadItemFromIndex(key DBKeyer, index *entity.TableIndex, row DBKeyer) error
 	GetEntity(entityIndex entity.TableIndex, entity fmt.Stringer, rows interface{}, withDeleted bool) error
 	DeleteTable() error
 	TranslateDBError(err error, entity fmt.Stringer, id fmt.Stringer) error
-	BatchReadItems(keys []entity.DBKeyer, rows interface{}) error
+	BatchReadItems(keys []DBKeyer, rows interface{}) error
 	BatchWriteItems(rows ...interface{}) error
 	WithIndex(index entity.TableIndex) BaseTableProvider
-	BatchDeleteItems(rows []entity.DBKeyer) (int, error)
+	BatchDeleteItems(rows []DBKeyer) (int, error)
+}
+
+type DBKeyer interface {
+	GetPK() fmt.Stringer
+	GetSK() fmt.Stringer
+	GetEntity() fmt.Stringer
 }

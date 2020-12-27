@@ -1,7 +1,7 @@
 package persistence
 
 import (
-	"github.com/Linus-Boehm/go-serverless-suite/entity"
+	"github.com/Linus-Boehm/go-serverless-suite/itf"
 	"github.com/guregu/dynamo"
 )
 
@@ -13,7 +13,7 @@ func (b *dynamoBaseTable) BatchWriteItems(rows ...interface{}) error {
 	return nil
 }
 
-func (b *dynamoBaseTable) BatchDeleteItems(rows []entity.DBKeyer) (int, error) {
+func (b *dynamoBaseTable) BatchDeleteItems(rows []itf.DBKeyer) (int, error) {
 	keys := make([]dynamo.Keyed, len(rows))
 	for i, row := range rows {
 		keys[i] = dynamo.Keys{row.GetPK().String(), row.GetSK().String()}
@@ -22,7 +22,7 @@ func (b *dynamoBaseTable) BatchDeleteItems(rows []entity.DBKeyer) (int, error) {
 	return num, err
 }
 
-func (b *dynamoBaseTable) BatchReadItems(keys []entity.DBKeyer, rows interface{}) error {
+func (b *dynamoBaseTable) BatchReadItems(keys []itf.DBKeyer, rows interface{}) error {
 	//TODO split after 25
 	keyed := make([]dynamo.Keyed, len(keys))
 	for i, key := range keys {

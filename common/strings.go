@@ -50,3 +50,26 @@ func JoinStringerDBKey(stringer ...fmt.Stringer) string {
 	}
 	return strings.Join(strs, "#")
 }
+
+type StringKey struct {
+	PK  String
+	SK  String
+	Ent fmt.Stringer
+}
+
+func NewStringKey(pk string, sk string, entity fmt.Stringer) *StringKey {
+	return &StringKey{
+		PK:  NewJoinedStringDBKey(entity.String(), pk),
+		SK:  NewJoinedStringDBKey(entity.String(), sk),
+		Ent: entity,
+	}
+}
+func (s StringKey) GetPK() fmt.Stringer {
+	return s.PK
+}
+func (s StringKey) GetSK() fmt.Stringer {
+	return s.SK
+}
+func (s StringKey) GetEntity() fmt.Stringer {
+	return s.Ent
+}

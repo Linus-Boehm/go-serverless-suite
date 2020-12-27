@@ -14,6 +14,9 @@ import (
 )
 
 func NewTestSendgridProvider(t *testing.T) *Sendgrid {
+	if os.Getenv("ONLINE_TEST") == "" {
+		t.Skip("online test skipped")
+	}
 	c, err := testhelper.LoadConfig()
 	assert.NoError(t, err)
 	conf := SendgridConfig{
@@ -65,9 +68,6 @@ func TestSendgridProvider_SendSingleMail(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			if os.Getenv("ONLINE_TEST") == "" {
-				t.Skip("online test skipped")
-			}
 			p := NewTestSendgridProvider(t)
 			fmt.Println("Sending test mail to: ", test.input.ToMail.Mail)
 			err := p.SendSingleMail(test.input)

@@ -8,8 +8,6 @@ import (
 	"github.com/guregu/dynamo"
 )
 
-//go:generate mockgen -destination=dynamo_mocks.go -package=mocks github.com/guregu/dynamo Doermockgen github.com/guregu/dynamo DB,DynamoDriver
-
 type DynamoConfig struct {
 	Endpoint   *string
 	Region     *string

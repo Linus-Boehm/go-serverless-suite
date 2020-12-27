@@ -7,7 +7,7 @@ import (
 
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 
-	db "github.com/Linus-Boehm/go-serverless-suite/provider/db"
+	db "github.com/Linus-Boehm/go-serverless-suite/infra/provider/db"
 
 	"github.com/Linus-Boehm/go-serverless-suite/common"
 
@@ -85,8 +85,8 @@ func (b *dynamoBaseTable) WithDefaultIndices() itf.BaseTableProvider {
 	return b
 }
 
-func (b *dynamoBaseTable) PutItem(row entity.DBProvider) error {
-	err := b.Table.Put(row.GetPayload()).Run()
+func (b *dynamoBaseTable) PutItem(row itf.DBKeyer) error {
+	err := b.Table.Put(row).Run()
 	return b.TranslateDBError(err, row.GetEntity(), row.GetPK())
 }
 
@@ -96,9 +96,15 @@ func (b *dynamoBaseTable) RemoveMainEntity(entity fmt.Stringer, id fmt.Stringer)
 	return b.TranslateDBError(err, entity, id)
 }
 
-func (b *dynamoBaseTable) RemoveItem(key entity.DBKeyer) error {
-	err := b.Table.Delete(b.mainIndex.PK, key.GetPK().String()).Range(b.mainIndex.SK, key.GetSK().String()).Run()
+func (b *dynamoBaseTable) RemoveItem(key itf.DBKeyer, item itf.DBKeyer) error {
+	err := b.Table.Delete(b.mainIndex.PK, key.GetPK().String()).Range(b.mainIndex.SK, key.GetSK().String()).OldValue(item)
 	return b.TranslateDBError(err, key.GetEntity(), key.GetPK())
+}
+
+func (b *dynamoBaseTable) RemoveItemSoft(key itf.DBKeyer, item itf.DBKeyer) error {
+	//n := time.Now().Unix()
+
+	return b.Table.Update(b.mainIndex.PK, key.GetPK()).Range(b.mainIndex.SK, key.GetSK()).Set("firstname", "tessst").Run()
 }
 
 func (b *dynamoBaseTable) RemoveAllWithPK(entity fmt.Stringer, id fmt.Stringer) error {
@@ -107,7 +113,7 @@ func (b *dynamoBaseTable) RemoveAllWithPK(entity fmt.Stringer, id fmt.Stringer) 
 	return b.TranslateDBError(err, entity, id)
 }
 
-func (b *dynamoBaseTable) ReadItem(key entity.DBKeyer, item entity.DBProvider) error {
+func (b *dynamoBaseTable) ReadItem(key itf.DBKeyer, item itf.DBKeyer) error {
 	return b.ReadItemFromIndex(key, nil, item)
 }
 
@@ -127,7 +133,7 @@ func (b *dynamoBaseTable) ReadAllWithPK(key fmt.Stringer, index *entity.TableInd
 	return nil
 }
 
-func (b *dynamoBaseTable) ReadItemFromIndex(key entity.DBKeyer, index *entity.TableIndex, row entity.DBProvider) error {
+func (b *dynamoBaseTable) ReadItemFromIndex(key itf.DBKeyer, index *entity.TableIndex, row itf.DBKeyer) error {
 	if index == nil {
 		index = &b.mainIndex
 	}

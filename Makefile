@@ -13,7 +13,11 @@ deps:
 test:
 	$(GO_BIN) test -race ./...
 
-integration-test
+generate:
+	# $(GO_BIN) get github.com/golang/mock/mockgen@v1.4.4
+	$(GO_BIN) generate ./...
+
+integration-test:
 	INTEGRATIONTEST_ON=true $(GO_BIN) test -race ./...
 
 build:

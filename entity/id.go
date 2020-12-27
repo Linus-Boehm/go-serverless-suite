@@ -78,6 +78,6 @@ func (e ID) NewV4IfEmpty() {
 	}
 }
 
-func (e ID) WithEntity(entity EntityKey) fmt.Stringer {
+func (e ID) WithEntity(entity Name) fmt.Stringer {
 	return common.NewJoinedStringDBKey(entity.String(), e.String())
 }

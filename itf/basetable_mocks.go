@@ -35,7 +35,7 @@ func (m *MockBaseTableProvider) EXPECT() *MockBaseTableProviderMockRecorder {
 }
 
 // PutItem mocks base method
-func (m *MockBaseTableProvider) PutItem(row entity.DBProvider) error {
+func (m *MockBaseTableProvider) PutItem(row DBKeyer) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PutItem", row)
 	ret0, _ := ret[0].(error)
@@ -49,17 +49,31 @@ func (mr *MockBaseTableProviderMockRecorder) PutItem(row interface{}) *gomock.Ca
 }
 
 // RemoveItem mocks base method
-func (m *MockBaseTableProvider) RemoveItem(key entity.DBKeyer) error {
+func (m *MockBaseTableProvider) RemoveItem(key, item DBKeyer) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RemoveItem", key)
+	ret := m.ctrl.Call(m, "RemoveItem", key, item)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // RemoveItem indicates an expected call of RemoveItem
-func (mr *MockBaseTableProviderMockRecorder) RemoveItem(key interface{}) *gomock.Call {
+func (mr *MockBaseTableProviderMockRecorder) RemoveItem(key, item interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveItem", reflect.TypeOf((*MockBaseTableProvider)(nil).RemoveItem), key)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveItem", reflect.TypeOf((*MockBaseTableProvider)(nil).RemoveItem), key, item)
+}
+
+// RemoveItemSoft mocks base method
+func (m *MockBaseTableProvider) RemoveItemSoft(key, item DBKeyer) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveItemSoft", key, item)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveItemSoft indicates an expected call of RemoveItemSoft
+func (mr *MockBaseTableProviderMockRecorder) RemoveItemSoft(key, item interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveItemSoft", reflect.TypeOf((*MockBaseTableProvider)(nil).RemoveItemSoft), key, item)
 }
 
 // RemoveMainEntity mocks base method
@@ -77,7 +91,7 @@ func (mr *MockBaseTableProviderMockRecorder) RemoveMainEntity(entity, id interfa
 }
 
 // ReadItem mocks base method
-func (m *MockBaseTableProvider) ReadItem(key entity.DBKeyer, row *entity.DBProvider) error {
+func (m *MockBaseTableProvider) ReadItem(key, row DBKeyer) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadItem", key, row)
 	ret0, _ := ret[0].(error)
@@ -91,21 +105,21 @@ func (mr *MockBaseTableProviderMockRecorder) ReadItem(key, row interface{}) *gom
 }
 
 // ReadAllWithPK mocks base method
-func (m *MockBaseTableProvider) ReadAllWithPK(key entity.DBKeyer, index *entity.TableIndex, rows *[]entity.DBProvider) error {
+func (m *MockBaseTableProvider) ReadAllWithPK(key fmt.Stringer, index *entity.TableIndex, entity fmt.Stringer, rows interface{}) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReadAllWithPK", key, index, rows)
+	ret := m.ctrl.Call(m, "ReadAllWithPK", key, index, entity, rows)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // ReadAllWithPK indicates an expected call of ReadAllWithPK
-func (mr *MockBaseTableProviderMockRecorder) ReadAllWithPK(key, index, rows interface{}) *gomock.Call {
+func (mr *MockBaseTableProviderMockRecorder) ReadAllWithPK(key, index, entity, rows interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadAllWithPK", reflect.TypeOf((*MockBaseTableProvider)(nil).ReadAllWithPK), key, index, rows)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadAllWithPK", reflect.TypeOf((*MockBaseTableProvider)(nil).ReadAllWithPK), key, index, entity, rows)
 }
 
 // ReadItemFromIndex mocks base method
-func (m *MockBaseTableProvider) ReadItemFromIndex(key entity.DBKeyer, index *entity.TableIndex, row *entity.DBProvider) error {
+func (m *MockBaseTableProvider) ReadItemFromIndex(key DBKeyer, index *entity.TableIndex, row DBKeyer) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadItemFromIndex", key, index, row)
 	ret0, _ := ret[0].(error)
@@ -119,17 +133,17 @@ func (mr *MockBaseTableProviderMockRecorder) ReadItemFromIndex(key, index, row i
 }
 
 // GetEntity mocks base method
-func (m *MockBaseTableProvider) GetEntity(entityIndex entity.TableIndex, entity fmt.Stringer, rows *[]entity.DBProvider) error {
+func (m *MockBaseTableProvider) GetEntity(entityIndex entity.TableIndex, entity fmt.Stringer, rows interface{}, withDeleted bool) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetEntity", entityIndex, entity, rows)
+	ret := m.ctrl.Call(m, "GetEntity", entityIndex, entity, rows, withDeleted)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // GetEntity indicates an expected call of GetEntity
-func (mr *MockBaseTableProviderMockRecorder) GetEntity(entityIndex, entity, rows interface{}) *gomock.Call {
+func (mr *MockBaseTableProviderMockRecorder) GetEntity(entityIndex, entity, rows, withDeleted interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntity", reflect.TypeOf((*MockBaseTableProvider)(nil).GetEntity), entityIndex, entity, rows)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntity", reflect.TypeOf((*MockBaseTableProvider)(nil).GetEntity), entityIndex, entity, rows, withDeleted)
 }
 
 // DeleteTable mocks base method
@@ -161,7 +175,7 @@ func (mr *MockBaseTableProviderMockRecorder) TranslateDBError(err, entity, id in
 }
 
 // BatchReadItems mocks base method
-func (m *MockBaseTableProvider) BatchReadItems(keys []entity.DBKeyer, rows *[]entity.DBProvider) error {
+func (m *MockBaseTableProvider) BatchReadItems(keys []DBKeyer, rows interface{}) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "BatchReadItems", keys, rows)
 	ret0, _ := ret[0].(error)
@@ -175,17 +189,21 @@ func (mr *MockBaseTableProviderMockRecorder) BatchReadItems(keys, rows interface
 }
 
 // BatchWriteItems mocks base method
-func (m *MockBaseTableProvider) BatchWriteItems(rows []entity.DBProvider) error {
+func (m *MockBaseTableProvider) BatchWriteItems(rows ...interface{}) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "BatchWriteItems", rows)
+	varargs := []interface{}{}
+	for _, a := range rows {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchWriteItems", varargs...)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // BatchWriteItems indicates an expected call of BatchWriteItems
-func (mr *MockBaseTableProviderMockRecorder) BatchWriteItems(rows interface{}) *gomock.Call {
+func (mr *MockBaseTableProviderMockRecorder) BatchWriteItems(rows ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchWriteItems", reflect.TypeOf((*MockBaseTableProvider)(nil).BatchWriteItems), rows)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchWriteItems", reflect.TypeOf((*MockBaseTableProvider)(nil).BatchWriteItems), rows...)
 }
 
 // WithIndex mocks base method
@@ -203,7 +221,7 @@ func (mr *MockBaseTableProviderMockRecorder) WithIndex(index interface{}) *gomoc
 }
 
 // BatchDeleteItems mocks base method
-func (m *MockBaseTableProvider) BatchDeleteItems(rows []entity.DBProvider) (int, error) {
+func (m *MockBaseTableProvider) BatchDeleteItems(rows []DBKeyer) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "BatchDeleteItems", rows)
 	ret0, _ := ret[0].(int)
@@ -215,4 +233,69 @@ func (m *MockBaseTableProvider) BatchDeleteItems(rows []entity.DBProvider) (int,
 func (mr *MockBaseTableProviderMockRecorder) BatchDeleteItems(rows interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchDeleteItems", reflect.TypeOf((*MockBaseTableProvider)(nil).BatchDeleteItems), rows)
+}
+
+// MockDBKeyer is a mock of DBKeyer interface
+type MockDBKeyer struct {
+	ctrl     *gomock.Controller
+	recorder *MockDBKeyerMockRecorder
+}
+
+// MockDBKeyerMockRecorder is the mock recorder for MockDBKeyer
+type MockDBKeyerMockRecorder struct {
+	mock *MockDBKeyer
+}
+
+// NewMockDBKeyer creates a new mock instance
+func NewMockDBKeyer(ctrl *gomock.Controller) *MockDBKeyer {
+	mock := &MockDBKeyer{ctrl: ctrl}
+	mock.recorder = &MockDBKeyerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockDBKeyer) EXPECT() *MockDBKeyerMockRecorder {
+	return m.recorder
+}
+
+// GetPK mocks base method
+func (m *MockDBKeyer) GetPK() fmt.Stringer {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPK")
+	ret0, _ := ret[0].(fmt.Stringer)
+	return ret0
+}
+
+// GetPK indicates an expected call of GetPK
+func (mr *MockDBKeyerMockRecorder) GetPK() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPK", reflect.TypeOf((*MockDBKeyer)(nil).GetPK))
+}
+
+// GetSK mocks base method
+func (m *MockDBKeyer) GetSK() fmt.Stringer {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSK")
+	ret0, _ := ret[0].(fmt.Stringer)
+	return ret0
+}
+
+// GetSK indicates an expected call of GetSK
+func (mr *MockDBKeyerMockRecorder) GetSK() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSK", reflect.TypeOf((*MockDBKeyer)(nil).GetSK))
+}
+
+// GetEntity mocks base method
+func (m *MockDBKeyer) GetEntity() fmt.Stringer {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEntity")
+	ret0, _ := ret[0].(fmt.Stringer)
+	return ret0
+}
+
+// GetEntity indicates an expected call of GetEntity
+func (mr *MockDBKeyerMockRecorder) GetEntity() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntity", reflect.TypeOf((*MockDBKeyer)(nil).GetEntity))
 }
