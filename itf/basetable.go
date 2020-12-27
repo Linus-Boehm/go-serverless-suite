@@ -11,7 +11,7 @@ import (
 type BaseTableProvider interface {
 	PutItem(row DBKeyer) error
 	RemoveItem(key DBKeyer, item DBKeyer) error
-	RemoveItemSoft(key DBKeyer, item DBKeyer) error
+	RemoveItemSoft(key DBKeyer, item DeletableKey) error
 	RemoveMainEntity(entity fmt.Stringer, id fmt.Stringer) error
 	ReadItem(key DBKeyer, row DBKeyer) error
 	ReadAllWithPK(key fmt.Stringer, index *entity.TableIndex, entity fmt.Stringer, rows interface{}) error
@@ -29,4 +29,10 @@ type DBKeyer interface {
 	GetPK() fmt.Stringer
 	GetSK() fmt.Stringer
 	GetEntity() fmt.Stringer
+}
+
+type DeletableKey interface {
+	DBKeyer
+	IsDeleted() bool
+	SoftDeleteNow()
 }

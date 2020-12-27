@@ -91,7 +91,9 @@ type UserEntity struct {
 	UserAttributes map[string]string `dynamo:"user_attributes,omitempty"`
 }
 
-func NewUserEntity(u entity.User) itf.DBKeyer {
+
+
+func NewUserEntity(u entity.User) itf.DeletableKey {
 	return &UserEntity{
 		BaseEntity: BaseEntity{
 			PK:     common.JoinStringerDBKey(entity.UserEntityName, u.ID),
@@ -143,6 +145,10 @@ func (e *UserEntity) GetEntity() fmt.Stringer {
 	return entity.UserEntityName
 }
 
-func (e *UserEntity) GetPayload() interface{} {
-	return e
+func (e *UserEntity) IsDeleted() bool {
+	return e.Timestamps.IsDeleted()
+}
+
+func (e *UserEntity) SoftDeleteNow() {
+	e.Timestamps.SoftDeleteNow()
 }

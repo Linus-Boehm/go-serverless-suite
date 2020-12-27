@@ -48,7 +48,8 @@ func NewTestProvider(from interface{}) (itf.BaseTableProvider, error) {
 		Region:     common.StringPtr("eu-central-1"),
 		AwsProfile: "",
 	})
-	tbl := dbProvider.TableFromName("go-svl", "basetable", "test")
+	id := entity.NewEntityIDV4()
+	tbl := dbProvider.TableFromName("go-svl", "basetable", fmt.Sprintf("test-%s",id.String()))
 	err = tbl.DeleteTable().Run()
 	if err != nil {
 		fmt.Println(err)
@@ -101,10 +102,13 @@ func (b *dynamoBaseTable) RemoveItem(key itf.DBKeyer, item itf.DBKeyer) error {
 	return b.TranslateDBError(err, key.GetEntity(), key.GetPK())
 }
 
-func (b *dynamoBaseTable) RemoveItemSoft(key itf.DBKeyer, item itf.DBKeyer) error {
-	//n := time.Now().Unix()
-
-	return b.Table.Update(b.mainIndex.PK, key.GetPK()).Range(b.mainIndex.SK, key.GetSK()).Set("firstname", "tessst").Run()
+func (b *dynamoBaseTable) RemoveItemSoft(key itf.DBKeyer, item itf.DeletableKey) error {
+	err := b.ReadItem(key, item)
+	if err != nil {
+		return err
+	}
+	item.SoftDeleteNow()
+	return b.PutItem(item)
 }
 
 func (b *dynamoBaseTable) RemoveAllWithPK(entity fmt.Stringer, id fmt.Stringer) error {

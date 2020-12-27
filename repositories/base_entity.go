@@ -43,7 +43,3 @@ func (e *BaseEntity) GetSK() fmt.Stringer {
 func (e *BaseEntity) GetEntity() fmt.Stringer {
 	panic("this method should be implemented in the GetEntity")
 }
-
-func (e *BaseEntity) GetPayload() interface{} {
-	panic("this method should be implemented in the GetPayload")
-}

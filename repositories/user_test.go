@@ -192,7 +192,7 @@ func TestUserRepository_DeleteUser(t *testing.T) {
 			if test.soft {
 				assert.NotNil(t, u)
 				assert.NotNil(t, u.Timestamps.DeletedAt)
-				assert.Greater(t, *u.Timestamps.DeletedAt, 0)
+				assert.Greater(t, *u.Timestamps.DeletedAt, int64(0))
 				u.Timestamps = entity.Timestamps{}
 			}
 			assert.EqualValues(t, test.expectUser(test.inputID, test.inputEmail), u)
