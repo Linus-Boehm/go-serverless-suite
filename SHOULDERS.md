@@ -11,7 +11,11 @@ Thank you to the following **GIANTS**:
 
 * [github.com/armon/consul-api](https://godoc.org/github.com/armon/consul-api)
 
+* [github.com/aws/aws-sdk-go](https://godoc.org/github.com/aws/aws-sdk-go)
+
 * [github.com/aymerick/douceur](https://godoc.org/github.com/aymerick/douceur)
+
+* [github.com/cenkalti/backoff](https://godoc.org/github.com/cenkalti/backoff)
 
 * [github.com/chris-ramon/douceur](https://godoc.org/github.com/chris-ramon/douceur)
 
@@ -46,6 +50,8 @@ Thank you to the following **GIANTS**:
 * [github.com/go-playground/universal-translator](https://godoc.org/github.com/go-playground/universal-translator)
 
 * [github.com/go-playground/validator/v10](https://godoc.org/github.com/go-playground/validator/v10)
+
+* [github.com/go-sql-driver/mysql](https://godoc.org/github.com/go-sql-driver/mysql)
 
 * [github.com/gobuffalo/attrs](https://godoc.org/github.com/gobuffalo/attrs)
 
@@ -91,17 +97,25 @@ Thank you to the following **GIANTS**:
 
 * [github.com/gofrs/uuid](https://godoc.org/github.com/gofrs/uuid)
 
+* [github.com/golang/mock](https://godoc.org/github.com/golang/mock)
+
 * [github.com/golang/protobuf](https://godoc.org/github.com/golang/protobuf)
 
 * [github.com/google/gofuzz](https://godoc.org/github.com/google/gofuzz)
 
+* [github.com/google/uuid](https://godoc.org/github.com/google/uuid)
+
 * [github.com/gorilla/css](https://godoc.org/github.com/gorilla/css)
+
+* [github.com/guregu/dynamo](https://godoc.org/github.com/guregu/dynamo)
 
 * [github.com/hashicorp/hcl](https://godoc.org/github.com/hashicorp/hcl)
 
 * [github.com/hpcloud/tail](https://godoc.org/github.com/hpcloud/tail)
 
 * [github.com/inconshreveable/mousetrap](https://godoc.org/github.com/inconshreveable/mousetrap)
+
+* [github.com/jmespath/go-jmespath](https://godoc.org/github.com/jmespath/go-jmespath)
 
 * [github.com/joho/godotenv](https://godoc.org/github.com/joho/godotenv)
 
