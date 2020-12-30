@@ -5,9 +5,10 @@
 package itf
 
 import (
+	reflect "reflect"
+
 	entity "github.com/Linus-Boehm/go-serverless-suite/entity"
 	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 )
 
 // MockTplRenderer is a mock of TplRenderer interface
@@ -115,10 +116,10 @@ func (mr *MockMailerMockRecorder) SendSimpleContactForm(input, renderer interfac
 }
 
 // GetContactLists mocks base method
-func (m *MockMailer) GetContactLists() ([]entity.ContactList, error) {
+func (m *MockMailer) GetContactLists() ([]entity.MailContactList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetContactLists")
-	ret0, _ := ret[0].([]entity.ContactList)
+	ret0, _ := ret[0].([]entity.MailContactList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -181,10 +182,10 @@ func (mr *MockMailerProviderMockRecorder) SendSingleMail(input interface{}) *gom
 }
 
 // GetContactLists mocks base method
-func (m *MockMailerProvider) GetContactLists() ([]entity.ContactList, error) {
+func (m *MockMailerProvider) GetContactLists() ([]entity.MailContactList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetContactLists")
-	ret0, _ := ret[0].([]entity.ContactList)
+	ret0, _ := ret[0].([]entity.MailContactList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

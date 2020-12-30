@@ -5,7 +5,7 @@ type Mail struct {
 	Mail string
 }
 
-type ContactList struct {
+type MailContactList struct {
 	ID             ID
 	Name           string
 	RecipientCount int

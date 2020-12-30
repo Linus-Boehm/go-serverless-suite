@@ -14,11 +14,11 @@ type TplRenderer interface {
 
 type Mailer interface {
 	SendSimpleContactForm(input entity.ContactForm, renderer TplRenderer) error
-	GetContactLists() ([]entity.ContactList, error)
+	GetContactLists() ([]entity.MailContactList, error)
 	GetProvider() MailerProvider
 }
 
 type MailerProvider interface {
 	SendSingleMail(input entity.MinimalMail) error
-	GetContactLists() ([]entity.ContactList, error)
+	GetContactLists() ([]entity.MailContactList, error)
 }

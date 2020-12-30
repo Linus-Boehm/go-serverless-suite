@@ -66,7 +66,7 @@ type GetContactListResponse struct {
 	} `json:"result"`
 }
 
-func (s *Sendgrid) GetContactLists() ([]entity.ContactList, error) {
+func (s *Sendgrid) GetContactLists() ([]entity.MailContactList, error) {
 
 	request := sendgrid.GetRequest(s.config.APIKey, "/v3/marketing/lists", s.host)
 	request.Method = "GET"
@@ -82,10 +82,10 @@ func (s *Sendgrid) GetContactLists() ([]entity.ContactList, error) {
 	if err != nil {
 		return nil, err
 	}
-	lists := []entity.ContactList{}
+	lists := []entity.MailContactList{}
 
 	for _, l := range payload.Result {
-		lists = append(lists, entity.ContactList{
+		lists = append(lists, entity.MailContactList{
 			ID:             entity.IDFromStringOrNil(l.ID),
 			Name:           l.Name,
 			RecipientCount: l.ContactCount,

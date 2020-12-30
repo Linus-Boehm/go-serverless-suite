@@ -28,7 +28,7 @@ func (m *service) SendSimpleContactForm(input entity.ContactForm, renderer itf.T
 	return m.provider.SendSingleMail(mmi)
 }
 
-func (m *service) GetContactLists() ([]entity.ContactList, error) {
+func (m *service) GetContactLists() ([]entity.MailContactList, error) {
 	return m.provider.GetContactLists()
 }
 
