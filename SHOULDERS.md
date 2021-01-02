@@ -137,8 +137,6 @@ Thank you to the following **GIANTS**:
 
 * [github.com/markbates/oncer](https://godoc.org/github.com/markbates/oncer)
 
-* [github.com/markbates/pkger](https://godoc.org/github.com/markbates/pkger)
-
 * [github.com/markbates/safe](https://godoc.org/github.com/markbates/safe)
 
 * [github.com/mattn/go-isatty](https://godoc.org/github.com/mattn/go-isatty)
@@ -216,8 +214,6 @@ Thank you to the following **GIANTS**:
 * [golang.org/x/sync](https://godoc.org/golang.org/x/sync)
 
 * [golang.org/x/sys](https://godoc.org/golang.org/x/sys)
-
-* [golang.org/x/term](https://godoc.org/golang.org/x/term)
 
 * [golang.org/x/text](https://godoc.org/golang.org/x/text)
 
