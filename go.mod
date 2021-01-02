@@ -3,7 +3,7 @@ module github.com/Linus-Boehm/go-serverless-suite
 go 1.16
 
 require (
-	github.com/aws/aws-sdk-go v1.36.15
+	github.com/aws/aws-sdk-go v1.36.18
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/logger v0.0.2
 	github.com/gin-gonic/gin v1.6.3
