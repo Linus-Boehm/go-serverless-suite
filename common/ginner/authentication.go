@@ -3,9 +3,10 @@ package ginner
 import (
 	"fmt"
 	"strings"
-	"github.com/pkg/errors"
+
 	"github.com/Linus-Boehm/go-serverless-suite/common"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 )
 
 const UserClaimsContext = "User"

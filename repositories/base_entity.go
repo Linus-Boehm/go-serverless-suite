@@ -23,9 +23,9 @@ type BaseEntity struct {
 }
 
 // BaseEntity fulfills itf.TableKey
-func NewBaseEntity(pkId entity.ID, skID entity.ID, slug string, entity entity.Name) BaseEntity {
+func NewBaseEntity(pkID entity.ID, skID entity.ID, slug string, entity entity.Name) BaseEntity {
 	return BaseEntity{
-		PK:     common.JoinStringerDBKey(entity, pkId),
+		PK:     common.JoinStringerDBKey(entity, pkID),
 		SK:     common.JoinStringerDBKey(entity, skID),
 		Entity: entity.String(),
 		Slug:   slug,

@@ -42,6 +42,6 @@ func (t *Timestamps) SoftDeleteNow() {
 	t.DeletedAt = &n
 }
 
-func (e *Timestamps) IsDeleted() bool {
-	return e.DeletedAt != nil || *e.DeletedAt > 0
+func (t *Timestamps) IsDeleted() bool {
+	return t.DeletedAt != nil || *t.DeletedAt > 0
 }

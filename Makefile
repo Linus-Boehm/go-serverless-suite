@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 
-VERSION ?= "v0.7.3"
+VERSION ?= "v0.7.4"
 TAGS ?= ""
 GO_BIN ?= "go1.16beta1"
 
@@ -24,7 +24,7 @@ build:
 	$(GO_BIN) build -v .
 
 lint:
-	golangci-lint run
+	golangci-lint run ./... -v
 
 install:
 	echo "Skip install for this package"

@@ -2,19 +2,20 @@ package persistence
 
 import (
 	"fmt"
-	"github.com/Linus-Boehm/go-serverless-suite/common"
 	"testing"
+
+	"github.com/Linus-Boehm/go-serverless-suite/common"
 
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/stretchr/testify/assert"
 )
 
 type TestEntity struct {
-	PK     string `dynamo:"pk,hash" index:"gsi-1-reverse,range"`
-	SK     string `dynamo:"sk,range" index:"gsi-1-reverse,hash"`
-	Entity string `dynamo:"entity,omitempty" index:"gsi-2-entity,hash"`
-	Slug   string `dynamo:"slug,omitempty" index:"gsi-2-entity,range"`
-	Timestamps entity.Timestamps  `dynamo:"timestamps"`
+	PK         string            `dynamo:"pk,hash" index:"gsi-1-reverse,range"`
+	SK         string            `dynamo:"sk,range" index:"gsi-1-reverse,hash"`
+	Entity     string            `dynamo:"entity,omitempty" index:"gsi-2-entity,hash"`
+	Slug       string            `dynamo:"slug,omitempty" index:"gsi-2-entity,range"`
+	Timestamps entity.Timestamps `dynamo:"timestamps"`
 }
 
 func (e *TestEntity) GetPK() fmt.Stringer {
@@ -43,9 +44,9 @@ func TestDynamoBaseTable_PutReadItem(t *testing.T) {
 	ts.CreatedNow()
 	e := &TestEntity{
 		PK:         entity.NewEntityIDV4().String(),
-		SK:      "example.org",
-		Entity: "TEST",
-		Slug: "bla",
+		SK:         "example.org",
+		Entity:     "TEST",
+		Slug:       "bla",
 		Timestamps: ts,
 	}
 	err = b.PutItem(e)
@@ -67,9 +68,9 @@ func TestDynamoBaseTable_ReadAllWithPK(t *testing.T) {
 	ts.CreatedNow()
 	e := &TestEntity{
 		PK:         entity.NewEntityIDV4().String(),
-		SK:      "example.org",
-		Entity: "TEST",
-		Slug: "bla",
+		SK:         "example.org",
+		Entity:     "TEST",
+		Slug:       "bla",
 		Timestamps: ts,
 	}
 	err = b.PutItem(e)
@@ -87,10 +88,10 @@ func TestDynamoBaseTable_BatchWriteItems(t *testing.T) {
 	defer b.DeleteTable()
 	newU := func() TestEntity {
 		return TestEntity{
-			PK:         entity.NewEntityIDV4().String(),
-			SK:      "example.org",
+			PK:     entity.NewEntityIDV4().String(),
+			SK:     "example.org",
 			Entity: "TEST",
-			Slug: "bla",
+			Slug:   "bla",
 		}
 	}
 	var payload []interface{}

@@ -48,8 +48,11 @@ func NewTestProvider(from interface{}) (itf.BaseTableProvider, error) {
 		Region:     common.StringPtr("eu-central-1"),
 		AwsProfile: "",
 	})
+	if err != nil {
+		panic(err)
+	}
 	id := entity.NewEntityIDV4()
-	tbl := dbProvider.TableFromName("go-svl", "basetable", fmt.Sprintf("test-%s",id.String()))
+	tbl := dbProvider.TableFromName("go-svl", "basetable", fmt.Sprintf("test-%s", id.String()))
 	err = tbl.DeleteTable().Run()
 	if err != nil {
 		fmt.Println(err)

@@ -14,28 +14,28 @@ func TestIDFromStringOrNil(t *testing.T) {
 	tests := []struct {
 		name        string
 		input       string
-		expectId    *uuid.UUID
+		expectID    *uuid.UUID
 		expectVal   *string
 		expectedStr string
 	}{
 		{
 			name:        "happy - uuid",
 			input:       uid.String(),
-			expectId:    &uid,
+			expectID:    &uid,
 			expectVal:   nil,
 			expectedStr: uid.String(),
 		},
 		{
 			name:        "happy - string",
 			input:       "username",
-			expectId:    nil,
+			expectID:    nil,
 			expectVal:   common.StringPtr("username"),
 			expectedStr: "username",
 		},
 		{
 			name:        "happy - empty",
 			input:       "",
-			expectId:    nil,
+			expectID:    nil,
 			expectVal:   nil,
 			expectedStr: "",
 		},
@@ -43,10 +43,10 @@ func TestIDFromStringOrNil(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			id := IDFromStringOrNil(test.input)
-			if test.expectId == nil {
+			if test.expectID == nil {
 				assert.Nil(t, id.id)
 			} else {
-				assert.Equal(t, test.expectId.String(), id.id.String())
+				assert.Equal(t, test.expectID.String(), id.id.String())
 
 			}
 			if test.expectVal == nil {
@@ -66,7 +66,7 @@ func TestIDFromDBString(t *testing.T) {
 		name      string
 		input     string
 		expectErr bool
-		expectId  *uuid.UUID
+		expectID  *uuid.UUID
 		expectVal *string
 	}{
 		{
@@ -88,7 +88,7 @@ func TestIDFromDBString(t *testing.T) {
 			name:      "happy uuid",
 			input:     fmt.Sprintf("FOO#%s", uid.String()),
 			expectErr: false,
-			expectId:  &uid,
+			expectID:  &uid,
 		},
 		{
 			name:      "happy str",
@@ -110,10 +110,10 @@ func TestIDFromDBString(t *testing.T) {
 			if test.expectErr {
 				return
 			}
-			if test.expectId == nil {
+			if test.expectID == nil {
 				assert.Nil(t, id.id)
 			} else {
-				assert.Equal(t, test.expectId.String(), id.id.String())
+				assert.Equal(t, test.expectID.String(), id.id.String())
 
 			}
 			if test.expectVal == nil {

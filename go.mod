@@ -9,6 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/gobuffalo/release v1.15.0 // indirect
 	github.com/golang/mock v1.4.4
+	github.com/golangci/golangci-lint v1.34.1 // indirect
 	github.com/google/uuid v1.1.3
 	github.com/guregu/dynamo v1.10.2
 	github.com/microcosm-cc/bluemonday v1.0.4
@@ -17,4 +18,5 @@ require (
 	github.com/sendgrid/rest v2.6.2+incompatible // indirect
 	github.com/sendgrid/sendgrid-go v3.7.2+incompatible
 	github.com/stretchr/testify v1.6.1
+	golang.org/x/tools v0.0.0-20210101214203-2dba1e4ea05c // indirect
 )
