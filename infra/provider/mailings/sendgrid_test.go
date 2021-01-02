@@ -2,6 +2,7 @@ package mailings
 
 import (
 	"fmt"
+	"github.com/Linus-Boehm/go-serverless-suite/itf"
 	"os"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func NewTestSendgridProvider(t *testing.T) *sendgridProvider {
+func NewTestSendgridProvider(t *testing.T) itf.MailerProvider {
 	if os.Getenv("ONLINE_TEST") == "" {
 		t.Skip("online test skipped")
 	}

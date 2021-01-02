@@ -63,7 +63,7 @@ func (mr *MockBaseTableProviderMockRecorder) RemoveItem(key, item interface{}) *
 }
 
 // RemoveItemSoft mocks base method
-func (m *MockBaseTableProvider) RemoveItemSoft(key, item DBKeyer) error {
+func (m *MockBaseTableProvider) RemoveItemSoft(key DBKeyer, item DeletableKey) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RemoveItemSoft", key, item)
 	ret0, _ := ret[0].(error)
@@ -298,4 +298,95 @@ func (m *MockDBKeyer) GetEntity() fmt.Stringer {
 func (mr *MockDBKeyerMockRecorder) GetEntity() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntity", reflect.TypeOf((*MockDBKeyer)(nil).GetEntity))
+}
+
+// MockDeletableKey is a mock of DeletableKey interface
+type MockDeletableKey struct {
+	ctrl     *gomock.Controller
+	recorder *MockDeletableKeyMockRecorder
+}
+
+// MockDeletableKeyMockRecorder is the mock recorder for MockDeletableKey
+type MockDeletableKeyMockRecorder struct {
+	mock *MockDeletableKey
+}
+
+// NewMockDeletableKey creates a new mock instance
+func NewMockDeletableKey(ctrl *gomock.Controller) *MockDeletableKey {
+	mock := &MockDeletableKey{ctrl: ctrl}
+	mock.recorder = &MockDeletableKeyMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockDeletableKey) EXPECT() *MockDeletableKeyMockRecorder {
+	return m.recorder
+}
+
+// GetPK mocks base method
+func (m *MockDeletableKey) GetPK() fmt.Stringer {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPK")
+	ret0, _ := ret[0].(fmt.Stringer)
+	return ret0
+}
+
+// GetPK indicates an expected call of GetPK
+func (mr *MockDeletableKeyMockRecorder) GetPK() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPK", reflect.TypeOf((*MockDeletableKey)(nil).GetPK))
+}
+
+// GetSK mocks base method
+func (m *MockDeletableKey) GetSK() fmt.Stringer {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSK")
+	ret0, _ := ret[0].(fmt.Stringer)
+	return ret0
+}
+
+// GetSK indicates an expected call of GetSK
+func (mr *MockDeletableKeyMockRecorder) GetSK() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSK", reflect.TypeOf((*MockDeletableKey)(nil).GetSK))
+}
+
+// GetEntity mocks base method
+func (m *MockDeletableKey) GetEntity() fmt.Stringer {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetEntity")
+	ret0, _ := ret[0].(fmt.Stringer)
+	return ret0
+}
+
+// GetEntity indicates an expected call of GetEntity
+func (mr *MockDeletableKeyMockRecorder) GetEntity() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEntity", reflect.TypeOf((*MockDeletableKey)(nil).GetEntity))
+}
+
+// IsDeleted mocks base method
+func (m *MockDeletableKey) IsDeleted() bool {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IsDeleted")
+	ret0, _ := ret[0].(bool)
+	return ret0
+}
+
+// IsDeleted indicates an expected call of IsDeleted
+func (mr *MockDeletableKeyMockRecorder) IsDeleted() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsDeleted", reflect.TypeOf((*MockDeletableKey)(nil).IsDeleted))
+}
+
+// SoftDeleteNow mocks base method
+func (m *MockDeletableKey) SoftDeleteNow() {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SoftDeleteNow")
+}
+
+// SoftDeleteNow indicates an expected call of SoftDeleteNow
+func (mr *MockDeletableKeyMockRecorder) SoftDeleteNow() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SoftDeleteNow", reflect.TypeOf((*MockDeletableKey)(nil).SoftDeleteNow))
 }

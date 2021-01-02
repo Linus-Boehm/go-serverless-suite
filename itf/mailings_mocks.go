@@ -5,10 +5,9 @@
 package itf
 
 import (
-	reflect "reflect"
-
 	entity "github.com/Linus-Boehm/go-serverless-suite/entity"
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockTplRenderer is a mock of TplRenderer interface
@@ -194,4 +193,18 @@ func (m *MockMailerProvider) GetContactLists() ([]entity.MailContactList, error)
 func (mr *MockMailerProviderMockRecorder) GetContactLists() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContactLists", reflect.TypeOf((*MockMailerProvider)(nil).GetContactLists))
+}
+
+// GetDefaultSender mocks base method
+func (m *MockMailerProvider) GetDefaultSender() *entity.Mail {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDefaultSender")
+	ret0, _ := ret[0].(*entity.Mail)
+	return ret0
+}
+
+// GetDefaultSender indicates an expected call of GetDefaultSender
+func (mr *MockMailerProviderMockRecorder) GetDefaultSender() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefaultSender", reflect.TypeOf((*MockMailerProvider)(nil).GetDefaultSender))
 }
