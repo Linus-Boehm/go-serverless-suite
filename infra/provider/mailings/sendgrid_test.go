@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func NewTestSendgridProvider(t *testing.T) *Sendgrid {
+func NewTestSendgridProvider(t *testing.T) *sendgridProvider {
 	if os.Getenv("ONLINE_TEST") == "" {
 		t.Skip("online test skipped")
 	}

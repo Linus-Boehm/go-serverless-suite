@@ -21,4 +21,5 @@ type Mailer interface {
 type MailerProvider interface {
 	SendSingleMail(input entity.MinimalMail) error
 	GetContactLists() ([]entity.MailContactList, error)
+	GetDefaultSender() *entity.Mail
 }

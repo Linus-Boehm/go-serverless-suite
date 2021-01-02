@@ -2,6 +2,8 @@ package entity
 
 const (
 	UserEntityName   Name = "USER"
+	CRMSubscriptionEntityName   Name = "CRM_SUB"
+	CRMEmailListEntityName   Name = "CRM_EMAIL_LIST"
 	TenantEntityName Name = "TENANT"
 )
 

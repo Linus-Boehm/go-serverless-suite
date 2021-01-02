@@ -18,9 +18,10 @@ type CRMContactList struct {
 
 type CRMContactLists []CRMContactList
 
-type CRMContactSubscription struct {
+type CRMEmailListSubscription struct {
 	ListID ID
-	UserID ID
+	EMail ID
+	SubscriptionID ID
 	Status SubscriptionStatus
 	Timestamps
 }

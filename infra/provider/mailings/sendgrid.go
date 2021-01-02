@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Linus-Boehm/go-serverless-suite/itf"
 
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 
@@ -15,9 +16,10 @@ import (
 
 type SendgridConfig struct {
 	APIKey string
+	DefaultSender *entity.Mail
 }
 
-type Sendgrid struct {
+type sendgridProvider struct {
 	client *sendgrid.Client
 	config *SendgridConfig
 	host   string
@@ -25,17 +27,17 @@ type Sendgrid struct {
 
 var ErrNotAuthorizedSenderMail = errors.New("sender mail is not authorized")
 
-func NewSendgridProvider(config SendgridConfig) *Sendgrid {
+func NewSendgridProvider(config SendgridConfig) itf.MailerProvider {
 	c := sendgrid.NewSendClient(config.APIKey)
 
-	return &Sendgrid{
+	return &sendgridProvider{
 		client: c,
 		config: &config,
 		host:   "https://api.sendgrid.com",
 	}
 }
 
-func (s *Sendgrid) SendSingleMail(input entity.MinimalMail) error {
+func (s *sendgridProvider) SendSingleMail(input entity.MinimalMail) error {
 	plainText := input.GetPlainText()
 	from := sendgridMailFromMailingsMail(input.FromMail)
 	to := sendgridMailFromMailingsMail(input.ToMail)
@@ -54,6 +56,10 @@ func (s *Sendgrid) SendSingleMail(input entity.MinimalMail) error {
 	return nil
 }
 
+func (s *sendgridProvider) GetDefaultSender() *entity.Mail {
+	return s.config.DefaultSender
+}
+
 func sendgridMailFromMailingsMail(m entity.Mail) *mail.Email {
 	return mail.NewEmail(m.Name, m.Mail)
 }
@@ -66,7 +72,7 @@ type GetContactListResponse struct {
 	} `json:"result"`
 }
 
-func (s *Sendgrid) GetContactLists() ([]entity.MailContactList, error) {
+func (s *sendgridProvider) GetContactLists() ([]entity.MailContactList, error) {
 
 	request := sendgrid.GetRequest(s.config.APIKey, "/v3/marketing/lists", s.host)
 	request.Method = "GET"

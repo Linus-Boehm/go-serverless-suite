@@ -20,6 +20,7 @@ type BaseEntity struct {
 	SK     string `dynamo:"sk,range" index:"gsi-1-reverse,hash"`
 	Entity string `dynamo:"entity,omitempty" index:"gsi-2-entity,hash"`
 	Slug   string `dynamo:"slug,omitempty" index:"gsi-2-entity,range"`
+	Timestamps entity.Timestamps `dynamo:"timestamps,omitempty"`
 }
 
 // BaseEntity fulfills itf.TableKey
@@ -30,6 +31,11 @@ func NewBaseEntity(pkID entity.ID, skID entity.ID, slug string, entity entity.Na
 		Entity: entity.String(),
 		Slug:   slug,
 	}
+}
+
+func (e BaseEntity) WithTimestamps(t entity.Timestamps) BaseEntity {
+	e.Timestamps = t
+	return e
 }
 
 func (e *BaseEntity) GetPK() fmt.Stringer {

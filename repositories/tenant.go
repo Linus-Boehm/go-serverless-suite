@@ -10,14 +10,12 @@ import (
 
 type TenantEntity struct {
 	BaseEntity
-	Timestamps entity.Timestamps `dynamo:"timestamps"`
 	Name       string            `dynamo:"name,omitempty"`
 }
 
 func NewTenantEntity(t entity.Tenant) itf.DBKeyer {
 	return &TenantEntity{
-		BaseEntity: NewBaseEntity(t.ParentID, t.ID, t.Slug, entity.TenantEntityName),
-		Timestamps: t.Timestamps,
+		BaseEntity: NewBaseEntity(t.ParentID, t.ID, t.Slug, entity.TenantEntityName).WithTimestamps(t.Timestamps),
 		Name:       t.Name,
 	}
 }
