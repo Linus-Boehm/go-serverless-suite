@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 
-VERSION ?= "v0.7.1"
+VERSION ?= "v0.7.2"
 TAGS ?= ""
 GO_BIN ?= "go1.16beta1"
 
@@ -28,6 +28,9 @@ lint:
 
 install:
 	echo "Skip install for this package"
+
+tidy:
+	$(GO_BIN) mod tidy
 
 update:
 	rm go.*
