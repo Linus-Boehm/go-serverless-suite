@@ -10,7 +10,7 @@ import (
 type Configer interface {
 	IsDebug() bool
 	GetStage() string
-	Validate() (err error, valid bool)
+	Validate() (valid bool, err error)
 }
 
 func LoadConfigFile(filepath string, fs embed.FS, config Configer) (Configer, error) {
@@ -23,7 +23,7 @@ func LoadConfigFile(filepath string, fs embed.FS, config Configer) (Configer, er
 	if err != nil {
 		return nil, err
 	}
-	err, valid := config.Validate()
+	valid, err := config.Validate()
 	if err != nil {
 		return config, err
 	}
