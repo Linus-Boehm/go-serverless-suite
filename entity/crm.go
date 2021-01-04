@@ -2,6 +2,7 @@ package entity
 
 const (
 	UserOptedInSubscriptionStatus  SubscriptionStatus = "USER_OPTED_IN"
+	UserOptedInRequestedSubscriptionStatus  SubscriptionStatus = "USER_OPTED_IN_REQUESTED"
 	AdminSubscriptionStatus        SubscriptionStatus = "ADMIN_CREATED"
 	UserOptedOutSubscriptionStatus SubscriptionStatus = "USER_OPTED_OUT"
 )
