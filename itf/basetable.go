@@ -22,6 +22,7 @@ type BaseTableProvider interface {
 	BatchReadItems(keys []DBKeyer, rows interface{}) error
 	BatchWriteItems(rows ...interface{}) error
 	WithIndex(index entity.TableIndex) BaseTableProvider
+	WithDefaultIndices() BaseTableProvider
 	BatchDeleteItems(rows []DBKeyer) (int, error)
 }
 

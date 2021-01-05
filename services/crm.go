@@ -11,6 +11,7 @@ type crmSVC struct {
 	mailer itf.Mailer
 	repo itf.CRMProvider
 	senderMail entity.Mail
+	userRepo itf.UserProvider
 }
 
 func NewCRMService(mailer itf.Mailer, repo itf.CRMProvider, senderMail entity.Mail) itf.CRMServicer {
@@ -23,6 +24,12 @@ func NewCRMService(mailer itf.Mailer, repo itf.CRMProvider, senderMail entity.Ma
 
 func (c crmSVC) GetMailer() itf.Mailer {
 	panic("implement me")
+}
+func (c crmSVC) CreateNewUser(user entity.User) (entity.User,error) {
+	user.ID.NewV4IfEmpty()
+	user.Timestamps.CreatedNow()
+	err := c.userRepo.PutUser(user)
+	return user, err
 }
 
 func (c crmSVC) CreateSubscription(subscriptions []entity.CRMEmailListSubscription, confirmationTPL entity.HTMLTemplate) error {

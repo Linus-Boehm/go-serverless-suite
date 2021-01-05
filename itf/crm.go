@@ -9,6 +9,7 @@ type NewsWriter interface {
 
 type CRMServicer interface {
 	GetMailer() Mailer
+	CreateNewUser(user entity.User) (entity.User,error)
 	CreateSubscription(subs []entity.CRMEmailListSubscription, confirmationTPL entity.HTMLTemplate) error
 	ValidateEmail(email entity.ID) error
 
