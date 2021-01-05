@@ -2,6 +2,8 @@ package itf
 
 import "github.com/Linus-Boehm/go-serverless-suite/entity"
 
+//go:generate mockgen -destination=crm_mocks.go -package=itf -source=crm.go
+
 type NewsWriter interface {
 }
 

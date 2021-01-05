@@ -1,10 +1,10 @@
 package entity
 
 const (
-	UserOptedInSubscriptionStatus  SubscriptionStatus = "USER_OPTED_IN"
-	UserOptedInRequestedSubscriptionStatus  SubscriptionStatus = "USER_OPTED_IN_REQUESTED"
-	AdminSubscriptionStatus        SubscriptionStatus = "ADMIN_CREATED"
-	UserOptedOutSubscriptionStatus SubscriptionStatus = "USER_OPTED_OUT"
+	UserOptedInSubscriptionStatus          SubscriptionStatus = "USER_OPTED_IN"
+	UserOptedInRequestedSubscriptionStatus SubscriptionStatus = "USER_OPTED_IN_REQUESTED"
+	AdminSubscriptionStatus                SubscriptionStatus = "ADMIN_CREATED"
+	UserOptedOutSubscriptionStatus         SubscriptionStatus = "USER_OPTED_OUT"
 )
 
 type CRMContactList struct {
@@ -20,10 +20,10 @@ type CRMContactList struct {
 type CRMContactLists []CRMContactList
 
 type CRMEmailListSubscription struct {
-	ListID ID
-	EMail ID
+	ListID         ID
+	EMail          ID
 	SubscriptionID ID
-	Status SubscriptionStatus
+	Status         SubscriptionStatus
 	Timestamps
 }
 
