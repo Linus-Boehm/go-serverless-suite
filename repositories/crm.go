@@ -39,11 +39,11 @@ func (c crmRepo) PutSubscription(subscription entity.CRMEmailListSubscription) e
 }
 
 func (c crmRepo) PutSubscriptions(subs []entity.CRMEmailListSubscription) error {
-	var rows []itf.DBKeyer
+	var rows []interface{}
 	for _, sub := range subs {
 		rows = append(rows, NewSubscriptionEntity(sub))
 	}
-	return c.table.BatchWriteItems(rows)
+	return c.table.BatchWriteItems(rows...)
 }
 
 func (c crmRepo) GetSubscriptionsOfList(listID entity.ID) ([]entity.CRMEmailListSubscription, error) {

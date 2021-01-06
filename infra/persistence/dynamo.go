@@ -61,7 +61,7 @@ func NewTestProvider(from interface{}) (itf.BaseTableProvider, error) {
 		CreateTable(tbl.Name(), from).
 		Provision(4, 4).
 		Run()
-	return NewFromDynamoDB(dbProvider, tbl, nil), err
+	return NewFromDynamoDB(dbProvider, tbl, nil).WithDefaultIndices(), err
 }
 
 func NewFromDynamoDB(provider *db.DynamoProvider, table dynamo.Table, mainIndex *entity.TableIndex) itf.BaseTableProvider {
