@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"fmt"
+	"reflect"
 	"testing"
 	"time"
 
@@ -263,6 +265,112 @@ func TestUserRepository_PutUser(t *testing.T) {
 				assert.EqualValues(t, test.expectUser(test.inputID), user)
 			}
 
+		})
+	}
+}
+
+func Test_userRepository_ReadUserByEmail(t *testing.T) {
+	type args struct {
+		email entity.ID
+		ID    entity.ID
+	}
+	tests := []struct {
+		name       string
+		args       args
+		beforeTest func(args, *testing.T, itf.UserProvider) entity.User
+		wantErr    bool
+	}{
+		{
+			name: "happy path",
+			args: args{
+				ID: entity.NewEntityIDV4(),
+				email: entity.IDFromStringOrNil("test@example.org"),
+			},
+			beforeTest: func(args args, t *testing.T, provider itf.UserProvider) entity.User {
+				now := entity.Timestamps{}
+				now.CreatedNow()
+				user := entity.User{
+					ID:            args.ID,
+					Email:         args.email.String(),
+					Firstname:     "Foo",
+					Lastname:      "Bar",
+					EmailVerified: true,
+					Attributes: map[string]string{
+						"Foo": "Bar",
+					},
+					Timestamps:    now,
+				}
+				err := provider.PutUser(user)
+				assert.NoError(t, err)
+				return user
+			},
+			wantErr:  false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			b, err := persistence.NewTestProvider(UserEntity{})
+			assert.NoError(t, err)
+			defer b.DeleteTable()
+			userRepo := NewUserRepository(b)
+			wantUser := tt.beforeTest(tt.args, t, userRepo)
+			gotUser, err := userRepo.ReadUserByEmail(tt.args.email)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ReadUserByEmail() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(gotUser, wantUser) {
+				t.Errorf("ReadUserByEmail() gotUser = %v, want %v", gotUser, wantUser)
+			}
+		})
+	}
+}
+
+func TestNewUserEntity(t *testing.T) {
+	type args struct {
+		u entity.User
+	}
+	tests := []struct {
+		name string
+		args args
+		want func(user entity.User) *UserEntity
+	}{
+		{
+			name: "User with attributes",
+			args: args{
+				u: entity.User{
+					ID:            entity.NewEntityIDV4(),
+					Email:         "test@example.org",
+					Firstname:     "Foo",
+					Lastname:      "Bar",
+					EmailVerified: true,
+					Attributes: map[string]string{"Foo":"Bar"},
+					Timestamps:    entity.Timestamps{},
+				},
+			},
+			want: func(user entity.User) *UserEntity {
+				return &UserEntity{
+					BaseEntity:     BaseEntity{
+						PK: fmt.Sprintf("USER#%s",user.ID.String()),
+						SK:         fmt.Sprintf("USER#%s",user.Email),
+						Entity:     "USER",
+						Slug:       fmt.Sprintf("user-%s", user.ID.String()),
+						Timestamps: entity.Timestamps{},
+					},
+					Firstname:      "Foo",
+					Lastname:       "Bar",
+					EmailVerified:  true,
+					UserAttributes: map[string]string{"Foo":"Bar"},
+				}
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			want := *tt.want(tt.args.u)
+			if got := NewUserEntity(tt.args.u); !reflect.DeepEqual(*got, want) {
+				t.Errorf("NewUserEntity() = %v, want %v", *got, want)
+			}
 		})
 	}
 }

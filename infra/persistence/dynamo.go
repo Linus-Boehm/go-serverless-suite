@@ -129,6 +129,9 @@ func (b *dynamoBaseTable) ReadAllWithPK(key fmt.Stringer, index *entity.TableInd
 		index = &b.mainIndex
 	}
 	query := b.Table.Get(index.PK, key.String())
+	if index.Name != b.mainIndex.Name {
+		query = query.Index(index.Name)
+	}
 	if entity.String() != "" {
 		query = query.Filter("'entity' = ?", entity.String())
 	}

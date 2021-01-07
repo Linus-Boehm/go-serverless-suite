@@ -85,22 +85,21 @@ func (u userRepository) ListUsers() ([]entity.User, error) {
 // UserEntity is implementing itf.TableEntity
 type UserEntity struct {
 	BaseEntity
-	Timestamps     entity.Timestamps `dynamo:"timestamps"`
 	Firstname      string            `dynamo:"firstname,omitempty"`
 	Lastname       string            `dynamo:"lastname,omitempty"`
 	EmailVerified  bool              `dynamo:"emailVerified,omitempty"`
 	UserAttributes map[string]string `dynamo:"user_attributes,omitempty"`
 }
 
-func NewUserEntity(u entity.User) itf.DeletableKey {
+func NewUserEntity(u entity.User) *UserEntity {
 	return &UserEntity{
 		BaseEntity: BaseEntity{
 			PK:     common.JoinStringerDBKey(entity.UserEntityName, u.ID),
 			SK:     common.JoinDBKey(entity.UserEntityName.String(), u.Email),
 			Entity: entity.UserEntityName.String(),
 			Slug:   fmt.Sprintf("user-%s", u.ID.String()),
+			Timestamps: u.Timestamps,
 		},
-		Timestamps:     u.Timestamps,
 		EmailVerified:  u.EmailVerified,
 		Firstname:      u.Firstname,
 		Lastname:       u.Lastname,
@@ -124,6 +123,7 @@ func (e *UserEntity) GetUser() (entity.User, error) {
 		Lastname:   e.Lastname,
 		Attributes: e.UserAttributes,
 		Timestamps: e.Timestamps,
+		EmailVerified: e.EmailVerified,
 	}
 
 	return u, nil
