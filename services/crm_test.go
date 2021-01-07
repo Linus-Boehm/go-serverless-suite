@@ -30,8 +30,26 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 					UserID:           entity.IDFromStringOrNil("123"),
 					SubID:            entity.IDFromStringOrNil("456"),
 					ConfirmationPath: "http://localhost",
-					Template:         tplreader.CRMOptInMailManifest,
-					FS:               tplreader.DefaultManifests,
+					Template:         &tplreader.CRMOptInMailManifest,
+					FS:               &tplreader.DefaultManifests,
+				},
+			},
+			wantErr:        false,
+			expectContains: []string{
+				"Max Mustermann",
+				"http://localhost/?id=123&subid=456&email=test%40example.org",
+			},
+		},
+		{
+			name:           "happy empty",
+			args:           args{
+				options: entity.CRMOptInMailOptions{
+					Fullname:         "Max Mustermann",
+					Subject:          nil,
+					EMail:            entity.IDFromStringOrNil("test@example.org"),
+					UserID:           entity.IDFromStringOrNil("123"),
+					SubID:            entity.IDFromStringOrNil("456"),
+					ConfirmationPath: "http://localhost",
 				},
 			},
 			wantErr:        false,

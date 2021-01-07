@@ -19,8 +19,8 @@ type CRMOptInMailOptions struct {
 	UserID           ID
 	SubID            ID
 	ConfirmationPath string
-	Template         TemplateManifest
-	FS               embed.FS
+	Template         *TemplateManifest
+	FS               *embed.FS
 }
 
 type CRMOptInMailTemplateOptions struct {

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"embed"
 	"html/template"
+	"io/fs"
 	"io/ioutil"
 
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
@@ -28,6 +29,10 @@ var (
 //go:embed manifests/*
 var DefaultManifests embed.FS
 
+type Opener interface {
+	Open(name string) (fs.File, error)
+}
+
 type Template struct {
 	raw      *string
 	manifest entity.TemplateManifest
@@ -38,7 +43,7 @@ func LoadTemplate(manifest entity.TemplateManifest) (itf.TplRenderer, error) {
 	return LoadCustomTemplate(DefaultManifests, manifest)
 }
 
-func LoadCustomTemplate(fs embed.FS, manifest entity.TemplateManifest) (itf.TplRenderer, error) {
+func LoadCustomTemplate(fs Opener, manifest entity.TemplateManifest) (itf.TplRenderer, error) {
 	rawContent, err := open(fs, manifest.Path)
 	if err != nil {
 		return nil, err
@@ -76,7 +81,7 @@ func (t *Template) RenderWithHTML(data interface{}) (*entity.HTMLTemplate, error
 	return &entity.HTMLTemplate{Content: *content}, nil
 }
 
-func open(fs embed.FS, p string) (*string, error) {
+func open(fs Opener, p string) (*string, error) {
 	f, err := fs.Open(p)
 	if err != nil {
 		return nil, err

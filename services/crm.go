@@ -53,7 +53,13 @@ func (c crmSVC) CreateSubscription(subscriptions []entity.CRMEmailListSubscripti
 }
 
 func (c crmSVC) SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error {
-	reader, err :=  tplreader.LoadCustomTemplate(options.FS, options.Template)
+	if options.FS == nil {
+		options.FS = &tplreader.DefaultManifests
+	}
+	if options.Template == nil {
+		options.Template = &tplreader.CRMOptInMailManifest
+	}
+	reader, err :=  tplreader.LoadCustomTemplate(options.FS, *options.Template)
 	if err != nil {
 		return err
 	}
