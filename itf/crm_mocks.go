@@ -70,6 +70,21 @@ func (mr *MockCRMServicerMockRecorder) GetMailer() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMailer", reflect.TypeOf((*MockCRMServicer)(nil).GetMailer))
 }
 
+// CreateNewUser mocks base method
+func (m *MockCRMServicer) CreateNewUser(user entity.User) (entity.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateNewUser", user)
+	ret0, _ := ret[0].(entity.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateNewUser indicates an expected call of CreateNewUser
+func (mr *MockCRMServicerMockRecorder) CreateNewUser(user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateNewUser", reflect.TypeOf((*MockCRMServicer)(nil).CreateNewUser), user)
+}
+
 // CreateSubscription mocks base method
 func (m *MockCRMServicer) CreateSubscription(subs []entity.CRMEmailListSubscription, confirmationTPL entity.HTMLTemplate) error {
 	m.ctrl.T.Helper()

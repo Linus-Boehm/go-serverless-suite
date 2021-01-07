@@ -2,6 +2,8 @@ package itf
 
 import "github.com/Linus-Boehm/go-serverless-suite/entity"
 
+//go:generate mockgen -destination=user_mocks.go -package=itf -source=user.go
+
 type TenantProvider interface {
 }
 
