@@ -6,6 +6,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+var ErrEntityNotFound = errors.New("entity was not found")
+
 type EntityError interface {
 	Error() string
 	Cause() error
@@ -14,38 +16,38 @@ type EntityError interface {
 	Entity() string
 }
 
-type ErrEntityNotFound struct {
+type EntityNotFoundError struct {
 	id     fmt.Stringer
 	entity fmt.Stringer
 	cause  error
 }
 
-func NewEntityNotFoundError(id fmt.Stringer, entity fmt.Stringer) *ErrEntityNotFound {
-	err := errors.New("entity was not found")
+func NewEntityNotFoundError(id fmt.Stringer, entity fmt.Stringer) *EntityNotFoundError {
 
-	return &ErrEntityNotFound{
+
+	return &EntityNotFoundError{
 		id:     id,
 		entity: entity,
-		cause:  errors.WithMessage(err, fmt.Sprintf("GetEntity: %Val, ID: %Val", entity, id)),
+		cause:  errors.WithMessage(ErrEntityNotFound,fmt.Sprintf("GetEntity: %Val, ID: %Val", entity, id)),
 	}
 }
 
-func (e ErrEntityNotFound) Error() string {
+func (e EntityNotFoundError) Error() string {
 	return e.cause.Error()
 }
 
-func (e ErrEntityNotFound) Cause() error {
-	return e.cause
+func (e EntityNotFoundError) Cause() error {
+	return ErrEntityNotFound
 }
 
-func (e ErrEntityNotFound) Unwrap() error {
-	return e.cause
+func (e EntityNotFoundError) Unwrap() error {
+	return ErrEntityNotFound
 }
 
-func (e ErrEntityNotFound) ID() string {
+func (e EntityNotFoundError) ID() string {
 	return e.id.String()
 }
 
-func (e ErrEntityNotFound) Entity() string {
+func (e EntityNotFoundError) Entity() string {
 	return e.entity.String()
 }
