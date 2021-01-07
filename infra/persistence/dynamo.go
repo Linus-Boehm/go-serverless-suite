@@ -179,7 +179,7 @@ func (b *dynamoBaseTable) TranslateDBError(err error, entity fmt.Stringer, id fm
 	if err == nil {
 		return nil
 	}
-	if errors.Is(err, dynamo.ErrNotFound) {
+	if errors.As(err, &dynamo.ErrNotFound) {
 		return common.NewEntityNotFoundError(id, entity)
 	}
 	return err

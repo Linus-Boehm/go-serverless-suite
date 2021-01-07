@@ -20,7 +20,7 @@ type ErrEntityNotFound struct {
 	cause  error
 }
 
-func NewEntityNotFoundError(id fmt.Stringer, entity fmt.Stringer) EntityError {
+func NewEntityNotFoundError(id fmt.Stringer, entity fmt.Stringer) *ErrEntityNotFound {
 	err := errors.New("entity was not found")
 
 	return &ErrEntityNotFound{

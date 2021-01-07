@@ -1,7 +1,9 @@
 package persistence
 
 import (
+	"errors"
 	"fmt"
+	"github.com/guregu/dynamo"
 	"testing"
 
 	"github.com/Linus-Boehm/go-serverless-suite/common"
@@ -107,4 +109,69 @@ func TestDynamoBaseTable_BatchWriteItems(t *testing.T) {
 	err = b.GetEntity(DynamoEntityIndex, (&TestEntity{}).GetEntity(), &counter, false)
 	assert.NoError(t, err)
 	assert.Len(t, counter, 50)
+}
+
+func Test_dynamoBaseTable_TranslateDBError(t *testing.T) {
+	type args struct {
+		entity fmt.Stringer
+		id     fmt.Stringer
+		inputErr error
+	}
+	tests := []struct {
+		name         string
+		args         args
+		wantErrEqual error
+		wantErr      bool
+	}{
+		{
+			name: "happy return domain err",
+			args: args{
+				entity: common.NewString("TEST"),
+				id:     common.NewString("ID"),
+				inputErr: dynamo.ErrNotFound,
+			},
+			
+			wantErrEqual: common.NewEntityNotFoundError(common.NewString("ID"), common.NewString("TEST")),
+			wantErr:      true,
+		},
+		{
+			name: "happy return other errors",
+			args: args{
+				entity: common.NewString("TEST"),
+				id:     common.NewString("ID"),
+				inputErr: errors.New("foo"),
+			},
+
+			wantErrEqual: errors.New("foo"),
+			wantErr:      true,
+		},
+		{
+			name: "happy return other errors",
+			args: args{
+				entity: common.NewString("TEST"),
+				id:     common.NewString("ID"),
+				inputErr: nil,
+			},
+
+			wantErrEqual: nil,
+			wantErr:      false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			b, err := NewTestProvider(TestEntity{})
+			assert.NoError(t, err)
+			defer b.DeleteTable()
+
+			gotErr := b.TranslateDBError(tt.args.inputErr, tt.args.entity, tt.args.id)
+			if  (gotErr != nil) != tt.wantErr {
+				t.Errorf("TranslateDBError() error = %v, wantErr %v", gotErr, tt.wantErr)
+			}
+			if tt.wantErr == true {
+				if !errors.As(gotErr, &tt.wantErrEqual) {
+					t.Errorf("TranslateDBError() gotError = %v, want %v", gotErr, tt.wantErrEqual)
+				}
+			}
+		})
+	}
 }
