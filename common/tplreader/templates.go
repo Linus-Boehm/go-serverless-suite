@@ -18,10 +18,15 @@ var (
 		Name: "SimpleContactForm",
 		Path: "manifests/mailings/en/simplecontactform.html",
 	}
+
+	CRMOptInMailManifest = entity.TemplateManifest{
+		Name: "CRMOptInMail",
+		Path: "manifests/mailings/en/CRMOptInMail.html",
+	}
 )
 
 //go:embed manifests/*
-var manifests embed.FS
+var DefaultManifests embed.FS
 
 type Template struct {
 	raw      *string
@@ -30,7 +35,7 @@ type Template struct {
 }
 
 func LoadTemplate(manifest entity.TemplateManifest) (itf.TplRenderer, error) {
-	return LoadCustomTemplate(manifests, manifest)
+	return LoadCustomTemplate(DefaultManifests, manifest)
 }
 
 func LoadCustomTemplate(fs embed.FS, manifest entity.TemplateManifest) (itf.TplRenderer, error) {

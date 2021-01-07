@@ -1,11 +1,34 @@
 package entity
 
+import (
+	"embed"
+	"html/template"
+)
+
 const (
 	UserOptedInSubscriptionStatus          SubscriptionStatus = "USER_OPTED_IN"
 	UserOptedInRequestedSubscriptionStatus SubscriptionStatus = "USER_OPTED_IN_REQUESTED"
 	AdminSubscriptionStatus                SubscriptionStatus = "ADMIN_CREATED"
 	UserOptedOutSubscriptionStatus         SubscriptionStatus = "USER_OPTED_OUT"
 )
+
+type CRMOptInMailOptions struct {
+	Fullname         string  // Name of the user (optional)
+	Subject          *string // Subject (optional)
+	EMail            ID
+	UserID           ID
+	SubID            ID
+	ConfirmationPath string
+	Template         TemplateManifest
+	FS               embed.FS
+}
+
+type CRMOptInMailTemplateOptions struct {
+	//path of the frontend without trailing slash like https://localhost/crm/confirm
+	ConfirmURL template.HTML
+	Email      string
+	FullName   string
+}
 
 type CRMContactList struct {
 	ID           ID
