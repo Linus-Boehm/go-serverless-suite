@@ -19,21 +19,19 @@ type EntityError interface {
 type EntityNotFoundError struct {
 	id     fmt.Stringer
 	entity fmt.Stringer
-	cause  error
+	message  string
 }
 
 func NewEntityNotFoundError(id fmt.Stringer, entity fmt.Stringer) *EntityNotFoundError {
-
-
 	return &EntityNotFoundError{
 		id:     id,
 		entity: entity,
-		cause:  errors.WithMessage(ErrEntityNotFound,fmt.Sprintf("GetEntity: %Val, ID: %Val", entity, id)),
+		message:  fmt.Sprintf("GetEntity: %v, ID: %v", entity, id),
 	}
 }
 
 func (e EntityNotFoundError) Error() string {
-	return e.cause.Error()
+	return errors.WithMessage(e.Cause(), e.message).Error()
 }
 
 func (e EntityNotFoundError) Cause() error {
