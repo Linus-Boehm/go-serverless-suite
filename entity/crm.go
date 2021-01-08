@@ -12,6 +12,8 @@ const (
 	UserOptedOutSubscriptionStatus         SubscriptionStatus = "USER_OPTED_OUT"
 )
 
+// TODO move out non db related stuff
+
 type CRMOptInMailOptions struct {
 	Fullname         string  // Name of the user (optional)
 	Subject          *string // Subject (optional)

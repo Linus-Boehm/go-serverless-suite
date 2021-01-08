@@ -96,8 +96,37 @@ func (c crmSVC) SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error {
 	return c.mailer.GetProvider().SendSingleMail(mailConfig)
 }
 
-func (c crmSVC) ValidateEmail(email entity.ID) error {
-	panic("implement me")
+func (c crmSVC) ValidateEmail(email entity.ID, userID entity.ID, subID entity.ID) error {
+	subs, err := c.repo.GetSubscriptionsOfEmail(email)
+	if err != nil {
+		return err
+	}
+	user, err := c.userRepo.ReadUser(userID)
+	if err != nil {
+		return err
+	}
+	var toConfirm []entity.CRMEmailListSubscription
+	//Filter for subscription
+	for _, sub := range subs {
+		if sub.SubscriptionID.String() == subID.String(){
+			// Set user to confirmed in our DB
+			sub.Status = entity.UserOptedInSubscriptionStatus
+			sub.UpdatedNow()
+			toConfirm = append(toConfirm, sub)
+		}
+	}
+	//TODO add user here to provider email list
+
+	if err := c.repo.PutSubscriptions(toConfirm); err != nil {
+		return err
+	}
+	if !user.EmailVerified {
+		user.EmailVerified = true
+		user.UpdatedNow()
+		return c.userRepo.PutUser(user)
+	}
+	return nil
+
 }
 
 

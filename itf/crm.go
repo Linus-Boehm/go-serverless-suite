@@ -12,7 +12,7 @@ type CRMServicer interface {
 	CreateNewUser(user entity.User) (entity.User,error)
 	CreateSubscription(subs entity.CRMEmailListSubscription) (entity.CRMEmailListSubscription, error)
 	SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error
-	ValidateEmail(email entity.ID) error
+	ValidateEmail(email entity.ID, userID entity.ID, subID entity.ID) error
 }
 
 type CRMProvider interface {
