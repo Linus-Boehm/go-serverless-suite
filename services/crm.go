@@ -65,7 +65,7 @@ func (c crmSVC) SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error {
 	}
 	encodedEmail := url.QueryEscape(options.EMail.String())
 	confirmUrl := fmt.Sprintf("%s/?id=%s&subid=%s&email=%s", options.ConfirmationPath, options.UserID, options.SubID, encodedEmail)
-	htmlLink := template.HTML(fmt.Sprintf(`<a href="%s">%s</a>`, confirmUrl, confirmUrl))
+	htmlLink := template.HTML(fmt.Sprintf(`<a href="%s" target="_blank">%s</a>`, confirmUrl, confirmUrl))
 	tplOptions := entity.CRMOptInMailTemplateOptions{
 		ConfirmURL:   htmlLink,
 		Email:        options.EMail.String(),
