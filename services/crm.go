@@ -47,11 +47,9 @@ func (c crmSVC) CreateSubscription(subscription entity.CRMEmailListSubscription)
 			return userSub, nil
 		}
 	}
-	subID := entity.NewEntityIDV4()
-
 
 	subscription.Timestamps.CreatedNow()
-	subscription.SubscriptionID = subID
+	subscription.SubscriptionID.NewV4IfEmpty()
 
 	return subscription, c.repo.PutSubscription(subscription)
 }
