@@ -67,12 +67,12 @@ func (e ID) String() string {
 	return e.id.String()
 }
 
-func (e ID) NewV4() {
+func (e *ID) NewV4() {
 	i := uuid.Must(uuid.NewRandom())
 	e.id = &i
 }
 
-func (e ID) NewV4IfEmpty() {
+func (e *ID) NewV4IfEmpty() {
 	if e.id == nil && e.val == nil {
 		e.NewV4()
 	}
