@@ -86,17 +86,32 @@ func (mr *MockCRMServicerMockRecorder) CreateNewUser(user interface{}) *gomock.C
 }
 
 // CreateSubscription mocks base method
-func (m *MockCRMServicer) CreateSubscription(subs []entity.CRMEmailListSubscription, confirmationTPL entity.HTMLTemplate) error {
+func (m *MockCRMServicer) CreateSubscription(subs entity.CRMEmailListSubscription) (entity.CRMEmailListSubscription, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateSubscription", subs, confirmationTPL)
+	ret := m.ctrl.Call(m, "CreateSubscription", subs)
+	ret0, _ := ret[0].(entity.CRMEmailListSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateSubscription indicates an expected call of CreateSubscription
+func (mr *MockCRMServicerMockRecorder) CreateSubscription(subs interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSubscription", reflect.TypeOf((*MockCRMServicer)(nil).CreateSubscription), subs)
+}
+
+// SendDoubleOptInMail mocks base method
+func (m *MockCRMServicer) SendDoubleOptInMail(options entity.CRMOptInMailOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SendDoubleOptInMail", options)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// CreateSubscription indicates an expected call of CreateSubscription
-func (mr *MockCRMServicerMockRecorder) CreateSubscription(subs, confirmationTPL interface{}) *gomock.Call {
+// SendDoubleOptInMail indicates an expected call of SendDoubleOptInMail
+func (mr *MockCRMServicerMockRecorder) SendDoubleOptInMail(options interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSubscription", reflect.TypeOf((*MockCRMServicer)(nil).CreateSubscription), subs, confirmationTPL)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendDoubleOptInMail", reflect.TypeOf((*MockCRMServicer)(nil).SendDoubleOptInMail), options)
 }
 
 // ValidateEmail mocks base method

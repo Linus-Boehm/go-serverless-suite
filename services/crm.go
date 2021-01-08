@@ -6,7 +6,6 @@ import (
 	"github.com/Linus-Boehm/go-serverless-suite/common/tplreader"
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/Linus-Boehm/go-serverless-suite/itf"
-	"github.com/pkg/errors"
 	"html/template"
 	"net/url"
 )
@@ -36,20 +35,25 @@ func (c crmSVC) CreateNewUser(user entity.User) (entity.User,error) {
 	return user, err
 }
 
-func (c crmSVC) CreateSubscription(subscriptions []entity.CRMEmailListSubscription) error {
-	if len(subscriptions) == 0 {
-		return nil
+// CreateSubscription creates a new subscription, if the email is already subscribed to the ListID, then no new subscription is created, but the current one is returned
+func (c crmSVC) CreateSubscription(subscription entity.CRMEmailListSubscription) (entity.CRMEmailListSubscription, error) {
+	currentSubs, err := c.repo.GetSubscriptionsOfEmail(subscription.EMail)
+	if err != nil {
+		return subscription, err
+	}
+	// Check if user is already subscribed, if yes return subscription
+	for _, userSub := range currentSubs {
+		if userSub.ListID == subscription.ListID {
+			return userSub, nil
+		}
 	}
 	subID := entity.NewEntityIDV4()
-	email := subscriptions[0].EMail
-	for i,sub := range subscriptions {
-		if sub.EMail.String() != email.String() {
-			return errors.New("provided different emails for subscription batch")
-		}
-		subscriptions[i].Timestamps.CreatedNow()
-		subscriptions[i].SubscriptionID = subID
-	}
-	return c.repo.PutSubscriptions(subscriptions)
+
+
+	subscription.Timestamps.CreatedNow()
+	subscription.SubscriptionID = subID
+
+	return subscription, c.repo.PutSubscription(subscription)
 }
 
 func (c crmSVC) SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error {

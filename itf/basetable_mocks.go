@@ -220,6 +220,20 @@ func (mr *MockBaseTableProviderMockRecorder) WithIndex(index interface{}) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithIndex", reflect.TypeOf((*MockBaseTableProvider)(nil).WithIndex), index)
 }
 
+// WithDefaultIndices mocks base method
+func (m *MockBaseTableProvider) WithDefaultIndices() BaseTableProvider {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WithDefaultIndices")
+	ret0, _ := ret[0].(BaseTableProvider)
+	return ret0
+}
+
+// WithDefaultIndices indicates an expected call of WithDefaultIndices
+func (mr *MockBaseTableProviderMockRecorder) WithDefaultIndices() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithDefaultIndices", reflect.TypeOf((*MockBaseTableProvider)(nil).WithDefaultIndices))
+}
+
 // BatchDeleteItems mocks base method
 func (m *MockBaseTableProvider) BatchDeleteItems(rows []DBKeyer) (int, error) {
 	m.ctrl.T.Helper()
