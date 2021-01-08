@@ -47,5 +47,5 @@ func (e *BaseEntity) GetSK() fmt.Stringer {
 }
 
 func (e *BaseEntity) GetEntity() fmt.Stringer {
-	panic("this method should be implemented in the GetEntity")
+	return common.NewString(e.Entity)
 }
