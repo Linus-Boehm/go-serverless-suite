@@ -66,9 +66,9 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 			mailer := itf.NewMockMailer(ctrl)
 
 			mailer.EXPECT().GetProvider().Return(mailProvider)
-			c := NewCRMService(mailer, nil, entity.Mail{
+			c := NewCRMService(mailer, nil,nil, entity.Mail{
 				Mail: "test@example.org",
-			})
+			} )
 			mailProvider.EXPECT().SendSingleMail(gomock.Any()).DoAndReturn(func(mail entity.MinimalMail) error {
 				html := mail.HTMLTemplate.GetHTML()
 				for _, input := range tt.expectContains {

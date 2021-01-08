@@ -17,11 +17,12 @@ type crmSVC struct {
 	userRepo itf.UserProvider
 }
 
-func NewCRMService(mailer itf.Mailer, repo itf.CRMProvider, senderMail entity.Mail) *crmSVC {
+func NewCRMService(mailer itf.Mailer, repo itf.CRMProvider, userRepo itf.UserProvider, senderMail entity.Mail) *crmSVC {
 	return &crmSVC{
 		mailer: mailer,
 		repo: repo,
 		senderMail: senderMail,
+		userRepo: userRepo,
 	}
 }
 
