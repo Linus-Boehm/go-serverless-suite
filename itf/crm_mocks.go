@@ -101,17 +101,17 @@ func (mr *MockCRMServicerMockRecorder) CreateSubscription(subs interface{}) *gom
 }
 
 // SendDoubleOptInMail mocks base method
-func (m *MockCRMServicer) SendDoubleOptInMail(options entity.CRMOptInMailOptions) error {
+func (m *MockCRMServicer) SendDoubleOptInMail(options entity.CRMOptInMailOptions, renderer TplRenderer) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendDoubleOptInMail", options)
+	ret := m.ctrl.Call(m, "SendDoubleOptInMail", options, renderer)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // SendDoubleOptInMail indicates an expected call of SendDoubleOptInMail
-func (mr *MockCRMServicerMockRecorder) SendDoubleOptInMail(options interface{}) *gomock.Call {
+func (mr *MockCRMServicerMockRecorder) SendDoubleOptInMail(options, renderer interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendDoubleOptInMail", reflect.TypeOf((*MockCRMServicer)(nil).SendDoubleOptInMail), options)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendDoubleOptInMail", reflect.TypeOf((*MockCRMServicer)(nil).SendDoubleOptInMail), options, renderer)
 }
 
 // ValidateEmail mocks base method

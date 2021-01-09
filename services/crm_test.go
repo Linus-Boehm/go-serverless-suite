@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Linus-Boehm/go-serverless-suite/common/tplengine"
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/Linus-Boehm/go-serverless-suite/itf"
 	"github.com/golang/mock/gomock"
@@ -13,7 +12,8 @@ import (
 func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 
 	type args struct {
-		options entity.CRMOptInMailOptions
+		options  entity.CRMOptInMailOptions
+		renderer itf.TplRenderer
 	}
 	tests := []struct {
 		name           string
@@ -31,8 +31,6 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 					UserID:           entity.IDFromStringOrNil("123"),
 					SubID:            entity.IDFromStringOrNil("456"),
 					ConfirmationPath: "http://localhost",
-					Template:         &tplengine.CRMOptInMailManifest,
-					FS:               &tplengine.DefaultManifests,
 				},
 			},
 			wantErr: false,
@@ -79,7 +77,7 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 				}
 				return nil
 			})
-			if err := c.SendDoubleOptInMail(tt.args.options); (err != nil) != tt.wantErr {
+			if err := c.SendDoubleOptInMail(tt.args.options, tt.args.renderer); (err != nil) != tt.wantErr {
 				t.Errorf("SendDoubleOptInMail() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
