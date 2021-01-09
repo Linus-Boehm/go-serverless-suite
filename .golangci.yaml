@@ -17,3 +17,5 @@ linters:
 run:
   skip-files:
     - version.go
+    # Ignore as golint doesn't like embed
+    - common/tplengine/fs.go

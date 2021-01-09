@@ -65,18 +65,18 @@ func (mr *MockTplRendererMockRecorder) RenderWithHTML(data interface{}) *gomock.
 }
 
 // WithTemplate mocks base method
-func (m *MockTplRenderer) WithTemplate(fs fs.FS, manifest entity.TemplateManifest) (TplRenderer, error) {
+func (m *MockTplRenderer) WithTemplate(fs fs.FS, manifest entity.TemplateManifest, tplName string) (TplRenderer, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "WithTemplate", fs, manifest)
+	ret := m.ctrl.Call(m, "WithTemplate", fs, manifest, tplName)
 	ret0, _ := ret[0].(TplRenderer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // WithTemplate indicates an expected call of WithTemplate
-func (mr *MockTplRendererMockRecorder) WithTemplate(fs, manifest interface{}) *gomock.Call {
+func (mr *MockTplRendererMockRecorder) WithTemplate(fs, manifest, tplName interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithTemplate", reflect.TypeOf((*MockTplRenderer)(nil).WithTemplate), fs, manifest)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithTemplate", reflect.TypeOf((*MockTplRenderer)(nil).WithTemplate), fs, manifest, tplName)
 }
 
 // MockMailer is a mock of Mailer interface

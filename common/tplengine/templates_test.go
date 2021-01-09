@@ -1,6 +1,8 @@
-package tplreader
+package tplengine
 
 import (
+	"bytes"
+	"html/template"
 	"testing"
 
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
@@ -21,7 +23,7 @@ func TestLoadRenderTemplate(t *testing.T) {
 			input: SimpleContactFormManifest,
 			data: map[string]interface{}{
 				"FromMail": map[string]interface{}{
-					"Name": "Max Muster",
+					"Slot": "Max Muster",
 					"Mail": "max.muster@example.org",
 				},
 				"Subject": "Subject",
@@ -35,7 +37,7 @@ func TestLoadRenderTemplate(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			tpl, err := LoadTemplate(test.input)
+			tpl, err := LoadLayoutTemplate(test.input)
 			assert.NoError(t, err)
 			assert.NotNil(t, tpl)
 			result, err := tpl.RenderWithHTML(test.data)
@@ -58,12 +60,20 @@ func TestLoadRenderTemplate(t *testing.T) {
 
 func TestLoadRenderTemplateWithLayouts(t *testing.T) {
 	layoutManifest := entity.TemplateManifest{
-		Name: "ExampleLayout",
+		Slot: "ExampleLayout",
 		Path: "manifests/examples/ExampleLayout.html",
 	}
 	contentManifest := entity.TemplateManifest{
-		Name: "ExampleContent",
+		Slot: "ExampleContent",
 		Path: "manifests/examples/ExampleContent.html",
+	}
+	footerManifest := entity.TemplateManifest{
+		Slot: "ExampleFooter",
+		Path: "manifests/examples/ExampleFooter.html",
+	}
+	type input struct {
+		template entity.TemplateManifest
+		slot     string
 	}
 	type data struct {
 		Title    string
@@ -71,14 +81,45 @@ func TestLoadRenderTemplateWithLayouts(t *testing.T) {
 	}
 	tests := []struct {
 		name              string
-		inputs            []entity.TemplateManifest
+		inputs            []input
 		data              data
 		wantRenderErr     bool
 		mustIncludeRender []string
 	}{
 		{
-			name:   "happy",
-			inputs: []entity.TemplateManifest{contentManifest, layoutManifest},
+			name: "happy",
+			inputs: []input{
+				{
+					template: layoutManifest,
+					slot:     "layout",
+				},
+				{
+					template: contentManifest,
+					slot:     "content",
+				},
+				{
+					template: footerManifest,
+					slot:     "footer",
+				},
+			},
+			data: data{
+				Title:    "TestTitle",
+				Subtitle: "TestSubtitle",
+			},
+			mustIncludeRender: []string{"TestTitle", "TestSubtitle", "Thank you for templating"},
+		},
+		{
+			name: "error no footer",
+			inputs: []input{
+				{
+					template: layoutManifest,
+					slot:     "layout",
+				},
+				{
+					template: contentManifest,
+					slot:     "content",
+				},
+			},
 			data: data{
 				Title:    "TestTitle",
 				Subtitle: "TestSubtitle",
@@ -88,12 +129,12 @@ func TestLoadRenderTemplateWithLayouts(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			tpl, err := LoadTemplate(test.inputs[0])
+			tpl, err := LoadLayoutTemplate(test.inputs[0].template)
 			assert.NoError(t, err)
 			assert.NotNil(t, tpl)
 			if len(test.inputs) > 1 {
 				for i := 1; i < len(test.inputs); i++ {
-					_, err := tpl.WithTemplate(DefaultManifests, test.inputs[i])
+					_, err := tpl.WithTemplate(DefaultManifests, test.inputs[i].template, test.inputs[i].slot)
 					assert.NoError(t, err)
 				}
 			}
@@ -101,6 +142,9 @@ func TestLoadRenderTemplateWithLayouts(t *testing.T) {
 			if !test.wantRenderErr {
 				assert.NoError(t, err)
 				assert.NotNil(t, result)
+				if test.wantRenderErr != (err != nil) {
+					t.Errorf("RenderWithHTML() error = %v", err)
+				}
 
 			} else {
 				assert.Nil(t, err)
@@ -113,4 +157,27 @@ func TestLoadRenderTemplateWithLayouts(t *testing.T) {
 			}
 		})
 	}
+}
+
+func Test_templateing(t *testing.T) {
+	type data struct {
+		Title    string
+		Subtitle string
+	}
+	input := data{
+		Title:    "Title",
+		Subtitle: "Subtitle",
+	}
+	rawContent, err := open(DefaultManifests, "manifests/examples/ExamplePlainContent.html")
+	assert.NoError(t, err)
+	rawLayout, err := open(DefaultManifests, "manifests/examples/ExampleLayout.html")
+	assert.NoError(t, err)
+	tpl := template.Must(template.New("layout").Parse(*rawLayout))
+	tpl.New("content").Parse(*rawContent)
+	tpl.New("footer").Parse(*rawContent)
+	var buf bytes.Buffer
+	err = tpl.Execute(&buf, input)
+	assert.NoError(t, err)
+	result := buf.String()
+	assert.Contains(t, result, input.Subtitle)
 }

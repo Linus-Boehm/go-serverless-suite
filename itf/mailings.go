@@ -11,7 +11,7 @@ import (
 type TplRenderer interface {
 	Render(data interface{}) (*string, error)
 	RenderWithHTML(data interface{}) (*entity.HTMLTemplate, error)
-	WithTemplate(fs fs.FS, manifest entity.TemplateManifest) (TplRenderer, error)
+	WithTemplate(fs fs.FS, manifest entity.TemplateManifest, tplName string) (TplRenderer, error)
 }
 
 type Mailer interface {

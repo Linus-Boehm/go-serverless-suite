@@ -1,8 +1,7 @@
-package tplreader
+package tplengine
 
 import (
 	"bytes"
-	"embed"
 	"html/template"
 	"io/fs"
 	"io/ioutil"
@@ -15,20 +14,21 @@ import (
 )
 
 var (
+	DefaultLayoutManifest = entity.TemplateManifest{
+		Slot: "content",
+		Path: "manifests/DefaultLayout.html",
+	}
+
 	SimpleContactFormManifest = entity.TemplateManifest{
-		Name: "SimpleContactForm",
+		Slot: "content",
 		Path: "manifests/mailings/en/simplecontactform.html",
 	}
 
 	CRMOptInMailManifest = entity.TemplateManifest{
-		Name: "CRMOptInMail",
+		Slot: "content",
 		Path: "manifests/mailings/en/CRMOptInMail.html",
 	}
 )
-
-// DefaultManifests is a packs a filesystem to the tpl manifests
-// go:embed manifests/*
-var DefaultManifests embed.FS
 
 type Template struct {
 	rawContent []string
@@ -36,47 +36,53 @@ type Template struct {
 	Tpl        *template.Template
 }
 
-func LoadTemplate(manifest entity.TemplateManifest) (*Template, error) {
-	return LoadCustomTemplate(DefaultManifests, manifest)
+// LoadLayoutTemplate should be called with your root or layout template
+func LoadLayoutTemplate(layout entity.TemplateManifest) (*Template, error) {
+	return LoadLayoutTemplateFromFS(DefaultManifests, layout)
 }
 
-func LoadCustomTemplate(fs fs.FS, manifest entity.TemplateManifest) (*Template, error) {
-	temp := &Template{
-		rawContent: []string{},
-		manifests:  []entity.TemplateManifest{},
-	}
-	temp, err := temp.withTemplate(fs, manifest)
+func LoadLayoutTemplateFromFS(fs fs.FS, layout entity.TemplateManifest) (*Template, error) {
+	rawContent, err := open(fs, layout.Path)
 	if err != nil {
 		return nil, err
 	}
-	return temp, nil
+
+	t := &Template{
+		rawContent: []string{*rawContent},
+		manifests:  []entity.TemplateManifest{layout},
+	}
+
+	t.Tpl, err = template.New("layout").Parse(*rawContent)
+	if err != nil {
+		return nil, err
+	}
+	return t, nil
 }
 
-func (t *Template) withTemplate(fs fs.FS, manifest entity.TemplateManifest) (*Template, error) {
-	if t.Tpl == nil {
-		t.Tpl = template.New(manifest.Name)
-	}
+func (t *Template) withTemplate(fs fs.FS, manifest entity.TemplateManifest, tplName string) (*Template, error) {
+
 	rawContent, err := open(fs, manifest.Path)
 	if err != nil {
 		return nil, err
 	}
 	t.manifests = append(t.manifests, manifest)
 	t.rawContent = append(t.rawContent, *rawContent)
-	temp, err := t.Tpl.Parse(*rawContent)
+
+	_, err = t.Tpl.New(tplName).Parse(*rawContent)
+
 	if err != nil {
 		return nil, err
 	}
-	t.Tpl = temp
 	return t, nil
 }
 
-func (t *Template) WithTemplate(fs fs.FS, manifest entity.TemplateManifest) (itf.TplRenderer, error) {
-	return t.withTemplate(fs, manifest)
+func (t *Template) WithTemplate(fs fs.FS, manifest entity.TemplateManifest, tplName string) (itf.TplRenderer, error) {
+	return t.withTemplate(fs, manifest, tplName)
 }
 
 func (t *Template) Render(data interface{}) (*string, error) {
 	var buf bytes.Buffer
-	err := t.Tpl.Execute(&buf, data)
+	err := t.Tpl.ExecuteTemplate(&buf, "layout", data)
 	if err != nil {
 		return nil, err
 	}
