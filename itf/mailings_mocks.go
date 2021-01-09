@@ -7,6 +7,7 @@ package itf
 import (
 	entity "github.com/Linus-Boehm/go-serverless-suite/entity"
 	gomock "github.com/golang/mock/gomock"
+	fs "io/fs"
 	reflect "reflect"
 )
 
@@ -31,20 +32,6 @@ func NewMockTplRenderer(ctrl *gomock.Controller) *MockTplRenderer {
 // EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockTplRenderer) EXPECT() *MockTplRendererMockRecorder {
 	return m.recorder
-}
-
-// GetRaw mocks base method
-func (m *MockTplRenderer) GetRaw() *string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRaw")
-	ret0, _ := ret[0].(*string)
-	return ret0
-}
-
-// GetRaw indicates an expected call of GetRaw
-func (mr *MockTplRendererMockRecorder) GetRaw() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRaw", reflect.TypeOf((*MockTplRenderer)(nil).GetRaw))
 }
 
 // Render mocks base method
@@ -75,6 +62,21 @@ func (m *MockTplRenderer) RenderWithHTML(data interface{}) (*entity.HTMLTemplate
 func (mr *MockTplRendererMockRecorder) RenderWithHTML(data interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RenderWithHTML", reflect.TypeOf((*MockTplRenderer)(nil).RenderWithHTML), data)
+}
+
+// WithTemplate mocks base method
+func (m *MockTplRenderer) WithTemplate(fs fs.FS, manifest entity.TemplateManifest) (TplRenderer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WithTemplate", fs, manifest)
+	ret0, _ := ret[0].(TplRenderer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// WithTemplate indicates an expected call of WithTemplate
+func (mr *MockTplRendererMockRecorder) WithTemplate(fs, manifest interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WithTemplate", reflect.TypeOf((*MockTplRenderer)(nil).WithTemplate), fs, manifest)
 }
 
 // MockMailer is a mock of Mailer interface

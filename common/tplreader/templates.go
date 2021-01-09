@@ -29,39 +29,48 @@ var (
 //go:embed manifests/*
 var DefaultManifests embed.FS
 
-type Opener interface {
-	Open(name string) (fs.File, error)
-}
-
 type Template struct {
-	raw      *string
-	manifest entity.TemplateManifest
-	Tpl      *template.Template
+	rawContent []string
+	manifests  []entity.TemplateManifest
+	Tpl        *template.Template
 }
 
-func LoadTemplate(manifest entity.TemplateManifest) (itf.TplRenderer, error) {
+func LoadTemplate(manifest entity.TemplateManifest) (*Template, error) {
 	return LoadCustomTemplate(DefaultManifests, manifest)
 }
 
-func LoadCustomTemplate(fs Opener, manifest entity.TemplateManifest) (itf.TplRenderer, error) {
+func LoadCustomTemplate(fs fs.FS, manifest entity.TemplateManifest) (*Template, error) {
+	temp := &Template{
+		rawContent: []string{},
+		manifests:  []entity.TemplateManifest{},
+	}
+	temp, err := temp.withTemplate(fs, manifest)
+	if err != nil {
+		return nil, err
+	}
+	return temp, nil
+}
+
+func (t *Template) withTemplate(fs fs.FS, manifest entity.TemplateManifest) (*Template, error) {
+	if t.Tpl == nil {
+		t.Tpl = template.New(manifest.Name)
+	}
 	rawContent, err := open(fs, manifest.Path)
 	if err != nil {
 		return nil, err
 	}
-	tpl, err := template.New(manifest.Name).Parse(*rawContent)
+	t.manifests = append(t.manifests, manifest)
+	t.rawContent = append(t.rawContent, *rawContent)
+	temp, err := t.Tpl.Parse(*rawContent)
 	if err != nil {
 		return nil, err
 	}
-
-	return &Template{
-		raw:      rawContent,
-		manifest: manifest,
-		Tpl:      tpl,
-	}, nil
+	t.Tpl = temp
+	return t, nil
 }
 
-func (t *Template) GetRaw() *string {
-	return t.raw
+func (t *Template) WithTemplate(fs fs.FS, manifest entity.TemplateManifest) (itf.TplRenderer, error) {
+	return t.withTemplate(fs, manifest)
 }
 
 func (t *Template) Render(data interface{}) (*string, error) {
@@ -81,7 +90,7 @@ func (t *Template) RenderWithHTML(data interface{}) (*entity.HTMLTemplate, error
 	return &entity.HTMLTemplate{Content: *content}, nil
 }
 
-func open(fs Opener, p string) (*string, error) {
+func open(fs fs.FS, p string) (*string, error) {
 	f, err := fs.Open(p)
 	if err != nil {
 		return nil, err

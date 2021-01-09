@@ -3,8 +3,9 @@ package entity
 import "github.com/microcosm-cc/bluemonday"
 
 type HTMLTemplate struct {
-	Title string
-	Content string
+	Title       string
+	Content     string
+	TextContent string
 }
 
 type TemplateManifest struct {

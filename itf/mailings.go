@@ -1,15 +1,17 @@
 package itf
 
 import (
+	"io/fs"
+
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 )
 
 //go:generate mockgen -destination=mailings_mocks.go -package=itf -source=mailings.go
 
 type TplRenderer interface {
-	GetRaw() *string
 	Render(data interface{}) (*string, error)
 	RenderWithHTML(data interface{}) (*entity.HTMLTemplate, error)
+	WithTemplate(fs fs.FS, manifest entity.TemplateManifest) (TplRenderer, error)
 }
 
 type Mailer interface {
