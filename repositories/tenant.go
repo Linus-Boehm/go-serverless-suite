@@ -10,7 +10,7 @@ import (
 
 type TenantEntity struct {
 	BaseEntity
-	Name       string            `dynamo:"name,omitempty"`
+	Name string `dynamo:"name,omitempty"`
 }
 
 func NewTenantEntity(t entity.Tenant) itf.DBKeyer {

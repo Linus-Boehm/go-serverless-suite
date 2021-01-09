@@ -283,7 +283,7 @@ func Test_userRepository_ReadUserByEmail(t *testing.T) {
 		{
 			name: "happy path",
 			args: args{
-				ID: entity.NewEntityIDV4(),
+				ID:    entity.NewEntityIDV4(),
 				email: entity.IDFromStringOrNil("test@example.org"),
 			},
 			beforeTest: func(args args, t *testing.T, provider itf.UserProvider) entity.User {
@@ -298,13 +298,13 @@ func Test_userRepository_ReadUserByEmail(t *testing.T) {
 					Attributes: map[string]string{
 						"Foo": "Bar",
 					},
-					Timestamps:    now,
+					Timestamps: now,
 				}
 				err := provider.PutUser(user)
 				assert.NoError(t, err)
 				return user
 			},
-			wantErr:  false,
+			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
@@ -344,15 +344,15 @@ func TestNewUserEntity(t *testing.T) {
 					Firstname:     "Foo",
 					Lastname:      "Bar",
 					EmailVerified: true,
-					Attributes: map[string]string{"Foo":"Bar"},
+					Attributes:    map[string]string{"Foo": "Bar"},
 					Timestamps:    entity.Timestamps{},
 				},
 			},
 			want: func(user entity.User) *UserEntity {
 				return &UserEntity{
-					BaseEntity:     BaseEntity{
-						PK: fmt.Sprintf("USER#%s",user.ID.String()),
-						SK:         fmt.Sprintf("USER#%s",user.Email),
+					BaseEntity: BaseEntity{
+						PK:         fmt.Sprintf("USER#%s", user.ID.String()),
+						SK:         fmt.Sprintf("USER#%s", user.Email),
 						Entity:     "USER",
 						Slug:       fmt.Sprintf("user-%s", user.ID.String()),
 						Timestamps: entity.Timestamps{},
@@ -360,7 +360,7 @@ func TestNewUserEntity(t *testing.T) {
 					Firstname:      "Foo",
 					Lastname:       "Bar",
 					EmailVerified:  true,
-					UserAttributes: map[string]string{"Foo":"Bar"},
+					UserAttributes: map[string]string{"Foo": "Bar"},
 				}
 			},
 		},

@@ -11,7 +11,7 @@ type TenantServicer interface {
 }
 
 type UserServicer interface {
-	CreateNewUser(user entity.User) (entity.User,error)
+	CreateNewUser(user entity.User) (entity.User, error)
 }
 
 type UserProvider interface {

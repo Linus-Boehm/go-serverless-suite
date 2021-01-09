@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Linus-Boehm/go-serverless-suite/itf"
 
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 
@@ -15,11 +14,11 @@ import (
 )
 
 type SendgridConfig struct {
-	APIKey string
+	APIKey        string
 	DefaultSender *entity.Mail
 }
 
-type sendgridProvider struct {
+type SendgridProvider struct {
 	client *sendgrid.Client
 	config *SendgridConfig
 	host   string
@@ -27,17 +26,17 @@ type sendgridProvider struct {
 
 var ErrNotAuthorizedSenderMail = errors.New("sender mail is not authorized")
 
-func NewSendgridProvider(config SendgridConfig) itf.MailerProvider {
+func NewSendgridProvider(config SendgridConfig) *SendgridProvider {
 	c := sendgrid.NewSendClient(config.APIKey)
 
-	return &sendgridProvider{
+	return &SendgridProvider{
 		client: c,
 		config: &config,
 		host:   "https://api.sendgrid.com",
 	}
 }
 
-func (s *sendgridProvider) SendSingleMail(input entity.MinimalMail) error {
+func (s *SendgridProvider) SendSingleMail(input entity.MinimalMail) error {
 	plainText := input.GetPlainText()
 	from := sendgridMailFromMailingsMail(input.FromMail)
 	to := sendgridMailFromMailingsMail(input.ToMail)
@@ -56,7 +55,7 @@ func (s *sendgridProvider) SendSingleMail(input entity.MinimalMail) error {
 	return nil
 }
 
-func (s *sendgridProvider) GetDefaultSender() *entity.Mail {
+func (s *SendgridProvider) GetDefaultSender() *entity.Mail {
 	return s.config.DefaultSender
 }
 
@@ -72,8 +71,7 @@ type GetContactListResponse struct {
 	} `json:"result"`
 }
 
-func (s *sendgridProvider) GetContactLists() ([]entity.MailContactList, error) {
-
+func (s *SendgridProvider) GetContactLists() ([]entity.MailContactList, error) {
 	request := sendgrid.GetRequest(s.config.APIKey, "/v3/marketing/lists", s.host)
 	request.Method = "GET"
 	response, err := sendgrid.API(request)
@@ -98,4 +96,62 @@ func (s *sendgridProvider) GetContactLists() ([]entity.MailContactList, error) {
 		})
 	}
 	return lists, nil
+}
+
+type SendgridContact struct {
+	Email        string                 `json:"email"`
+	FirstName    string                 `json:"first_name"`
+	LastName     string                 `json:"last_name"`
+	CustomFields map[string]interface{} `json:"custom_fields"`
+}
+
+type SendgridUpdateContactRequest struct {
+	ListIDS  []string          `json:"list_ids"`
+	Contacts []SendgridContact `json:"contacts"`
+}
+
+func mapUserEntityToContact(user entity.User) SendgridContact {
+	attrs := map[string]interface{}{}
+	for k, v := range user.Attributes {
+		attrs[k] = v
+	}
+	return SendgridContact{
+		Email:        user.Email,
+		FirstName:    user.Firstname,
+		LastName:     user.Lastname,
+		CustomFields: attrs,
+	}
+}
+
+// listIDs of the sendgrid lists, if null
+func (s *SendgridProvider) CreateUser(user entity.User, listIDs []entity.ID) error {
+	listPayload := []string{}
+	for _, id := range listIDs {
+		listPayload = append(listPayload, id.String())
+	}
+	requestPayload := SendgridUpdateContactRequest{
+		ListIDS: listPayload,
+		Contacts: []SendgridContact{
+			mapUserEntityToContact(user),
+		},
+	}
+	jsonPayload, err := json.Marshal(requestPayload)
+	if err != nil {
+		return err
+	}
+
+	request := sendgrid.GetRequest(s.config.APIKey, "/v3/marketing/contacts", s.host)
+	request.Method = "PUT"
+	request.Body = jsonPayload
+	response, err := sendgrid.API(request)
+	if err != nil {
+		return err
+	}
+	if response.StatusCode == 403 {
+		return fmt.Errorf("%w: %s", ErrNotAuthorizedSenderMail, response.Body)
+	}
+	if response.StatusCode != 202 {
+		return fmt.Errorf("unexpected response code from sendgrid: %d Msg: %s", response.StatusCode, response.Body)
+	}
+	return nil
 }

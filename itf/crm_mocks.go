@@ -115,17 +115,17 @@ func (mr *MockCRMServicerMockRecorder) SendDoubleOptInMail(options interface{}) 
 }
 
 // ValidateEmail mocks base method
-func (m *MockCRMServicer) ValidateEmail(email entity.ID) error {
+func (m *MockCRMServicer) ValidateEmail(email, userID, subID entity.ID) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ValidateEmail", email)
+	ret := m.ctrl.Call(m, "ValidateEmail", email, userID, subID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // ValidateEmail indicates an expected call of ValidateEmail
-func (mr *MockCRMServicerMockRecorder) ValidateEmail(email interface{}) *gomock.Call {
+func (mr *MockCRMServicerMockRecorder) ValidateEmail(email, userID, subID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidateEmail", reflect.TypeOf((*MockCRMServicer)(nil).ValidateEmail), email)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidateEmail", reflect.TypeOf((*MockCRMServicer)(nil).ValidateEmail), email, userID, subID)
 }
 
 // MockCRMProvider is a mock of CRMProvider interface

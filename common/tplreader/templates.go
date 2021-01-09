@@ -26,7 +26,8 @@ var (
 	}
 )
 
-//go:embed manifests/*
+// DefaultManifests is a packs a filesystem to the tpl manifests
+// go:embed manifests/*
 var DefaultManifests embed.FS
 
 type Opener interface {

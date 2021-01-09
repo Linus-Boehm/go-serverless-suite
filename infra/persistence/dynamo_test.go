@@ -3,8 +3,9 @@ package persistence
 import (
 	"errors"
 	"fmt"
-	"github.com/guregu/dynamo"
 	"testing"
+
+	"github.com/guregu/dynamo"
 
 	"github.com/Linus-Boehm/go-serverless-suite/common"
 
@@ -113,8 +114,8 @@ func TestDynamoBaseTable_BatchWriteItems(t *testing.T) {
 
 func Test_dynamoBaseTable_TranslateDBError(t *testing.T) {
 	type args struct {
-		entity fmt.Stringer
-		id     fmt.Stringer
+		entity   fmt.Stringer
+		id       fmt.Stringer
 		inputErr error
 	}
 	tests := []struct {
@@ -126,19 +127,19 @@ func Test_dynamoBaseTable_TranslateDBError(t *testing.T) {
 		{
 			name: "happy return domain err",
 			args: args{
-				entity: common.NewString("TEST"),
-				id:     common.NewString("ID"),
+				entity:   common.NewString("TEST"),
+				id:       common.NewString("ID"),
 				inputErr: dynamo.ErrNotFound,
 			},
-			
+
 			wantErrEqual: common.NewEntityNotFoundError(common.NewString("ID"), common.NewString("TEST")),
 			wantErr:      true,
 		},
 		{
 			name: "happy return other errors",
 			args: args{
-				entity: common.NewString("TEST"),
-				id:     common.NewString("ID"),
+				entity:   common.NewString("TEST"),
+				id:       common.NewString("ID"),
 				inputErr: errors.New("foo"),
 			},
 
@@ -148,8 +149,8 @@ func Test_dynamoBaseTable_TranslateDBError(t *testing.T) {
 		{
 			name: "happy return other errors",
 			args: args{
-				entity: common.NewString("TEST"),
-				id:     common.NewString("ID"),
+				entity:   common.NewString("TEST"),
+				id:       common.NewString("ID"),
 				inputErr: nil,
 			},
 
@@ -164,7 +165,7 @@ func Test_dynamoBaseTable_TranslateDBError(t *testing.T) {
 			defer b.DeleteTable()
 
 			gotErr := b.TranslateDBError(tt.args.inputErr, tt.args.entity, tt.args.id)
-			if  (gotErr != nil) != tt.wantErr {
+			if (gotErr != nil) != tt.wantErr {
 				t.Errorf("TranslateDBError() error = %v, wantErr %v", gotErr, tt.wantErr)
 			}
 			if tt.wantErr == true {

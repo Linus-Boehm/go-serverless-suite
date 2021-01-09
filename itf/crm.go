@@ -9,9 +9,9 @@ type NewsWriter interface {
 
 type CRMServicer interface {
 	GetMailer() Mailer
-	CreateNewUser(user entity.User) (entity.User,error)
+	CreateNewUser(user entity.User) (entity.User, error)
 	CreateSubscription(subs entity.CRMEmailListSubscription) (entity.CRMEmailListSubscription, error)
-	SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error
+	SendDoubleOptInMail(options entity.CRMOptInMailOptions) error
 	ValidateEmail(email entity.ID, userID entity.ID, subID entity.ID) error
 }
 

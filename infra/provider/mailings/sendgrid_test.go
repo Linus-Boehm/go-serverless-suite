@@ -2,9 +2,10 @@ package mailings
 
 import (
 	"fmt"
-	"github.com/Linus-Boehm/go-serverless-suite/itf"
 	"os"
 	"testing"
+
+	"github.com/Linus-Boehm/go-serverless-suite/itf"
 
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 

@@ -1,42 +1,43 @@
 package repositories
 
 import (
-	"github.com/Linus-Boehm/go-serverless-suite/entity"
-	"github.com/Linus-Boehm/go-serverless-suite/infra/persistence"
-	"github.com/stretchr/testify/assert"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/Linus-Boehm/go-serverless-suite/entity"
+	"github.com/Linus-Boehm/go-serverless-suite/infra/persistence"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCrmRepo_PutSubscriptions(t *testing.T) {
 	now := time.Now().Unix()
 
 	tests := []struct {
-		name       string
-		inputID    entity.ID
-		putSubs    func(id entity.ID) []entity.CRMEmailListSubscription
-		expectErr  bool
+		name      string
+		inputID   entity.ID
+		putSubs   func(id entity.ID) []entity.CRMEmailListSubscription
+		expectErr bool
 	}{
 		{
-			name:       "happy",
-			inputID:    entity.IDFromStringOrNil("email@example.org"),
+			name:    "happy",
+			inputID: entity.IDFromStringOrNil("email@example.org"),
 			putSubs: func(id entity.ID) []entity.CRMEmailListSubscription {
 				subs := []entity.CRMEmailListSubscription{}
 				for i := 0; i < 5; i++ {
 					subs = append(subs, entity.CRMEmailListSubscription{
-						ListID:         entity.IDFromStringOrNil(strconv.Itoa(i+1)),
+						ListID:         entity.IDFromStringOrNil(strconv.Itoa(i + 1)),
 						EMail:          id,
-						SubscriptionID: entity.IDFromStringOrNil(strconv.Itoa(i+1)),
+						SubscriptionID: entity.IDFromStringOrNil(strconv.Itoa(i + 1)),
 						Status:         entity.UserOptedInRequestedSubscriptionStatus,
-						Timestamps:     entity.Timestamps{
-							CreatedAt:   now,
+						Timestamps: entity.Timestamps{
+							CreatedAt: now,
 						},
 					})
 				}
 				return subs
 			},
-			expectErr:  false,
+			expectErr: false,
 		},
 	}
 	for _, test := range tests {

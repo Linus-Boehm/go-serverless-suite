@@ -3,7 +3,7 @@ package entity
 import "github.com/microcosm-cc/bluemonday"
 
 type HTMLTemplate struct {
-	Title string
+	Title   string
 	Content string
 }
 
