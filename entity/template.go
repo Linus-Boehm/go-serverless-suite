@@ -8,7 +8,7 @@ type HTMLTemplate struct {
 }
 
 type TemplateManifest struct {
-	Name string
+	Slot string
 	Path string
 }
 

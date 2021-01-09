@@ -6,7 +6,7 @@ import (
 	"net/url"
 
 	"github.com/Linus-Boehm/go-serverless-suite/common"
-	"github.com/Linus-Boehm/go-serverless-suite/common/tplreader"
+	"github.com/Linus-Boehm/go-serverless-suite/common/tplengine"
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/Linus-Boehm/go-serverless-suite/itf"
 )
@@ -58,12 +58,12 @@ func (c CRMService) CreateSubscription(subscription entity.CRMEmailListSubscript
 
 func (c CRMService) SendDoubleOptInMail(options entity.CRMOptInMailOptions) error {
 	if options.FS == nil {
-		options.FS = &tplreader.DefaultManifests
+		options.FS = &tplengine.DefaultManifests
 	}
 	if options.Template == nil {
-		options.Template = &tplreader.CRMOptInMailManifest
+		options.Template = &tplengine.CRMOptInMailManifest
 	}
-	reader, err := tplreader.LoadCustomTemplate(options.FS, *options.Template)
+	reader, err := tplengine.LoadLayoutTemplateFromFS(options.FS, *options.Template)
 	if err != nil {
 		return err
 	}

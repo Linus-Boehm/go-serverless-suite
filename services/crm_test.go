@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Linus-Boehm/go-serverless-suite/common/tplreader"
+	"github.com/Linus-Boehm/go-serverless-suite/common/tplengine"
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/Linus-Boehm/go-serverless-suite/itf"
 	"github.com/golang/mock/gomock"
@@ -31,8 +31,8 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 					UserID:           entity.IDFromStringOrNil("123"),
 					SubID:            entity.IDFromStringOrNil("456"),
 					ConfirmationPath: "http://localhost",
-					Template:         &tplreader.CRMOptInMailManifest,
-					FS:               &tplreader.DefaultManifests,
+					Template:         &tplengine.CRMOptInMailManifest,
+					FS:               &tplengine.DefaultManifests,
 				},
 			},
 			wantErr: false,
