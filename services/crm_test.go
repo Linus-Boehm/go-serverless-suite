@@ -1,12 +1,13 @@
 package services
 
 import (
+	"strings"
+	"testing"
+
 	"github.com/Linus-Boehm/go-serverless-suite/common/tplreader"
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/Linus-Boehm/go-serverless-suite/itf"
 	"github.com/golang/mock/gomock"
-	"strings"
-	"testing"
 )
 
 func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
@@ -15,14 +16,14 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 		options entity.CRMOptInMailOptions
 	}
 	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+		name           string
+		args           args
+		wantErr        bool
 		expectContains []string
 	}{
 		{
-			name:           "happy",
-			args:           args{
+			name: "happy",
+			args: args{
 				options: entity.CRMOptInMailOptions{
 					Fullname:         "Max Mustermann",
 					Subject:          nil,
@@ -34,15 +35,15 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 					FS:               &tplreader.DefaultManifests,
 				},
 			},
-			wantErr:        false,
+			wantErr: false,
 			expectContains: []string{
 				"Max Mustermann",
 				"http://localhost/?id=123&subid=456&email=test%40example.org",
 			},
 		},
 		{
-			name:           "happy empty",
-			args:           args{
+			name: "happy empty",
+			args: args{
 				options: entity.CRMOptInMailOptions{
 					Fullname:         "Max Mustermann",
 					Subject:          nil,
@@ -52,7 +53,7 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 					ConfirmationPath: "http://localhost",
 				},
 			},
-			wantErr:        false,
+			wantErr: false,
 			expectContains: []string{
 				"Max Mustermann",
 				"http://localhost/?id=123&subid=456&email=test%40example.org",
@@ -66,13 +67,13 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 			mailer := itf.NewMockMailer(ctrl)
 
 			mailer.EXPECT().GetProvider().Return(mailProvider)
-			c := NewCRMService(mailer, nil,nil, entity.Mail{
+			c := NewCRMService(mailer, nil, nil, entity.Mail{
 				Mail: "test@example.org",
-			} )
+			})
 			mailProvider.EXPECT().SendSingleMail(gomock.Any()).DoAndReturn(func(mail entity.MinimalMail) error {
 				html := mail.HTMLTemplate.GetHTML()
 				for _, input := range tt.expectContains {
-					if !strings.Contains(html, input){
+					if !strings.Contains(html, input) {
 						t.Errorf("SendDoubleOptInMail() expectStr = %s, in outpur %s", input, html)
 					}
 				}

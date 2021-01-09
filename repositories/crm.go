@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"fmt"
+
 	"github.com/Linus-Boehm/go-serverless-suite/common"
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/Linus-Boehm/go-serverless-suite/infra/persistence"
@@ -57,7 +58,7 @@ func (c crmRepo) GetSubscriptionsOfList(listID entity.ID) ([]entity.CRMEmailList
 	return mapSubscriptionsToEntity(rows)
 }
 
-func mapSubscriptionsToEntity(rows []SubscriptionEntity) ([]entity.CRMEmailListSubscription,error) {
+func mapSubscriptionsToEntity(rows []SubscriptionEntity) ([]entity.CRMEmailListSubscription, error) {
 	var subs []entity.CRMEmailListSubscription
 	for _, row := range rows {
 		sub, err := row.GetSubscription()
@@ -72,20 +73,20 @@ func mapSubscriptionsToEntity(rows []SubscriptionEntity) ([]entity.CRMEmailListS
 type SubscriptionEntity struct {
 	BaseEntity
 	SubscriptionStatus string `dynamo:"subscription_status,omitempty"`
-	SubscriptionID string `dynamo:"subscription_id,omitempty"`
+	SubscriptionID     string `dynamo:"subscription_id,omitempty"`
 }
 
 func NewSubscriptionEntity(s entity.CRMEmailListSubscription) itf.DBKeyer {
 	return &SubscriptionEntity{
 		BaseEntity: BaseEntity{
-			PK:     common.JoinStringerDBKey(entity.UserEntityName, s.EMail),
-			SK:     common.JoinStringerDBKey(entity.CRMEmailListEntityName, s.ListID),
-			Entity: entity.CRMSubscriptionEntityName.String(),
-			Slug:   fmt.Sprintf("crm-sub-%s-%s", s.EMail.String(), s.ListID.String()),
+			PK:         common.JoinStringerDBKey(entity.UserEntityName, s.EMail),
+			SK:         common.JoinStringerDBKey(entity.CRMEmailListEntityName, s.ListID),
+			Entity:     entity.CRMSubscriptionEntityName.String(),
+			Slug:       fmt.Sprintf("crm-sub-%s-%s", s.EMail.String(), s.ListID.String()),
 			Timestamps: s.Timestamps,
 		},
 		SubscriptionStatus: s.Status.String(),
-		SubscriptionID: s.SubscriptionID.String(),
+		SubscriptionID:     s.SubscriptionID.String(),
 	}
 }
 
@@ -99,10 +100,10 @@ func (e *SubscriptionEntity) GetSubscription() (entity.CRMEmailListSubscription,
 		return entity.CRMEmailListSubscription{}, err
 	}
 	s := entity.CRMEmailListSubscription{
-		ListID:     listID,
-		EMail:      email,
-		Status:     entity.SubscriptionStatus(e.SubscriptionStatus),
-		Timestamps: e.Timestamps,
+		ListID:         listID,
+		EMail:          email,
+		Status:         entity.SubscriptionStatus(e.SubscriptionStatus),
+		Timestamps:     e.Timestamps,
 		SubscriptionID: entity.IDFromStringOrNil(e.SubscriptionID),
 	}
 

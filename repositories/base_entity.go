@@ -16,10 +16,10 @@ type TableIndex struct {
 
 // every GetEntity struct that should get persisted should include BaseEntity
 type BaseEntity struct {
-	PK     string `dynamo:"pk,hash" index:"gsi-1-reverse,range"`
-	SK     string `dynamo:"sk,range" index:"gsi-1-reverse,hash"`
-	Entity string `dynamo:"entity,omitempty" index:"gsi-2-entity,hash"`
-	Slug   string `dynamo:"slug,omitempty" index:"gsi-2-entity,range"`
+	PK         string            `dynamo:"pk,hash" index:"gsi-1-reverse,range"`
+	SK         string            `dynamo:"sk,range" index:"gsi-1-reverse,hash"`
+	Entity     string            `dynamo:"entity,omitempty" index:"gsi-2-entity,hash"`
+	Slug       string            `dynamo:"slug,omitempty" index:"gsi-2-entity,range"`
 	Timestamps entity.Timestamps `dynamo:"timestamps,omitempty"`
 }
 

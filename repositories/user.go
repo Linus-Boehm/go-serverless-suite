@@ -94,10 +94,10 @@ type UserEntity struct {
 func NewUserEntity(u entity.User) *UserEntity {
 	return &UserEntity{
 		BaseEntity: BaseEntity{
-			PK:     common.JoinStringerDBKey(entity.UserEntityName, u.ID),
-			SK:     common.JoinDBKey(entity.UserEntityName.String(), u.Email),
-			Entity: entity.UserEntityName.String(),
-			Slug:   fmt.Sprintf("user-%s", u.ID.String()),
+			PK:         common.JoinStringerDBKey(entity.UserEntityName, u.ID),
+			SK:         common.JoinDBKey(entity.UserEntityName.String(), u.Email),
+			Entity:     entity.UserEntityName.String(),
+			Slug:       fmt.Sprintf("user-%s", u.ID.String()),
 			Timestamps: u.Timestamps,
 		},
 		EmailVerified:  u.EmailVerified,
@@ -117,12 +117,12 @@ func (e *UserEntity) GetUser() (entity.User, error) {
 		return entity.User{}, err
 	}
 	u := entity.User{
-		ID:         id,
-		Email:      email.String(),
-		Firstname:  e.Firstname,
-		Lastname:   e.Lastname,
-		Attributes: e.UserAttributes,
-		Timestamps: e.Timestamps,
+		ID:            id,
+		Email:         email.String(),
+		Firstname:     e.Firstname,
+		Lastname:      e.Lastname,
+		Attributes:    e.UserAttributes,
+		Timestamps:    e.Timestamps,
 		EmailVerified: e.EmailVerified,
 	}
 

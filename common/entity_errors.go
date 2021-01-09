@@ -17,16 +17,16 @@ type EntityError interface {
 }
 
 type EntityNotFoundError struct {
-	id     fmt.Stringer
-	entity fmt.Stringer
-	message  string
+	id      fmt.Stringer
+	entity  fmt.Stringer
+	message string
 }
 
 func NewEntityNotFoundError(id fmt.Stringer, entity fmt.Stringer) *EntityNotFoundError {
 	return &EntityNotFoundError{
-		id:     id,
-		entity: entity,
-		message:  fmt.Sprintf("GetEntity: %v, ID: %v", entity, id),
+		id:      id,
+		entity:  entity,
+		message: fmt.Sprintf("GetEntity: %v, ID: %v", entity, id),
 	}
 }
 

@@ -2,34 +2,35 @@ package services
 
 import (
 	"fmt"
+	"html/template"
+	"net/url"
+
 	"github.com/Linus-Boehm/go-serverless-suite/common"
 	"github.com/Linus-Boehm/go-serverless-suite/common/tplreader"
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 	"github.com/Linus-Boehm/go-serverless-suite/itf"
-	"html/template"
-	"net/url"
 )
 
-type crmSVC struct {
-	mailer itf.Mailer
-	repo itf.CRMProvider
+type CRMService struct {
+	mailer     itf.Mailer
+	repo       itf.CRMProvider
 	senderMail entity.Mail
-	userRepo itf.UserProvider
+	userRepo   itf.UserProvider
 }
 
-func NewCRMService(mailer itf.Mailer, repo itf.CRMProvider, userRepo itf.UserProvider, senderMail entity.Mail) *crmSVC {
-	return &crmSVC{
-		mailer: mailer,
-		repo: repo,
+func NewCRMService(mailer itf.Mailer, repo itf.CRMProvider, userRepo itf.UserProvider, senderMail entity.Mail) *CRMService {
+	return &CRMService{
+		mailer:     mailer,
+		repo:       repo,
 		senderMail: senderMail,
-		userRepo: userRepo,
+		userRepo:   userRepo,
 	}
 }
 
-func (c crmSVC) GetMailer() itf.Mailer {
+func (c CRMService) GetMailer() itf.Mailer {
 	panic("implement me")
 }
-func (c crmSVC) CreateNewUser(user entity.User) (entity.User,error) {
+func (c CRMService) CreateNewUser(user entity.User) (entity.User, error) {
 	user.ID.NewV4IfEmpty()
 	user.Timestamps.CreatedNow()
 	err := c.userRepo.PutUser(user)
@@ -37,7 +38,7 @@ func (c crmSVC) CreateNewUser(user entity.User) (entity.User,error) {
 }
 
 // CreateSubscription creates a new subscription, if the email is already subscribed to the ListID, then no new subscription is created, but the current one is returned
-func (c crmSVC) CreateSubscription(subscription entity.CRMEmailListSubscription) (entity.CRMEmailListSubscription, error) {
+func (c CRMService) CreateSubscription(subscription entity.CRMEmailListSubscription) (entity.CRMEmailListSubscription, error) {
 	currentSubs, err := c.repo.GetSubscriptionsOfEmail(subscription.EMail)
 	if err != nil {
 		return subscription, err
@@ -55,24 +56,24 @@ func (c crmSVC) CreateSubscription(subscription entity.CRMEmailListSubscription)
 	return subscription, c.repo.PutSubscription(subscription)
 }
 
-func (c crmSVC) SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error {
+func (c CRMService) SendDoubleOptInMail(options entity.CRMOptInMailOptions) error {
 	if options.FS == nil {
 		options.FS = &tplreader.DefaultManifests
 	}
 	if options.Template == nil {
 		options.Template = &tplreader.CRMOptInMailManifest
 	}
-	reader, err :=  tplreader.LoadCustomTemplate(options.FS, *options.Template)
+	reader, err := tplreader.LoadCustomTemplate(options.FS, *options.Template)
 	if err != nil {
 		return err
 	}
 	encodedEmail := url.QueryEscape(options.EMail.String())
-	confirmUrl := fmt.Sprintf("%s/?id=%s&subid=%s&email=%s", options.ConfirmationPath, options.UserID, options.SubID, encodedEmail)
-	htmlLink := template.HTML(fmt.Sprintf(`<a href="%s" target="_blank">%s</a>`, confirmUrl, confirmUrl))
+	confirmURL := fmt.Sprintf("%s/?id=%s&subid=%s&email=%s", options.ConfirmationPath, options.UserID, options.SubID, encodedEmail)
+	htmlLink := template.HTML(fmt.Sprintf(`<a href="%s" target="_blank">%s</a>`, confirmURL, confirmURL))
 	tplOptions := entity.CRMOptInMailTemplateOptions{
-		ConfirmURL:   htmlLink,
-		Email:        options.EMail.String(),
-		FullName:     options.Fullname,
+		ConfirmURL: htmlLink,
+		Email:      options.EMail.String(),
+		FullName:   options.Fullname,
 	}
 	htmlTemplate, err := reader.RenderWithHTML(tplOptions)
 	if err != nil {
@@ -82,12 +83,12 @@ func (c crmSVC) SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error {
 	var subject *string
 	if options.Subject != nil {
 		subject = options.Subject
-	}else {
+	} else {
 		subject = common.StringPtr("Please confirm your Sign-up")
 	}
 	mailConfig := entity.MinimalMail{
-		FromMail:     c.senderMail,
-		ToMail:       entity.Mail{
+		FromMail: c.senderMail,
+		ToMail: entity.Mail{
 			Name: options.Fullname,
 			Mail: options.EMail.String(),
 		},
@@ -97,7 +98,7 @@ func (c crmSVC) SendDoubleOptInMail(options entity.CRMOptInMailOptions ) error {
 	return c.mailer.GetProvider().SendSingleMail(mailConfig)
 }
 
-func (c crmSVC) ValidateEmail(email entity.ID, userID entity.ID, subID entity.ID) error {
+func (c CRMService) ValidateEmail(email entity.ID, userID entity.ID, subID entity.ID) error {
 	subs, err := c.repo.GetSubscriptionsOfEmail(email)
 	if err != nil {
 		return err
@@ -109,7 +110,7 @@ func (c crmSVC) ValidateEmail(email entity.ID, userID entity.ID, subID entity.ID
 	var toConfirm []entity.CRMEmailListSubscription
 	//Filter for subscription
 	for _, sub := range subs {
-		if sub.SubscriptionID.String() == subID.String(){
+		if sub.SubscriptionID.String() == subID.String() {
 			// Set user to confirmed in our DB
 			sub.Status = entity.UserOptedInSubscriptionStatus
 			sub.UpdatedNow()
@@ -129,5 +130,3 @@ func (c crmSVC) ValidateEmail(email entity.ID, userID entity.ID, subID entity.ID
 	return nil
 
 }
-
-

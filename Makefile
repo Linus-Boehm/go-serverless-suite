@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 
-VERSION ?= "v0.8.4"
+VERSION ?= "v0.8.5"
 TAGS ?= ""
 GO_BIN ?= "go1.16beta1"
 
@@ -42,6 +42,6 @@ update:
 release-test:
 	$(GO_BIN) test -tags ${TAGS} -race ./...
 
-release: release-test
+release: tidy generate lint release-test
 	$(GO_BIN) get github.com/gobuffalo/release
 	release -y -f version.go -v ${VERSION} --skip-packr
