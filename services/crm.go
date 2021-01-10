@@ -106,6 +106,7 @@ func (c CRMService) ValidateEmail(email entity.ID, userID entity.ID, subID entit
 		return err
 	}
 	var toConfirm []entity.CRMEmailListSubscription
+	listIDs := []entity.ID{}
 	//Filter for subscription
 	for _, sub := range subs {
 		if sub.SubscriptionID.String() == subID.String() {
@@ -113,9 +114,18 @@ func (c CRMService) ValidateEmail(email entity.ID, userID entity.ID, subID entit
 			sub.Status = entity.UserOptedInSubscriptionStatus
 			sub.UpdatedNow()
 			toConfirm = append(toConfirm, sub)
+
 		}
+		//TODO move within if statement to only update list that are not already subscribed
+		listIDs = append(listIDs, sub.ListID)
 	}
-	//TODO add user here to provider email list
+
+	mailProvider := c.mailer.GetProvider()
+	//TODO if user is already verified only update user
+	err = mailProvider.CreateUser(user, listIDs)
+	if err != nil {
+		return err
+	}
 
 	if err := c.repo.PutSubscriptions(toConfirm); err != nil {
 		return err

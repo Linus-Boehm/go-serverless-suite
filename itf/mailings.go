@@ -24,4 +24,5 @@ type MailerProvider interface {
 	SendSingleMail(input entity.MinimalMail) error
 	GetContactLists() ([]entity.MailContactList, error)
 	GetDefaultSender() *entity.Mail
+	CreateUser(user entity.User, listIDs []entity.ID) error
 }

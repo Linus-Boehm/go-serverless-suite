@@ -210,3 +210,17 @@ func (mr *MockMailerProviderMockRecorder) GetDefaultSender() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefaultSender", reflect.TypeOf((*MockMailerProvider)(nil).GetDefaultSender))
 }
+
+// CreateUser mocks base method
+func (m *MockMailerProvider) CreateUser(user entity.User, listIDs []entity.ID) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateUser", user, listIDs)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateUser indicates an expected call of CreateUser
+func (mr *MockMailerProviderMockRecorder) CreateUser(user, listIDs interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockMailerProvider)(nil).CreateUser), user, listIDs)
+}
