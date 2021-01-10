@@ -25,3 +25,7 @@ bin/*
 gin-bin
 .idea/
 .vscode
+
+# Ignore test config
+
+testhelper/assets/config.json

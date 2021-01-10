@@ -1,0 +1,9 @@
+{
+  "mailings": {
+    "test_recipient": "whereShouldTestMailsSend",
+    "sendgrid_config": {
+      "api_key": "yourSendgridAPIKey",
+      "list_id": "testSendgridList"
+    }
+  }
+}

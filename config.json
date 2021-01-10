@@ -1,8 +1,0 @@
-{
-  "mailings": {
-    "test_recipient": "linus@sewandbooze.com",
-    "sendgrid_config": {
-      "api_key": "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"
-    }
-  }
-}

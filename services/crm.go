@@ -56,17 +56,15 @@ func (c CRMService) CreateSubscription(subscription entity.CRMEmailListSubscript
 	return subscription, c.repo.PutSubscription(subscription)
 }
 
-func (c CRMService) SendDoubleOptInMail(options entity.CRMOptInMailOptions) error {
-	if options.FS == nil {
-		options.FS = &tplengine.DefaultManifests
+func (c CRMService) SendDoubleOptInMail(options entity.CRMOptInMailOptions, renderer itf.TplRenderer) error {
+	if renderer == nil {
+		engine, err := tplengine.LoadLayoutTemplate(tplengine.CRMOptInMailManifest)
+		if err != nil {
+			return err
+		}
+		renderer = engine
 	}
-	if options.Template == nil {
-		options.Template = &tplengine.CRMOptInMailManifest
-	}
-	reader, err := tplengine.LoadLayoutTemplateFromFS(options.FS, *options.Template)
-	if err != nil {
-		return err
-	}
+
 	encodedEmail := url.QueryEscape(options.EMail.String())
 	confirmURL := fmt.Sprintf("%s/?id=%s&subid=%s&email=%s", options.ConfirmationPath, options.UserID, options.SubID, encodedEmail)
 	htmlLink := template.HTML(fmt.Sprintf(`<a href="%s" target="_blank">%s</a>`, confirmURL, confirmURL))
@@ -75,7 +73,7 @@ func (c CRMService) SendDoubleOptInMail(options entity.CRMOptInMailOptions) erro
 		Email:      options.EMail.String(),
 		FullName:   options.Fullname,
 	}
-	htmlTemplate, err := reader.RenderWithHTML(tplOptions)
+	htmlTemplate, err := renderer.RenderWithHTML(tplOptions)
 	if err != nil {
 		return err
 	}

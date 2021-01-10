@@ -5,8 +5,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Linus-Boehm/go-serverless-suite/itf"
-
 	"github.com/Linus-Boehm/go-serverless-suite/entity"
 
 	"github.com/Linus-Boehm/go-serverless-suite/common"
@@ -15,8 +13,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func NewTestSendgridProvider(t *testing.T) itf.MailerProvider {
-	if os.Getenv("ONLINE_TEST") == "" {
+func NewTestSendgridProvider(t *testing.T) *SendgridProvider {
+	if os.Getenv("integration-test") != "1" {
 		t.Skip("online test skipped")
 	}
 	c, err := testhelper.LoadConfig()
@@ -89,4 +87,51 @@ func TestSendgrid_GetContactLists(t *testing.T) {
 	lists, err := p.GetContactLists()
 	assert.NoError(t, err)
 	assert.NotNil(t, lists)
+}
+
+func TestSendgridProvider_CreateUser(t *testing.T) {
+	cfg, err := testhelper.LoadConfig()
+	assert.NoError(t, err)
+
+	type args struct {
+		user    entity.User
+		listIDs []entity.ID
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "happy",
+			args: args{
+				user: entity.User{
+					ID:            entity.NewEntityIDV4(),
+					Email:         "test@example.org",
+					Firstname:     "Max",
+					Lastname:      "Muster",
+					EmailVerified: true,
+					Attributes: map[string]string{
+						"styleInterest": "both",
+					},
+					Timestamps: entity.Timestamps{},
+				},
+				listIDs: []entity.ID{
+					entity.IDFromStringOrNil(cfg.Mailings.SendgridConfig.ListID),
+				},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := NewTestSendgridProvider(t)
+			s.config.CustomFieldMap = map[string]string{
+				"styleInterest": "e1_T",
+			}
+			if err := s.CreateUser(tt.args.user, tt.args.listIDs); (err != nil) != tt.wantErr {
+				t.Errorf("CreateUser() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
 }
