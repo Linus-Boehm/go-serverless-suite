@@ -66,7 +66,7 @@ func (c CRMService) SendDoubleOptInMail(options entity.CRMOptInMailOptions, rend
 	}
 
 	encodedEmail := url.QueryEscape(options.EMail.String())
-	confirmURL := fmt.Sprintf("%s/?id=%s&subid=%s&email=%s", options.ConfirmationPath, options.UserID, options.SubID, encodedEmail)
+	confirmURL := fmt.Sprintf("%s?id=%s&subid=%s&email=%s", options.ConfirmationPath, options.UserID, options.SubID, encodedEmail)
 	htmlLink := template.HTML(fmt.Sprintf(`<a href="%s" target="_blank">%s</a>`, confirmURL, confirmURL))
 	tplOptions := entity.CRMOptInMailTemplateOptions{
 		ConfirmURL: htmlLink,

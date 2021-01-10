@@ -36,7 +36,7 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 			wantErr: false,
 			expectContains: []string{
 				"Max Mustermann",
-				"http://localhost/?id=123&subid=456&email=test%40example.org",
+				"http://localhost?id=123&subid=456&email=test%40example.org",
 			},
 		},
 		{
@@ -54,7 +54,7 @@ func Test_crmSVC_SendDoubleOptInMail(t *testing.T) {
 			wantErr: false,
 			expectContains: []string{
 				"Max Mustermann",
-				"http://localhost/?id=123&subid=456&email=test%40example.org",
+				"http://localhost?id=123&subid=456&email=test%40example.org",
 			},
 		},
 	}
