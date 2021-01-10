@@ -14,8 +14,9 @@ import (
 )
 
 type SendgridConfig struct {
-	APIKey        string
-	DefaultSender *entity.Mail
+	APIKey         string
+	DefaultSender  *entity.Mail
+	CustomFieldMap map[string]string
 }
 
 type SendgridProvider struct {
@@ -110,10 +111,15 @@ type SendgridUpdateContactRequest struct {
 	Contacts []SendgridContact `json:"contacts"`
 }
 
-func mapUserEntityToContact(user entity.User) SendgridContact {
+func (s *SendgridProvider) mapUserEntityToContact(user entity.User) SendgridContact {
 	attrs := map[string]interface{}{}
-	for k, v := range user.Attributes {
-		attrs[k] = v
+	if s.config.CustomFieldMap != nil {
+		for usrAttrName, v := range user.Attributes {
+			if customFieldID, ok := s.config.CustomFieldMap[usrAttrName]; ok {
+				attrs[customFieldID] = v
+			}
+
+		}
 	}
 	return SendgridContact{
 		Email:        user.Email,
@@ -132,7 +138,7 @@ func (s *SendgridProvider) CreateUser(user entity.User, listIDs []entity.ID) err
 	requestPayload := SendgridUpdateContactRequest{
 		ListIDS: listPayload,
 		Contacts: []SendgridContact{
-			mapUserEntityToContact(user),
+			s.mapUserEntityToContact(user),
 		},
 	}
 	jsonPayload, err := json.Marshal(requestPayload)
