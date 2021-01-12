@@ -11,6 +11,7 @@ type CRMServicer interface {
 	GetMailer() Mailer
 	CreateNewUser(user entity.User) (entity.User, error)
 	CreateSubscription(subs entity.CRMEmailListSubscription) (entity.CRMEmailListSubscription, error)
+	CreateSubscriptions(subscriptions []entity.CRMEmailListSubscription) ([]entity.CRMEmailListSubscription, error)
 	SendDoubleOptInMail(options entity.CRMOptInMailOptions, renderer TplRenderer) error
 	ValidateEmail(email entity.ID, userID entity.ID, subID entity.ID) error
 }

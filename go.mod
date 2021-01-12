@@ -3,11 +3,10 @@ module github.com/Linus-Boehm/go-serverless-suite
 go 1.16
 
 require (
-	github.com/aws/aws-sdk-go v1.36.23
+	github.com/aws/aws-sdk-go v1.36.25
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/logger v0.0.2
 	github.com/gin-gonic/gin v1.6.3
-	github.com/gobuffalo/release v1.15.0 // indirect
 	github.com/golang/mock v1.4.4
 	github.com/google/uuid v1.1.4
 	github.com/guregu/dynamo v1.10.2

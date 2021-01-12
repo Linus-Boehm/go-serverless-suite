@@ -56,6 +56,38 @@ func (c CRMService) CreateSubscription(subscription entity.CRMEmailListSubscript
 	return subscription, c.repo.PutSubscription(subscription)
 }
 
+func (c CRMService) CreateSubscriptions(subscriptions []entity.CRMEmailListSubscription) ([]entity.CRMEmailListSubscription, error) {
+	if len(subscriptions) == 0 {
+		return nil, nil
+	}
+	currentSubs, err := c.repo.GetSubscriptionsOfEmail(subscriptions[0].EMail)
+	if err != nil {
+		return nil, err
+	}
+	subsToCreate := []entity.CRMEmailListSubscription{}
+	// get only subscriptions which are not already
+	for _, sub := range subscriptions {
+		found := false
+		for _, currentSub := range currentSubs {
+			// if user already exists, only perform update when not already opted in
+			if sub.ListID == currentSub.ListID {
+				if currentSub.Status.String() != entity.UserOptedInSubscriptionStatus.String() {
+					sub.Status = currentSub.Status
+					sub.Timestamps = currentSub.Timestamps
+					sub.Timestamps.UpdatedNow()
+				} else {
+					found = true
+				}
+			}
+		}
+		if !found {
+			subsToCreate = append(subsToCreate, sub)
+		}
+	}
+
+	return subsToCreate, c.repo.PutSubscriptions(subsToCreate)
+}
+
 func (c CRMService) SendDoubleOptInMail(options entity.CRMOptInMailOptions, renderer itf.TplRenderer) error {
 	if renderer == nil {
 		engine, err := tplengine.LoadLayoutTemplate(tplengine.CRMOptInMailManifest)
