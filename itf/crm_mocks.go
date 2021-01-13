@@ -100,6 +100,21 @@ func (mr *MockCRMServicerMockRecorder) CreateSubscription(subs interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSubscription", reflect.TypeOf((*MockCRMServicer)(nil).CreateSubscription), subs)
 }
 
+// CreateSubscriptions mocks base method
+func (m *MockCRMServicer) CreateSubscriptions(subscriptions []entity.CRMEmailListSubscription) ([]entity.CRMEmailListSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateSubscriptions", subscriptions)
+	ret0, _ := ret[0].([]entity.CRMEmailListSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateSubscriptions indicates an expected call of CreateSubscriptions
+func (mr *MockCRMServicerMockRecorder) CreateSubscriptions(subscriptions interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSubscriptions", reflect.TypeOf((*MockCRMServicer)(nil).CreateSubscriptions), subscriptions)
+}
+
 // SendDoubleOptInMail mocks base method
 func (m *MockCRMServicer) SendDoubleOptInMail(options entity.CRMOptInMailOptions, renderer TplRenderer) error {
 	m.ctrl.T.Helper()
