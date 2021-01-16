@@ -1,4 +1,4 @@
 package main
 
 // Version of main
-const Version = "v0.9.4"
+const Version = "v0.9.5"

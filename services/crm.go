@@ -28,7 +28,7 @@ func NewCRMService(mailer itf.Mailer, repo itf.CRMProvider, userRepo itf.UserPro
 }
 
 func (c CRMService) GetMailer() itf.Mailer {
-	panic("implement me")
+	return c.mailer
 }
 func (c CRMService) CreateNewUser(user entity.User) (entity.User, error) {
 	user.ID.NewV4IfEmpty()
