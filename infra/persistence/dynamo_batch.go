@@ -8,7 +8,7 @@ import (
 func (b *dynamoBaseTable) BatchWriteItems(rows ...interface{}) error {
 	_, err := b.Table.Batch(b.mainIndex.PK, b.mainIndex.SK).Write().Put(rows...).Run()
 	if err != nil {
-		return err
+		return b.TranslateDBError(err, nil, nil)
 	}
 	return nil
 }
@@ -19,7 +19,7 @@ func (b *dynamoBaseTable) BatchDeleteItems(rows []itf.DBKeyer) (int, error) {
 		keys[i] = dynamo.Keys{row.GetPK().String(), row.GetSK().String()}
 	}
 	num, err := b.Table.Batch(b.mainIndex.PK, b.mainIndex.SK).Write().Delete(keys...).Run()
-	return num, err
+	return num, b.TranslateDBError(err, nil, nil)
 }
 
 func (b *dynamoBaseTable) BatchReadItems(keys []itf.DBKeyer, rows interface{}) error {
