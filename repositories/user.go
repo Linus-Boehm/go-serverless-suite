@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/Linus-Boehm/go-serverless-suite/infra/persistence"
 
 	"github.com/Linus-Boehm/go-serverless-suite/common"
@@ -78,8 +80,26 @@ func (u userRepository) DeleteUser(id entity.ID, email string, soft bool) (entit
 	return user.GetUser()
 }
 
-func (u userRepository) ListUsers() ([]entity.User, error) {
-	panic("implement me")
+func (u userRepository) ListUsers() (users []entity.User, err error) {
+	rows := []UserEntity{}
+
+	err = u.table.GetEntity(persistence.DynamoEntityIndex, entity.UserEntityName, &rows, true)
+	if err != nil {
+		return nil, err
+	}
+	return mapUsersToDomain(rows)
+}
+
+func mapUsersToDomain(users []UserEntity) ([]entity.User, error) {
+	u := []entity.User{}
+	for _, user := range users {
+		e, err := user.GetUser()
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to transfer user row to entity")
+		}
+		u = append(u, e)
+	}
+	return u, nil
 }
 
 // UserEntity is implementing itf.TableEntity
