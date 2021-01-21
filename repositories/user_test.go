@@ -374,3 +374,50 @@ func TestNewUserEntity(t *testing.T) {
 		})
 	}
 }
+
+func Test_userRepository_ListUsers(t *testing.T) {
+
+	tests := []struct {
+		name       string
+		beforeTest func(*testing.T, itf.UserProvider) []entity.User
+		wantErr    bool
+	}{
+		{
+			name: "happy",
+			beforeTest: func(t *testing.T, provider itf.UserProvider) []entity.User {
+				users := []entity.User{
+					{
+						ID:            entity.IDFromStringOrNil("useer-1"),
+						Email:         "test@example.org",
+						Firstname:     "Max",
+						Lastname:      "Muster",
+						EmailVerified: false,
+						Attributes:    nil,
+						Timestamps:    entity.Timestamps{},
+					},
+				}
+				err := provider.PutUser(users[0])
+				assert.NoError(t, err)
+				return users
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			b, err := persistence.NewTestProvider(UserEntity{})
+			assert.NoError(t, err)
+			defer b.DeleteTable()
+			userRepo := NewUserRepository(b)
+			wantUsers := tt.beforeTest(t, userRepo)
+			gotUsers, err := userRepo.ListUsers()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ListUsers() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(gotUsers, wantUsers) {
+				t.Errorf("ListUsers() gotUsers = %v, want %v", gotUsers, wantUsers)
+			}
+		})
+	}
+}
