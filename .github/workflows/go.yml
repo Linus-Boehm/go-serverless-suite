@@ -26,7 +26,7 @@ jobs:
       run: 'cd testhelper/assets && echo "$CONFIG" > config.json'
       shell: bash
       env:
-        $CONFIG: ${{secrets.TEST_CONFIG}}
+        CONFIG: ${{ secrets.TEST_CONFIG }}
     - name: Build
       run: make build
     
