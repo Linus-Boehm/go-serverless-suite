@@ -12,7 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: mooyoul/dynamodb-actions@v1.2.1
+    - name: Setup DynamoDB
+      uses: rrainn/dynamodb-action@v2.0.0
+      with:
+        port: 8000
+        cors: '*'
+        sharedDb: true
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
