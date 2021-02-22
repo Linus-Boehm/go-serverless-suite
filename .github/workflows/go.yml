@@ -17,7 +17,11 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.16
-
+    - name: Prepare Test Config
+      run: 'cd testhelper/assets && echo "$CONFIG" > config.json'
+      shell: bash
+      env:
+        $CONFIG: ${{secrets.TEST_CONFIG}}
     - name: Build
       run: make build
     
