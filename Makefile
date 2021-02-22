@@ -2,7 +2,7 @@ SHELL = /bin/bash
 
 VERSION ?= "v0.9.7"
 TAGS ?= ""
-GO_BIN ?= "go1.16"
+GO_BIN ?= "go"
 
 dynamodb-local:
 	cd dockerfiles/dynamodb && docker-compose up -d --no-recreate
