@@ -18,6 +18,7 @@ jobs:
         port: 8000
         cors: '*'
         sharedDb: true
+        optimizeDbBeforeStartup: true
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
