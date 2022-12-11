@@ -24,8 +24,9 @@ func (b *dynamoBaseTable) BatchDeleteItems(rows []itf.DBKeyer) (int, error) {
 
 func (b *dynamoBaseTable) BatchReadItems(keys []itf.DBKeyer, rows interface{}) error {
 	//TODO split after 25
-	keyed := make([]dynamo.Keyed, len(keys))
-	for i, key := range keys {
+	uniqueKeys := UniqueKeys(keys)
+	keyed := make([]dynamo.Keyed, len(uniqueKeys))
+	for i, key := range uniqueKeys {
 		keyed[i] = dynamo.Keys{key.GetPK().String(), key.GetSK().String()}
 	}
 	err := b.Table.Batch(b.mainIndex.PK, b.mainIndex.SK).Get(keyed...).All(rows)
@@ -33,4 +34,18 @@ func (b *dynamoBaseTable) BatchReadItems(keys []itf.DBKeyer, rows interface{}) e
 		return b.TranslateDBError(err, nil, nil)
 	}
 	return nil
+}
+
+func UniqueKeys(keys []itf.DBKeyer) []itf.DBKeyer {
+	unique := make(map[string]itf.DBKeyer)
+	for _, key := range keys {
+		unique[key.GetPK().String()+key.GetSK().String()] = key
+	}
+	result := make([]itf.DBKeyer, len(unique))
+	i := 0
+	for _, key := range unique {
+		result[i] = key
+		i++
+	}
+	return result
 }
